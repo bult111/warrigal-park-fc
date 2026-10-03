@@ -1,7 +1,6 @@
 """Application factory for Warrigal Park FC."""
 
 import os
-from pathlib import Path
 
 from flask import Flask
 
@@ -15,13 +14,14 @@ def create_app(test_config=None):
     """Create and configure the Flask application."""
     app = Flask(__name__, instance_relative_config=True)
 
+    # Secret key and database path come from the environment (or safe defaults).
+    # A relative DATABASE path is resolved against the instance folder.
     app.config.from_mapping(
         SECRET_KEY=os.environ.get("SECRET_KEY", "dev-secret-key"),
         DATABASE=os.environ.get("DATABASE", "warrigal_park_fc.db"),
     )
 
-    # Development / debug mode can be toggled through the environment.
-    app.config["FLASK_ENV"] = os.environ.get("FLASK_ENV", "development")
+    # Debug mode is driven by FLASK_DEBUG ("1" = on); run.py reads this value.
     app.config["DEBUG"] = os.environ.get("FLASK_DEBUG", "0") == "1"
 
     if test_config:
