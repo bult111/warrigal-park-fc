@@ -51,4 +51,4 @@ work is listed.
 - Improved application configuration (environment-driven host/port/debug,
   clearer `.env.example`, dependency grouping in `requirements.txt`).
 - Expanded and corrected project documentation.
-- Established a local feature-branch Git workflow (no remote operations).
+- Established a Git feature-branch workflow on GitHub (main plus three feature branches).

@@ -122,14 +122,20 @@ internet access.
 6. **Team removal safety.** Removing a team deletes only the team and its
    player assignments; members and registrations are untouched.
 
-## Local Git workflow
+## Git workflow
 
-The project uses a simple local feature-branch workflow:
+The project uses Git for version control, with the repository hosted on GitHub
+(remote `origin`). The workflow is:
 
-- `main` is the integration branch.
-- Feature work is done on `feature/*` branches and merged back into `main`
-  with `--no-ff` merge commits.
-- No remote repository or GitHub operations are used; everything is local.
+- `main` is the default and integration branch.
+- Feature work is done on `feature/*` branches created from `main`.
+- Feature branches are merged back into `main` with `--no-ff` merge commits so
+  each integration is recorded explicitly.
+- The test suite (`pytest`) is run on each feature branch before merging.
+
+Current branches: `main`, `feature/qa-and-validation`,
+`feature/configuration-improvements`, and `feature/project-documentation`.
+All three feature branches have been merged into `main`.
 
 ## Scope limitations
 
