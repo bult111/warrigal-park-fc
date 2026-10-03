@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Members — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>Members</h1>
+  <a class="btn" href="{{ url_for('main.member_new') }}">+ New Member</a>
+</div>
+
+<form class="inline-form" method="get" action="{{ url_for('main.members') }}">
+  <input type="text" name="q" value="{{ search }}" placeholder="Search by name…">
+  <button class="btn btn-secondary" type="submit">Search</button>
+  {% if search %}
+    <a class="btn btn-secondary" href="{{ url_for('main.members') }}">Clear</a>
+  {% endif %}
+</form>
+
+<div class="card">
+  {% if members %}
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Date of Birth</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in members %}
+        <tr>
+          <td><a href="{{ url_for('main.member_detail', member_id=m.id) }}">{{ m.name }}</a></td>
+          <td>{{ m.date_of_birth }}</td>
+          <td>{{ m.email or '—' }}</td>
+          <td>{{ m.phone or '—' }}</td>
+          <td>
+            <span class="badge badge-{{ m.status|lower }}">{{ m.status }}</span>
+          </td>
+          <td class="right">
+            <a class="btn btn-secondary btn-sm" href="{{ url_for('main.member_detail', member_id=m.id) }}">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">No members found.</div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Registrations — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>Registrations</h1>
+  <a class="btn" href="{{ url_for('main.registration_new') }}">+ New Registration</a>
+</div>
+
+<div class="card">
+  {% if registrations %}
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr><th>Member</th><th>Season</th><th>Age Group</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for r in registrations %}
+        <tr>
+          <td><a href="{{ url_for('main.member_detail', member_id=r.member_id) }}">{{ r.member_name }}</a></td>
+          <td>{{ r.season }}</td>
+          <td>{{ r.age_group }}</td>
+          <td><span class="badge badge-{{ r.status|lower }}">{{ r.status }}</span></td>
+          <td class="right">
+            <a class="btn btn-secondary btn-sm" href="{{ url_for('main.registration_detail', registration_id=r.id) }}">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">No registrations yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="dashboard-grid">
+  <div class="stat-card">
+    <div class="stat-value">{{ stats.total_members }}</div>
+    <div class="stat-label">Total Members</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ stats.active_members }}</div>
+    <div class="stat-label">Active Members</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ stats.guardians }}</div>
+    <div class="stat-label">Guardians</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ stats.registrations }}</div>
+    <div class="stat-label">Registrations</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value">{{ stats.teams }}</div>
+    <div class="stat-label">Teams</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2 class="mt-0">Welcome</h2>
+  <p>
+    Use the navigation above to manage members, guardians, registrations and
+    teams. This system records member registrations across seasons and assigns
+    registered players to teams for a matching season.
+  </p>
+</div>
+{% endblock %}

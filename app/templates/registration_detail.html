@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Registration #{{ registration.id }} — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>Registration #{{ registration.id }}</h1>
+  <div>
+    <a class="btn btn-secondary" href="{{ url_for('main.registration_edit', registration_id=registration.id) }}">Amend</a>
+    <a class="btn btn-secondary" href="{{ url_for('main.registrations') }}">Back to registrations</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="data">
+      <tbody>
+        <tr><th>Member</th><td><a href="{{ url_for('main.member_detail', member_id=registration.member_id) }}">{{ registration.member_name }}</a></td></tr>
+        <tr><th>Season</th><td>{{ registration.season }}</td></tr>
+        <tr><th>Age Group</th><td>{{ registration.age_group }}</td></tr>
+        <tr><th>Status</th><td><span class="badge badge-{{ registration.status|lower }}">{{ registration.status }}</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="form-actions">
+    {% if registration.status != 'Withdrawn' %}
+      <form method="post" action="{{ url_for('main.registration_withdraw', registration_id=registration.id) }}">
+        <button class="btn btn-danger" type="submit">Withdraw Registration</button>
+      </form>
+    {% else %}
+      <p class="muted">This registration has been withdrawn. Its record is preserved in the history.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

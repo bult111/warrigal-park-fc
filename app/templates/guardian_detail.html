@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ guardian.name }} — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>{{ guardian.name }}</h1>
+  <div>
+    <a class="btn btn-secondary" href="{{ url_for('main.guardian_edit', guardian_id=guardian.id) }}">Edit</a>
+    <a class="btn btn-secondary" href="{{ url_for('main.guardians') }}">Back to guardians</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="data">
+      <tbody>
+        <tr><th>Name</th><td>{{ guardian.name }}</td></tr>
+        <tr><th>Email</th><td>{{ guardian.email or '—' }}</td></tr>
+        <tr><th>Phone</th><td>{{ guardian.phone or '—' }}</td></tr>
+        <tr><th>Address</th><td>{{ guardian.address or '—' }}</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Linked Junior Members</h2>
+  {% if linked %}
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr><th>Name</th><th>Age</th><th>Email</th><th>Phone</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for m in linked %}
+        <tr>
+          <td><a href="{{ url_for('main.member_detail', member_id=m.id) }}">{{ m.name }}</a></td>
+          <td>{{ m.age }}</td>
+          <td>{{ m.email or '—' }}</td>
+          <td>{{ m.phone or '—' }}</td>
+          <td class="right">
+            <form method="post" action="{{ url_for('main.guardian_unlink', guardian_id=guardian.id, member_id=m.id) }}">
+              <button class="btn btn-danger btn-sm" type="submit">Unlink</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">No junior members are currently linked to this guardian.</div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h2>Link a Member</h2>
+  <form class="inline-form" method="post" action="{{ url_for('main.guardian_link', guardian_id=guardian.id) }}">
+    <select name="member_id" required>
+      <option value="">— Choose a member —</option>
+      {% for m in members %}
+        <option value="{{ m.id }}">{{ m.name }} ({{ m.date_of_birth }})</option>
+      {% endfor %}
+    </select>
+    <button class="btn" type="submit">Link member</button>
+  </form>
+</div>
+{% endblock %}

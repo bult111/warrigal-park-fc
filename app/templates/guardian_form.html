@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit Guardian' if guardian else 'New Guardian' }} — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>{{ 'Edit Guardian' if guardian else 'New Guardian' }}</h1>
+  {% if guardian %}
+    <a class="btn btn-secondary" href="{{ url_for('main.guardian_detail', guardian_id=guardian.id) }}">Back to guardian</a>
+  {% else %}
+    <a class="btn btn-secondary" href="{{ url_for('main.guardians') }}">Back to guardians</a>
+  {% endif %}
+</div>
+
+<div class="card">
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="name" value="{{ form.get('name', '') }}" required>
+      </div>
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ form.get('email', '') }}">
+      </div>
+      <div class="form-field">
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" name="phone" value="{{ form.get('phone', '') }}">
+      </div>
+      <div class="form-field">
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address" value="{{ form.get('address', '') }}">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" type="submit">{{ 'Save changes' if guardian else 'Create guardian' }}</button>
+      <a class="btn btn-secondary" href="{{ url_for('main.guardians') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

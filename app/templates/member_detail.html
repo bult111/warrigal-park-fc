@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}{{ member.name }} — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>{{ member.name }}</h1>
+  <div>
+    <a class="btn btn-secondary" href="{{ url_for('main.member_edit', member_id=member.id) }}">Edit</a>
+    <a class="btn btn-secondary" href="{{ url_for('main.members') }}">Back to members</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    <table class="data">
+      <tbody>
+        <tr><th>Name</th><td>{{ member.name }}</td></tr>
+        <tr><th>Date of Birth</th><td>{{ member.date_of_birth }} (age {{ member.age }})</td></tr>
+        <tr><th>Email</th><td>{{ member.email or '—' }}</td></tr>
+        <tr><th>Phone</th><td>{{ member.phone or '—' }}</td></tr>
+        <tr><th>Address</th><td>{{ member.address or '—' }}</td></tr>
+        <tr><th>Status</th><td><span class="badge badge-{{ member.status|lower }}">{{ member.status }}</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="form-actions">
+    {% if member.status == 'Active' %}
+      <form method="post" action="{{ url_for('main.member_deactivate', member_id=member.id) }}">
+        <button class="btn btn-danger" type="submit">Set Inactive</button>
+      </form>
+    {% else %}
+      <form method="post" action="{{ url_for('main.member_activate', member_id=member.id) }}">
+        <button class="btn" type="submit">Set Active</button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card">
+  <h2>Linked Guardians</h2>
+  {% if guardians %}
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Phone</th></tr>
+      </thead>
+      <tbody>
+        {% for g in guardians %}
+        <tr>
+          <td><a href="{{ url_for('main.guardian_detail', guardian_id=g.id) }}">{{ g.name }}</a></td>
+          <td>{{ g.email or '—' }}</td>
+          <td>{{ g.phone or '—' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">No guardians linked to this member.</div>
+  {% endif %}
+</div>
+
+<div class="card">
+  <h2>Registration History</h2>
+  {% if history %}
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr><th>Season</th><th>Age Group</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for r in history %}
+        <tr>
+          <td>{{ r.season }}</td>
+          <td>{{ r.age_group }}</td>
+          <td><span class="badge badge-{{ r.status|lower }}">{{ r.status }}</span></td>
+          <td class="right">
+            <a class="btn btn-secondary btn-sm" href="{{ url_for('main.registration_detail', registration_id=r.id) }}">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">No registrations on record for this member.</div>
+  {% endif %}
+</div>
+{% endblock %}

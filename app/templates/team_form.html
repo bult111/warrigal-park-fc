@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Rename Team' if team else 'New Team' }} — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>{{ 'Rename Team' if team else 'New Team' }}</h1>
+  {% if team %}
+    <a class="btn btn-secondary" href="{{ url_for('main.team_detail', team_id=team.id) }}">Back to team</a>
+  {% else %}
+    <a class="btn btn-secondary" href="{{ url_for('main.teams') }}">Back to teams</a>
+  {% endif %}
+</div>
+
+<div class="card">
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="season">Season *</label>
+        <input type="text" id="season" name="season" value="{{ form.get('season', '') }}" placeholder="e.g. 2026" required>
+      </div>
+      <div class="form-field">
+        <label for="name">Team Name *</label>
+        <input type="text" id="name" name="name" value="{{ form.get('name', '') }}" placeholder="e.g. Tigers" required>
+      </div>
+      <div class="form-field">
+        <label for="age_group">Age Group *</label>
+        <input type="text" id="age_group" name="age_group" value="{{ form.get('age_group', '') }}" placeholder="e.g. U16" required>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" type="submit">{{ 'Save changes' if team else 'Create team' }}</button>
+      <a class="btn btn-secondary" href="{{ url_for('main.teams') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+# Environment / secrets
+.env
+
+# Python virtual environments
+.venv/
+venv/
+
+# Python bytecode / caches
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Local SQLite databases (never commit real data)
+instance/*.db
+*.db
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

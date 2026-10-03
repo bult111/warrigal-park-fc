@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Teams — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>Teams</h1>
+  <a class="btn" href="{{ url_for('main.team_new') }}">+ New Team</a>
+</div>
+
+<div class="card">
+  {% if teams %}
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr><th>Season</th><th>Name</th><th>Age Group</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for t in teams %}
+        <tr>
+          <td>{{ t.season }}</td>
+          <td><a href="{{ url_for('main.team_detail', team_id=t.id) }}">{{ t.name }}</a></td>
+          <td>{{ t.age_group }}</td>
+          <td class="right">
+            <a class="btn btn-secondary btn-sm" href="{{ url_for('main.team_roster', team_id=t.id) }}">Roster</a>
+            <a class="btn btn-secondary btn-sm" href="{{ url_for('main.team_detail', team_id=t.id) }}">Manage</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">No teams yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

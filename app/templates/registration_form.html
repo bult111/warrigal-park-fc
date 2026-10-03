@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Amend Registration' if registration else 'New Registration' }} — Warrigal Park FC{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <h1>{{ 'Amend Registration' if registration else 'New Registration' }}</h1>
+  <a class="btn btn-secondary" href="{{ url_for('main.registrations') }}">Back to registrations</a>
+</div>
+
+<div class="card">
+  <form method="post">
+    <div class="form-grid">
+      <div class="form-field">
+        <label for="member_id">Member *</label>
+        <select id="member_id" name="member_id" required>
+          <option value="">— Choose a member —</option>
+          {% for m in members %}
+            <option value="{{ m.id }}" {% if form.get('member_id')|string == m.id|string %}selected{% endif %}>{{ m.name }} ({{ m.date_of_birth }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-field">
+        <label for="season">Season *</label>
+        <input type="text" id="season" name="season" value="{{ form.get('season', '') }}" placeholder="e.g. 2026" required>
+      </div>
+      <div class="form-field">
+        <label for="age_group">Age Group *</label>
+        <input type="text" id="age_group" name="age_group" value="{{ form.get('age_group', '') }}" placeholder="e.g. U16" required>
+      </div>
+      <div class="form-field">
+        <label for="status">Status *</label>
+        <select id="status" name="status" required>
+          {% for status in registration_statuses() %}
+            <option value="{{ status }}" {% if form.get('status', 'Started') == status %}selected{% endif %}>{{ status }}</option>
+          {% endfor %}
+        </select>
+        <span class="help-text">Members under 18 need a guardian before a registration can be Complete.</span>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn" type="submit">{{ 'Save changes' if registration else 'Create registration' }}</button>
+      <a class="btn btn-secondary" href="{{ url_for('main.registrations') }}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
