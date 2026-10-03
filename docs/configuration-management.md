@@ -1,8 +1,7 @@
 # Configuration Management
 
-This document describes how the local project is configured. It records only
-what has actually been implemented, and separates the implemented local
-configuration from a possible future version-control workflow.
+This document describes how the project is configured and how its Git version
+control is managed. It records only what has actually been implemented.
 
 ## Configuration files
 
@@ -10,7 +9,7 @@ configuration from a possible future version-control workflow.
 |------|---------|
 | `requirements.txt` | Pinned Python dependencies for the local project. |
 | `.env.example` | Documented example of the environment variables the app reads. |
-| `.gitignore` | Files excluded from any future version control (secrets, venvs, caches, databases). |
+| `.gitignore` | Files excluded from version control (secrets, venvs, caches, databases). |
 | `run.py` | Development entry point that starts the Flask app. |
 
 ## Environment variables
@@ -97,16 +96,18 @@ or hosting configuration. If the app were deployed, the following would apply
 - set `FLASK_DEBUG=0`,
 - point `DATABASE` at persistent storage with a backup strategy.
 
-## Local Git workflow
+## Git workflow
 
-The project is managed with a local Git repository (no remote). The workflow is:
+The project is version-controlled with Git and hosted on GitHub (remote
+`origin` at https://github.com/bult111/warrigal-park-fc). The workflow is:
 
-- `main` is the stable integration branch.
+- `main` is the default and stable integration branch.
 - Each piece of work is done on a `feature/*` branch created from `main`.
 - Feature branches are merged back into `main` with `--no-ff` so the merge is
   recorded as an explicit merge commit.
 - The test suite (`pytest`) is run on each feature branch and again after each
   merge.
 
-No GitHub repository, remote, pull request, or remote merge exists or has been
-performed. All branches, commits and merges are local to this machine.
+The current branches are `main`, `feature/qa-and-validation`,
+`feature/configuration-improvements`, and `feature/project-documentation`.
+All three feature branches have been merged into `main`.
