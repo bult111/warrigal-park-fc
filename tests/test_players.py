@@ -99,3 +99,40 @@ def test_move_to_wrong_season_rejected(make_member, make_registration, make_team
 
     # The player stays in team A.
     assert [p["name"] for p in services.team_players(team_a["id"])] == ["Season Mover"]
+
+
+def test_withdrawn_registration_not_eligible_for_team(make_member, make_registration, make_team):
+    """A withdrawn registration does not make a player eligible for a team."""
+    member = make_member("Withdrawn Player")
+    reg = make_registration(member["id"], "2026", "U16", "Started")
+    services.withdraw_registration(reg["id"])
+    team = make_team("2026", "Tigers", "U16")
+
+    with pytest.raises(services.ServiceError):
+        services.add_player_to_team(team["id"], member["id"])
+
+    assert services.team_players(team["id"]) == []
+
+
+def test_move_player_to_nonexistent_team_rejected(make_member, make_registration, make_team):
+    member = make_member("Move Ghost")
+    make_registration(member["id"], "2026", "U16", "Complete")
+    team_a = make_team("2026", "Tigers", "U16")
+    services.add_player_to_team(team_a["id"], member["id"])
+
+    with pytest.raises(services.ServiceError):
+        services.move_player(member["id"], team_a["id"], 99999)
+
+    assert [p["name"] for p in services.team_players(team_a["id"])] == ["Move Ghost"]
+
+
+def test_move_player_already_in_target_team_rejected(make_member, make_registration, make_team):
+    member = make_member("Dual Team")
+    make_registration(member["id"], "2026", "U16", "Complete")
+    team_a = make_team("2026", "Tigers", "U16")
+    team_b = make_team("2026", "Eagles", "U16")
+    services.add_player_to_team(team_a["id"], member["id"])
+    services.add_player_to_team(team_b["id"], member["id"])
+
+    with pytest.raises(services.ServiceError):
+        services.move_player(member["id"], team_a["id"], team_b["id"])

@@ -52,3 +52,14 @@ def test_guardian_contact_update_reflected(make_guardian, make_member, link_guar
     guardians = services.member_guardians(junior["id"])
     assert len(guardians) == 1
     assert guardians[0]["email"] == "new@example.com"
+
+
+def test_unlink_guardian(make_guardian, make_member, link_guardian, junior_dob):
+    guardian = make_guardian("Unlink Me")
+    junior = make_member("Junior", dob=junior_dob)
+    link_guardian(guardian["id"], junior["id"])
+    assert len(services.guardian_linked_members(guardian["id"])) == 1
+
+    services.unlink_guardian_member(guardian["id"], junior["id"])
+
+    assert services.guardian_linked_members(guardian["id"]) == []
