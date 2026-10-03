@@ -5,8 +5,9 @@ These tests assert that normal user mistakes raise :class:`ServiceError` (or
 """
 
 import pytest
+from datetime import date
 
-from app import services
+from app import models, services
 
 
 def test_missing_name_rejected():
@@ -74,3 +75,13 @@ def test_duplicate_team_player_rejected(make_member, make_registration, make_tea
     services.add_player_to_team(team["id"], member["id"])
     with pytest.raises(services.ServiceError):
         services.add_player_to_team(team["id"], member["id"])
+
+
+def test_calculate_age_boundary():
+    """The age calculation is correct around the 18th-birthday boundary."""
+    # Exactly 18 on the birthday.
+    assert models.calculate_age(date(2008, 3, 10), today=date(2026, 3, 10)) == 18
+    # One day before the birthday -> still 17.
+    assert models.calculate_age(date(2008, 3, 11), today=date(2026, 3, 10)) == 17
+    # One day after the birthday -> already 18.
+    assert models.calculate_age(date(2008, 3, 9), today=date(2026, 3, 10)) == 18

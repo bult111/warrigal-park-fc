@@ -97,3 +97,36 @@ def test_junior_created_directly_complete_rejected(make_member, make_registratio
     junior = make_member("Junior Direct", dob=junior_dob)
     with pytest.raises(services.ServiceError):
         make_registration(junior["id"], "2026", "U16", "Complete")
+
+
+def test_exactly_18_no_guardian_required(make_member, make_registration, exactly_18_dob):
+    """A member whose 18th birthday is today does not need a guardian."""
+    member = make_member("Turning 18", dob=exactly_18_dob)
+    reg = make_registration(member["id"], "2026", "Seniors", "Started")
+
+    updated = services.update_registration(reg["id"], member["id"], "2026", "Seniors", "Complete")
+    assert updated["status"] == "Complete"
+
+
+def test_just_under_18_requires_guardian(make_member, make_registration, just_under_18_dob):
+    """A member whose 18th birthday is tomorrow still needs a guardian."""
+    member = make_member("Almost 18", dob=just_under_18_dob)
+    reg = make_registration(member["id"], "2026", "U18", "Started")
+
+    with pytest.raises(services.ServiceError) as exc_info:
+        services.update_registration(reg["id"], member["id"], "2026", "U18", "Complete")
+
+    assert "under 18" in str(exc_info.value)
+    assert services.get_registration(reg["id"])["status"] == "Started"
+
+
+def test_withdrawn_registration_retained_in_history(make_member, make_registration):
+    """Withdrawing a registration keeps it visible in the member's history."""
+    member = make_member("Withdrawn History")
+    reg = make_registration(member["id"], "2026", "U16", "Started")
+    services.withdraw_registration(reg["id"])
+
+    history = services.member_registration_history(member["id"])
+    assert len(history) == 1
+    assert history[0]["season"] == "2026"
+    assert history[0]["status"] == "Withdrawn"

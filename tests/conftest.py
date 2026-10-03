@@ -4,7 +4,7 @@ Every test runs against a fresh, isolated SQLite database in a temporary
 directory so tests are repeatable and never touch real data.
 """
 
-from datetime import date
+from datetime import date, timedelta
 
 import pytest
 
@@ -59,6 +59,18 @@ def junior_dob():
 def adult_dob():
     """A date of birth that makes a member clearly 18 or over."""
     return _years_ago(30).isoformat()
+
+
+@pytest.fixture
+def exactly_18_dob():
+    """A date of birth making a member exactly 18 today (birthday today)."""
+    return _years_ago(18).isoformat()
+
+
+@pytest.fixture
+def just_under_18_dob():
+    """A date of birth making a member 17 (their 18th birthday is tomorrow)."""
+    return (_years_ago(18) + timedelta(days=1)).isoformat()
 
 
 @pytest.fixture

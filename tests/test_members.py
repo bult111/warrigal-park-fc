@@ -57,3 +57,22 @@ def test_set_inactive(make_member):
 def test_set_inactive_nonexistent_member():
     with pytest.raises(services.ServiceError):
         services.set_member_inactive(99999)
+
+
+def test_reactivate_member(make_member):
+    member = make_member("Reactive")
+    services.set_member_inactive(member["id"])
+    assert services.get_member(member["id"])["status"] == "Inactive"
+
+    reactivated = services.set_member_status(member["id"], "Active")
+    assert reactivated["status"] == "Active"
+
+
+def test_update_nonexistent_member_rejected():
+    with pytest.raises(services.ServiceError):
+        services.update_member(99999, "Ghost", "2000-01-01", "", "", "")
+
+
+def test_search_no_results(make_member):
+    make_member("John Smith")
+    assert services.list_members("zzz-no-match") == []
