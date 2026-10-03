@@ -107,6 +107,6 @@ the Flask test client (view tests). They never touch the real database.
 ## Configuration structure
 
 Configuration is loaded through `app/__init__.py` from environment variables
-(`SECRET_KEY`, `DATABASE`, `FLASK_ENV`, `FLASK_DEBUG`), with a local `.env`
-file supported by `python-dotenv`. See `configuration-management.md` for
-details.
+(`SECRET_KEY`, `DATABASE`, `FLASK_DEBUG`), with a local `.env` file supported
+by `python-dotenv`. The development server in `run.py` additionally reads
+`HOST` and `PORT`. See `configuration-management.md` for details.

@@ -43,3 +43,15 @@ Warrigal Park FC Member Registration and Team Roster System.
 - Family self-registration
 - Public club website
 - Complex authentication (login, roles, permissions)
+
+## Future Improvements (not yet implemented)
+
+The following are reasonable next steps but are not part of the current
+implementation:
+
+- User authentication and role-based access (for example admin vs. registrar).
+- CSV import/export of members, guardians and registrations.
+- Automated email notifications for registration confirmations.
+- A public-facing club website front-end.
+- Squad-size limits and automatic age-group eligibility checks when placing
+  players into teams.
