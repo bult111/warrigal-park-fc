@@ -93,7 +93,9 @@ The database file is created inside the `instance/` folder.
 python run.py
 ```
 
-Open <http://127.0.0.1:5000> in a browser.
+Open <http://127.0.0.1:5000> in a browser. The host and port default to
+`127.0.0.1:5000` and can be overridden with the `HOST` and `PORT` environment
+variables (see `.env.example`).
 
 ## Testing instructions
 
@@ -119,6 +121,15 @@ internet access.
    non-withdrawn registration for the same season as the team.
 6. **Team removal safety.** Removing a team deletes only the team and its
    player assignments; members and registrations are untouched.
+
+## Local Git workflow
+
+The project uses a simple local feature-branch workflow:
+
+- `main` is the integration branch.
+- Feature work is done on `feature/*` branches and merged back into `main`
+  with `--no-ff` merge commits.
+- No remote repository or GitHub operations are used; everything is local.
 
 ## Scope limitations
 

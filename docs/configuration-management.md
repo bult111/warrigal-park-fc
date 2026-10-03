@@ -19,10 +19,10 @@ Configuration is read in `app/__init__.py` through `os.environ`, and
 `python-dotenv` loads a local `.env` file if present. The supported variables
 are documented in `.env.example`:
 
-- `FLASK_ENV` — application environment (e.g. `development`).
 - `FLASK_DEBUG` — `1` enables Flask debug mode and auto-reload.
 - `SECRET_KEY` — Flask secret key used for session signing and flash messages.
-- `DATABASE` — SQLite database file path.
+- `DATABASE` — SQLite database file path (relative paths resolve under `instance/`).
+- `HOST` / `PORT` — bind address for `python run.py` (default `127.0.0.1:5000`).
 
 Secrets are not hard-coded. When `.env` is absent the app falls back to a
 development secret key and the default database name.
@@ -97,17 +97,16 @@ or hosting configuration. If the app were deployed, the following would apply
 - set `FLASK_DEBUG=0`,
 - point `DATABASE` at persistent storage with a backup strategy.
 
-## Implemented local configuration vs. future version-control workflow
+## Local Git workflow
 
-**Implemented now (local only):**
+The project is managed with a local Git repository (no remote). The workflow is:
 
-- environment-based configuration with `.env.example` and `python-dotenv`,
-- a `.gitignore` ready for when version control is used,
-- local database files kept out of the project's tracked content.
+- `main` is the stable integration branch.
+- Each piece of work is done on a `feature/*` branch created from `main`.
+- Feature branches are merged back into `main` with `--no-ff` so the merge is
+  recorded as an explicit merge commit.
+- The test suite (`pytest`) is run on each feature branch and again after each
+  merge.
 
-**Future version-control workflow (not performed):**
-
-No GitHub repository, branches, commits, pull requests or merges have been
-created for this project. This document does not claim that such a workflow
-exists; it only notes that the `.gitignore` and example environment file are in
-place so version control could be adopted later.
+No GitHub repository, remote, pull request, or remote merge exists or has been
+performed. All branches, commits and merges are local to this machine.

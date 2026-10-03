@@ -42,3 +42,13 @@ work is listed.
 ## 1.0.0
 
 - Testing and local QA completed (pytest suite, clean-environment verification).
+
+## 1.1.0
+
+- Strengthened automated test coverage with edge cases (age boundary, withdrawn
+  registrations, team eligibility, member reactivation, guardian unlink, age
+  calculation).
+- Improved application configuration (environment-driven host/port/debug,
+  clearer `.env.example`, dependency grouping in `requirements.txt`).
+- Expanded and corrected project documentation.
+- Established a local feature-branch Git workflow (no remote operations).
