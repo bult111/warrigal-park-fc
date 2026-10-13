@@ -134,8 +134,9 @@ The project uses Git for version control, with the repository hosted on GitHub
 - The test suite (`pytest`) is run on each feature branch before merging.
 
 Current branches: `main`, `feature/qa-and-validation`,
-`feature/configuration-improvements`, and `feature/project-documentation`.
-All three feature branches have been merged into `main`.
+`feature/configuration-improvements`, `feature/project-documentation`, and
+`feature/sprint-1-qa-release` (Sprint 1 QA work, in progress). The three
+earlier feature branches have been merged into `main`.
 
 ## Scope limitations
 
