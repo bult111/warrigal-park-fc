@@ -22,9 +22,10 @@ handover notes. No application feature code was changed.
 2. **Coverage strengthened** — added `tests/test_edge_cases.py` (11 new tests
    for unhappy paths and missing-record lookups). No existing test was removed
    or weakened.
-3. **End-to-end verification** — 19 core workflows exercised through the real
-   HTTP routes via the Flask test client against a temporary database; all
-   passed. See `sprint-1-e2e-checklist.md`.
+3. **End-to-end verification** — 19 core workflows verified against a
+   temporary database using a combination of Flask test client requests and
+   direct service-layer calls; all passed. See
+   `sprint-1-e2e-checklist.md`.
 4. **Configuration review** — `requirements.txt`, `.env.example`, `.gitignore`,
    `app/database.py`, `README.md`, and `docs/` were checked against the code.
    - `requirements.txt` matches the installed venv (Flask 3.0.3,
