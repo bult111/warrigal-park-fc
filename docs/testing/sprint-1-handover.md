@@ -37,6 +37,15 @@ handover notes. No application feature code was changed.
 5. **Documentation consistency** — updated the "current branches" lists in
    `README.md` and `docs/configuration-management.md` to include the in-progress
    `feature/sprint-1-qa-release` branch.
+6. **Browser verification** — the app was started against a fresh temporary
+   database (`PORT=5001`) and confirmed to serve all five main pages over HTTP
+   from the terminal (a smoke test, not a browser test). The real Microsoft
+   Edge browser pass was then completed manually by the user: all five
+   scenarios (Dashboard, Member, Guardian, Registration/under-18 rule, Team &
+   roster) passed, with six screenshots in
+   `C:\Users\z\Desktop\ScreenShot\Sprint1_Browser_Test` (all reviewed and
+   mapped to scenarios). See `sprint-1-e2e-checklist.md` →
+   `Manual Browser Verification`.
 
 ## Files changed / added
 
@@ -80,8 +89,9 @@ See `sprint-1-defect-log.md`. In short:
 - No Git operations were performed by the agent (`git add` / `commit` / `push`
   / `fetch` / `pull` / `merge`). All changes remain as uncommitted working-tree
   modifications for the user to review in GitHub Desktop.
-- No live-browser manual click-through was performed (no browser automation
-  available). Marked for manual verification.
+- The agent itself has no browser-automation capability, so the live Microsoft
+  Edge click-through was performed manually by the user (5/5 Pass) rather than
+  by the agent. No screenshots were generated or recorded by the agent.
 - No `CHANGELOG.md` version bump (no application release was made; only QA and
   documentation work).
 - No application code changed.
