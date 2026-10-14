@@ -2,8 +2,10 @@
 
 - **Sprint:** Sprint 2 — Epic: Member and Guardian Management
 - **Method:** browser verification against a temporary SQLite database
-- **Document status:** **executed once** by browser automation on the local
-  application. Results below are the actual observations, not expectations.
+- **Document status:** **executed** by browser automation on the local
+  application on 2026-10-14. The scenarios were run twice that day — once to
+  verify behaviour and once to capture the screenshot set — and the results
+  below are the actual observations, not expectations.
 
 > **Important — how to read the status column.**
 > The run below was performed with a browser-automation tool driving a real
@@ -17,15 +19,28 @@
 >
 > `C:\Users\HP\Documents\Sprint2_Browser_Evidence\`
 >
-> That folder contains 18 PNG files plus a `README.txt` index mapping each
-> image to its scenario. If the team wants the images inside the repository,
-> copy the folder under `docs/testing/` in a separate commit — do not commit
-> them without deciding that first.
+> That folder contains **17 PNG files** (plus a `README.txt` index). Two of the
+> 17 are byte-identical duplicates of each other
+> (`S2-E2E-04_duplicates_list.png` and `S2-E2E-04_duplicates_isolated.png`,
+> same SHA-256), so there are **16 distinct images**. All 17 were inspected
+> visually during the documentation review; the content of each image matched
+> the scenario it is mapped to.
 >
-> Scenario **S2-E2E-10** could not be reproduced through a second click in one
-> browser session (see that scenario for details), so its second half is
-> recorded as **Partially verified** rather than Passed, and no screenshot
-> exists for the no-op message itself.
+> If the team wants the images inside the repository, ask first and then copy
+> only the selected files under `docs/testing/screenshots/sprint-2/` — do not
+> commit all of them.
+>
+> **Screenshot coverage is not equal for every scenario.** Some claims in the
+> step tables were verified by page observation during the run and are *not*
+> visible in any screenshot (for example whether the member also appeared in
+> the Members list, or whether the stored registration status stayed
+> `Started`). Each scenario below states what its screenshot actually
+> establishes.
+>
+> Scenario **S2-E2E-10** is recorded as **Blocked**: its first half (unlinking a
+> linked member) passed, but the second half — the no-op unlink message — could
+> not be reproduced through a second click in one browser session (see that
+> scenario for details), and no screenshot exists for the no-op message itself.
 
 ## Preconditions used for this run
 
@@ -49,7 +64,7 @@
 | S2-E2E-07 | MSD426GXUST25-8 | Update guardian contact and verify the views | **Passed** |
 | S2-E2E-08 | MSD426GXUST25-2 / -3 | Invalid input is rejected with feedback | **Passed** (with a finding) |
 | S2-E2E-09 | MSD426GXUST25-7 | Under-18 rule blocks completion without a guardian | **Passed** |
-| S2-E2E-10 | MSD426GXUST25-7 (fix) | Unlink a guardian that is not linked | **Partially verified** |
+| S2-E2E-10 | MSD426GXUST25-7 (fix) | Unlink a guardian that is not linked | **Blocked** (first half passed) |
 
 Recorded data used: members `Ava Testplayer` (id 1), `Bob Secondplayer` (id 2),
 `Casey Samename` (ids 3 and 4), `Junior Testchild` (id 5), `Solo Testjunior`
@@ -75,7 +90,12 @@ Recorded data used: members `Ava Testplayer` (id 1), `Bob Secondplayer` (id 2),
   `2012-04-18 (age 14)`, all contact fields, `Status: Active`, "No guardians
   linked to this member." and "No registrations on record for this member."
   The member also appeared on the Members list.
-- **Evidence:** S2-E2E-01_member_created.png in the evidence folder (success flash + detail table + Status Active).
+- **Evidence:** `S2-E2E-01_member_created.png` — shows the green flash
+  `Member 'Ava Testplayer' created.` and the full detail page with
+  `2012-04-18 (age 14)`, all contact fields, `Status: Active` and the empty
+  Linked Guardians section. This image establishes the create-and-view outcome.
+  *Not* visible in the image: the member's presence on the Members list
+  (observed during the run, not photographed).
 
 ## S2-E2E-02 — Search and update a member
 
@@ -95,7 +115,13 @@ Recorded data used: members `Ava Testplayer` (id 1), `Bob Secondplayer` (id 2),
   the second member is unaffected.
 - **Actual result:** exactly as expected. `Bob Secondplayer` still showed
   `bob.secondplayer@example.com` and `2011-03-22` throughout.
-- **Evidence:** S2-E2E-02_search_testplayer.png and S2-E2E-02_member_updated.png in the evidence folder.
+- **Evidence:** `S2-E2E-02_search_testplayer.png` — the search box contains
+  `TESTPLAYER` and only the `Ava Testplayer` row is returned, which establishes
+  the case-insensitive search. `S2-E2E-02_member_updated.png` — the green flash
+  `Member 'Ava Testplayer' updated.` with `ava.updated@example.com`,
+  `0400 999 888` and `25 Updated Road`, which establishes the update.
+  *Not* visible in either image: that `Bob Secondplayer` was unaffected
+  (observed during the run).
 
 ## S2-E2E-03 — Deactivate a member and confirm the status
 
@@ -113,7 +139,14 @@ Recorded data used: members `Ava Testplayer` (id 1), `Bob Secondplayer` (id 2),
   member, preserves other data, and is reversible; the member is never deleted.
 - **Actual result:** exactly as expected. Contact details, Linked Guardians and
   Registration History were still present while inactive.
-- **Evidence:** S2-E2E-03_member_inactive.png (and S2-E2E-03_inactive_evidence_alt.png) in the evidence folder.
+- **Evidence:** `S2-E2E-03_member_inactive.png` — the `Status` field shows the
+  grey **Inactive** badge and the action button has changed to **Set Active**,
+  which establishes that deactivation took effect and persisted after reload.
+  `S2-E2E-03_inactive_evidence_alt.png` — a second capture of the same
+  inactive state showing the updated contact details.
+  *Not* visible in either image: the Members list showing only this member as
+  `Inactive`, and the successful reactivation step (both observed during the
+  run).
 
 ## S2-E2E-04 — Two members with the same name stay separate
 
@@ -132,7 +165,14 @@ Recorded data used: members `Ava Testplayer` (id 1), `Bob Secondplayer` (id 2),
 - **Expected result:** duplicates allowed, independently identified, both listed,
   and updates isolated to one record.
 - **Actual result:** exactly as expected.
-- **Evidence:** S2-E2E-04_duplicates_list.png, S2-E2E-04_duplicates_isolated.png and S2-E2E-04_duplicate_edited_list.png in the evidence folder.
+- **Evidence:** `S2-E2E-04_duplicates_list.png` — two rows both named
+  `Casey Samename`, distinguished by `2010-01-05 / casey.one@example.com` and
+  `2011-06-15 / casey.two@example.com`, which establishes that duplicate names
+  are stored as separate records. `S2-E2E-04_duplicate_edited_list.png` — the
+  first row now reads `casey.changed@example.com` while the second still reads
+  `casey.two@example.com`, which establishes that the update touched only one
+  record. `S2-E2E-04_duplicates_isolated.png` is a byte-identical duplicate of
+  `S2-E2E-04_duplicates_list.png` and adds no new evidence.
 
 ## S2-E2E-05 — Create, search and update a guardian
 
@@ -148,7 +188,12 @@ Recorded data used: members `Ava Testplayer` (id 1), `Bob Secondplayer` (id 2),
 
 - **Expected result:** creation, search and update all behave correctly.
 - **Actual result:** exactly as expected.
-- **Evidence:** S2-E2E-05_guardian_created.png in the evidence folder.
+- **Evidence:** `S2-E2E-05_guardian_created.png` — the green flash
+  `Guardian 'Nina Testguardian' created.` with the name, `nina@example.com`,
+  `0400 555 111`, `5 Guard Lane` and an empty Linked Junior Members section.
+  This image establishes only the **create** step. The guardian **search** and
+  **update** steps for this scenario were verified by page observation during
+  the run and are not covered by any screenshot.
 
 ## S2-E2E-06 — Link a guardian to a junior member
 
@@ -166,7 +211,16 @@ Recorded data used: members `Ava Testplayer` (id 1), `Bob Secondplayer` (id 2),
 - **Expected result:** the link persists, is visible in both views, and unlinking
   removes only the relationship.
 - **Actual result:** exactly as expected.
-- **Evidence:** S2-E2E-06_guardian_linked_junior.png, S2-E2E-06_two_juniors_linked.png and S2-E2E-06_unlink_success.png in the evidence folder.
+- **Evidence:** `S2-E2E-06_guardian_linked_junior.png` — the green flash
+  `Member linked to guardian.` with `Junior Testchild`, age `12`, listed under
+  Linked Junior Members. `S2-E2E-06_two_juniors_linked.png` — the same guardian
+  listing two linked juniors (`Junior Testchild` and `Solo Testjunior`).
+  `S2-E2E-06_unlink_success.png` — the green flash
+  `Member unlinked from guardian.` with `Junior Testchild` no longer in the
+  list, which establishes that unlinking removed only the relationship.
+  *Not* visible in any of these images: the member-side Linked Guardians view
+  (observed during the run) and that the member records still existed after
+  unlink.
 
 ## S2-E2E-07 — Update guardian contact and verify the views
 
@@ -184,7 +238,13 @@ Recorded data used: members `Ava Testplayer` (id 1), `Bob Secondplayer` (id 2),
   referenced, with no stale value, and relationships stay intact.
 - **Actual result:** exactly as expected. This confirms the design decision that
   contact details are read from the single `guardians` row via a join.
-- **Evidence:** S2-E2E-07_member_shows_new_contact.png in the evidence folder.
+- **Evidence:** `S2-E2E-07_member_shows_new_contact.png` — `Junior Testchild`'s
+  member page with the Linked Guardians table showing `Nina Testguardian`,
+  `nina.changed@example.com` and `0400 321 654`. This single image establishes
+  the whole outcome: the member page renders the guardian's **current** contact
+  details and no stale address, and the relationship is still present.
+  *Not* visible in this image: the Guardians list view and the guardian detail
+  page (both observed during the run).
 
 ## S2-E2E-08 — Invalid input is rejected with feedback
 
@@ -216,7 +276,12 @@ date — **do** reach the server and produce the expected 400 response and
 friendly flash. This is the behaviour the checklist step 2 was really testing,
 and it passed.
 
-- **Evidence:** S2-E2E-08_future_date_rejected.png in the evidence folder.
+- **Evidence:** `S2-E2E-08_future_date_rejected.png` — the **red** flash
+  `Date of birth cannot be in the future.` while the New Member form still holds
+  `Future Person` and `2999/01/01`, which establishes server-side rejection with
+  the typed values retained. (No screenshot exists for the empty-name and
+  malformed-email cases, because the browser blocked those submissions before
+  they reached the server — see the finding above.)
 
 ## S2-E2E-09 — Under-18 rule still blocks completion without a guardian
 
@@ -235,13 +300,23 @@ and it passed.
 - **Expected result:** the rule blocks completion without a guardian and allows
   it once one is linked; the rule must not be weakened.
 - **Actual result:** exactly as expected. The rule is intact.
-- **Evidence:** `S2-E2E-09_under18_blocked.png` and
-  `S2-E2E-09_registration_complete.png` in the evidence folder.
+- **Evidence:** `S2-E2E-09_under18_blocked.png` — the **red** flash
+  `Registration cannot be completed because a member under 18 must have at least
+  one guardian.` on the Amend Registration form for `Solo Testjunior`, season
+  `2027`, age group `U16`. This establishes that the rule blocked the attempt.
+  **Caveat:** the image shows `Complete` still selected in the form, so the
+  image alone does *not* prove the stored status stayed `Started` — that was
+  confirmed during the run by reopening the registration, and is asserted by the
+  automated tests.
+  `S2-E2E-09_registration_complete.png` — the green flash
+  `Registration updated.` with `Status: Complete` after a guardian was linked,
+  which establishes that the rule allows completion once the requirement is met.
 
 ## S2-E2E-10 — Unlink a guardian that is not linked
 
 - **Story:** MSD426GXUST25-7 (Sprint 2 defect fix S2-D1 / Sprint 1 D3)
-- **Status:** **Partially verified**
+- **Status:** **Blocked** — first half passed, second half not executable
+  through the UI in this run
 
 | Step | Action | Observed result |
 |---|---|---|
@@ -249,7 +324,13 @@ and it passed.
 | 2 | Clicked **Unlink** | Flash `Member unlinked from guardian.`; the junior was removed from the list |
 | 3 | Attempted to trigger the same unlink again through a second, deliberately stale browser tab | **Not reliably reproducible** — see below |
 
-### Why the second half is only partially verified
+- **Evidence:** the first half is supported by
+  `S2-E2E-06_unlink_success.png` (green flash `Member unlinked from guardian.`
+  with the junior removed from the list). **No screenshot exists for the no-op
+  message**, because step 3 was never executed. This scenario therefore cannot
+  be reported as `Passed` on the strength of the screenshots.
+
+### Why this scenario is Blocked
 
 The intended reproduction is to submit the unlink for a relationship that no
 longer exists. Because the Unlink button is only rendered for members who *are*

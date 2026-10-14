@@ -149,7 +149,7 @@ driven by browser automation, not by a human clicking through the interface.
 | S2-E2E-07 | Update guardian contact and verify the views | Passed |
 | S2-E2E-08 | Invalid input is rejected with feedback | Passed (with finding S2-N1) |
 | S2-E2E-09 | Under-18 rule blocks completion without a guardian | Passed |
-| S2-E2E-10 | Unlink a guardian that is not linked | **Partially verified** |
+| S2-E2E-10 | Unlink a guardian that is not linked | **Blocked** (first half passed) |
 
 Details, observations and evidence notes are in `sprint-2-e2e-checklist.md`.
 
@@ -158,12 +158,19 @@ Details, observations and evidence notes are in `sprint-2-e2e-checklist.md`.
 1. **S2-E2E-10** — the no-op unlink could not be driven reliably through the UI
    because extra tabs re-rendered instead of staying stale. A human should run
    the two-tab check documented in the checklist and mark it `Passed` or `Fail`.
-2. **Screenshots** — captured for nine scenarios and saved outside the
-   repository in `C:\Users\HP\Documents\Sprint2_Browser_Evidence\`
-   (18 PNG files + `README.txt` index). No screenshot exists for the E2E-10
-   no-op message itself. Decide whether the team wants these images inside the
-   repository; if yes, copy the folder under `docs/testing/` in a separate
-   commit.
+2. **Screenshots** — 17 PNG files (16 distinct; one byte-identical duplicate)
+   are saved outside the repository in
+   `C:\Users\HP\Documents\Sprint2_Browser_Evidence\`, and all of them were
+   inspected visually during the final documentation review. No screenshot
+   exists for the E2E-10 no-op message. Recommended for the PR: one image per
+   scenario outcome — `S2-E2E-01_member_created.png`,
+   `S2-E2E-02_member_updated.png`, `S2-E2E-03_member_inactive.png`,
+   `S2-E2E-04_duplicate_edited_list.png`, `S2-E2E-05_guardian_created.png`,
+   `S2-E2E-06_two_juniors_linked.png`, `S2-E2E-07_member_shows_new_contact.png`,
+   `S2-E2E-08_future_date_rejected.png` and
+   `S2-E2E-09_registration_complete.png`. Copy them into
+   `docs/testing/screenshots/sprint-2/` **only after the team approves**, and
+   leave the originals in place.
 3. **Acceptance sign-off** — automation is not a substitute for a human
    confirming the workflows before the Stories are marked Done in Jira.
 
@@ -178,8 +185,9 @@ checks, did reach the server and produced the expected 400 response and flash.
 
 ## Recommended next steps
 
-1. Run the manual browser pass and complete `sprint-2-e2e-checklist.md`.
-   All ten scenarios are still `Not Tested`.
+1. Close out the **one blocked scenario** — a human should run the two-tab
+   check for S2-E2E-10 documented in `sprint-2-e2e-checklist.md` and record
+   `Passed` or `Fail`. The other nine scenarios already have executed results.
 2. Obtain the authoritative Jira acceptance criteria for the seven Stories and
    compare them with the derived expectations in `sprint-2-test-plan.md`.
 3. Obtain product decisions on S2-O1, S2-O2, S2-C1 and S2-C2 so the follow-up
@@ -201,9 +209,16 @@ checks, did reach the server and produced the expected 400 response and flash.
 - Line-level code coverage was not measured; coverage was assessed by
   Story-to-test mapping.
 - **Browser verification was performed by automation, not by a human.** Nine of
-  the ten scenarios passed. S2-E2E-10 is only partially verified. No screenshot
-  files were saved to disk, so a human must still take image evidence and
-  confirm the workflows before acceptance.
+  the ten scenarios passed; S2-E2E-10 is Blocked (first half passed). 17 PNG
+  files are saved outside the repository in
+  `C:\Users\HP\Documents\Sprint2_Browser_Evidence\`, and all were inspected
+  visually during the final review; each image matched its scenario. No image
+  exists for the S2-E2E-10 no-op message, and no image can substitute for human
+  acceptance.
+- **Screenshot coverage is uneven.** Some checklist claims were verified by page
+  observation during the run rather than photographed; the checklist now flags
+  each of those explicitly (for example E2E-05 search/update, E2E-09's stored
+  `Started` status, and list-level effects).
 - The `.venv` creation difficulty noted before this review is resolved. It was
   caused by the development tool's restricted file-access mode blocking writes
   to the system temporary directory, not by the project. With normal access,

@@ -88,12 +88,15 @@ Executed against the real app on a temporary database
 (instance/sprint2_manual_check.db, deleted afterwards), served on port 5001.
 
   S2-E2E-01 .. S2-E2E-09  -> Passed  (9 scenarios)
-  S2-E2E-10               -> Partially verified (stale-tab no-op unlink)
+  S2-E2E-10               -> Blocked (first half passed; stale-tab no-op
+                              unlink not reproducible through the UI)
 
 Screenshots saved OUTSIDE the repository in:
   C:\Users\HP\Documents\Sprint2_Browser_Evidence\
-(18 PNG files + README.txt index). No screenshot exists for the S2-E2E-10
-no-op message itself. Decide whether to add the images to the repo.
+(17 PNG files, 16 distinct - two are byte-identical; plus README.txt index).
+All were inspected visually in the final review. No screenshot exists for the
+S2-E2E-10 no-op message itself. Ask for approval before copying any image into
+docs/testing/screenshots/sprint-2/.
 Driven by browser automation, not by a human; human acceptance sign-off is
 still required.
 Finding S2-N1 recorded (HTML5 validation fires before server-side messages).

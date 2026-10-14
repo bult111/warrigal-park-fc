@@ -262,6 +262,31 @@ This matches the final run above. No source file has been modified since this
 run, so the recorded result describes the exact state of the working tree being
 uploaded.
 
+## Re-verification runs (documentation review)
+
+The suite was run again during the documentation reviews to re-verify the
+reported numbers before they are handed over.
+
+Command:
+
+```text
+.venv\Scripts\python.exe -m pytest
+```
+
+Result (exact tail of the output, 2026-10-14):
+
+```text
+tests\test_validation.py ............                                    [ 93%]
+tests\test_views.py .........                                            [100%]
+
+============================= 133 passed in 4.77s =============================
+```
+
+An earlier review run on the same day produced `133 passed in 4.79s`. So the
+verified current result is **133 collected, 133 passed, 0 failed, 0 skipped,
+0 errors**. This matches the previously recorded final figures exactly; no test
+was changed to obtain it.
+
 
 ## Coverage changes
 
@@ -295,6 +320,9 @@ Behaviour that was already covered and did not need new tests is listed in
 
 ## Browser verification run
 
+**Date of the browser run:** 2026-10-14 (derived from the screenshot file
+timestamps, 19:43–20:10 local time; not assumed or invented).
+
 A browser run was executed against the real application served on
 `http://127.0.0.1:5001` with a temporary database
 (`instance/sprint2_manual_check.db`, deleted after the run). It was driven by
@@ -311,20 +339,31 @@ browser automation, not by a human clicking through the interface.
 | S2-E2E-07 | Update guardian contact and verify the views | Passed |
 | S2-E2E-08 | Invalid input is rejected with feedback | Passed (finding S2-N1) |
 | S2-E2E-09 | Under-18 rule blocks completion without a guardian | Passed |
-| S2-E2E-10 | Unlink a guardian that is not linked | **Partially verified** |
+| S2-E2E-10 | Unlink a guardian that is not linked | **Blocked** (first half passed) |
 
-Summary: **9 passed, 1 partially verified, 0 failed.**
+Manual scenario counts: **9 passed, 1 blocked, 0 failed, 0 not tested.**
 
-S2-E2E-10 is only partially verified because the stale-tab reproduction of the
-no-op unlink could not be driven reliably through the UI; the underlying
-behaviour is covered by automated tests and the negative control. See
-`sprint-2-e2e-checklist.md` for the observations and the two-tab procedure a
-human should run.
+S2-E2E-10 is Blocked because the stale-tab reproduction of the no-op unlink
+could not be driven reliably through the UI; its first half (unlinking a
+linked member) passed. The underlying no-op behaviour is covered by automated
+tests and the negative control. See `sprint-2-e2e-checklist.md` for the
+observations and the two-tab procedure a human should run.
 
 Screenshots **are** saved to disk for this run, in an evidence folder outside
-the repository: `C:\Users\HP\Documents\Sprint2_Browser_Evidence\` — 18 PNG
-files plus a `README.txt` index mapping each image to its scenario. Each
-scenario in the checklist lists its image file names.
+the repository: `C:\Users\HP\Documents\Sprint2_Browser_Evidence\` — **17 PNG
+files** (16 distinct; `S2-E2E-04_duplicates_list.png` and
+`S2-E2E-04_duplicates_isolated.png` are byte-identical) plus a `README.txt`
+index. Each scenario in the checklist lists its image file names.
+
+All 17 images were inspected visually during this documentation review. Every
+image's content matched the scenario it is mapped to (for example the green
+flash `Member 'Ava Testplayer' created.`, the grey **Inactive** badge on the
+member page, the two `Casey Samename` rows with different dates of birth and
+emails, the red flash `Date of birth cannot be in the future.` with the typed
+values retained, and `Status: Complete` on Registration #1). The review also
+confirmed which claims are **not** visible in any screenshot, and the checklist
+now marks those explicitly. No screenshot exists for the S2-E2E-10 no-op
+message, because that step was not executed.
 
 One finding was recorded: **S2-N1** — the browser's HTML5 validation blocks an
 empty Name/Date of Birth and a malformed email before the request reaches the
@@ -337,12 +376,11 @@ confirm the run left no state behind: **133 passed**.
 
 ## Failures and limitations
 
-- **Unresolved test failures:** none. The final suite is 133 passed, 0 failed,
-  0 skipped, 0 errored — measured after the scope cleanup and after restoring
-  the fix, in the clean `.venv`.
+- **Unresolved test failures:** none. The verified current result is 133 passed,
+  0 failed, 0 skipped, 0 errored (re-run on 2026-10-14: 133 passed in 4.79s).
 - **Baseline problems:** none. The baseline was already green at 79 passed.
-- **Not verified by automated tests:** visual layout and styling; the real
-  browser click-through; and the business decisions listed in
+- **Not verified by any test run:** visual layout and styling; human acceptance
+  of the workflows; and the business decisions listed in
   `sprint-2-test-plan.md` (duplicate same-season registrations, roster after
   withdrawal, inactive-member scope, guardian removal after completion).
 - **No coverage percentage is reported**, because no coverage measurement tool
@@ -350,8 +388,17 @@ confirm the run left no state behind: **133 passed**.
 - **No test duration other than the measured values above** is reported.
 - Passing tests do not by themselves prove a Story meets all acceptance
   criteria; human acceptance review remains necessary for all seven Stories.
-- **Browser scenarios:** nine passed and one (S2-E2E-10) is partially verified,
-  as recorded above. They were executed by automation rather than a human, so
-  they do not replace human acceptance sign-off.
-- **Screenshots:** none were saved to disk. A human must capture image evidence
-  if the team requires it.
+- **Browser scenarios:** nine passed and one (S2-E2E-10) is Blocked, as
+  recorded above. They were executed by browser automation rather than a human,
+  so they do not replace human acceptance sign-off.
+- **Screenshots:** 17 PNG files (16 distinct) are saved in the evidence folder
+  `C:\Users\HP\Documents\Sprint2_Browser_Evidence\` and all of them were
+  inspected visually during this review. No image exists for the S2-E2E-10
+  no-op message, and no image can prove that a human performed the runs — human
+  confirmation remains outstanding.
+- **Relationship between automated tests and browser checks:** the automated
+  suite (133 tests) proves the service and route behaviour directly, including
+  the S2-D1 no-op unlink path via `test_unlink_route_reports_no_op_instead_of_success`
+  and its negative control. The browser run proves the same flows work end to
+  end through the real UI for nine scenarios; the one UI gap (S2-E2E-10 no-op)
+  is exactly the path the automated tests do cover.

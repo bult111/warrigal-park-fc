@@ -80,13 +80,14 @@ No schema change. The function still never deletes a member or guardian.
 | Negative control: fix deliberately reverted | `... -k "no_op or nothing_was_linked"` | **1 failed**, 1 passed, 52 deselected |
 | Fix restored | `.venv\Scripts\python.exe -m pytest` | 133 passed, 0 failed |
 | Browser: real unlink of a linked member | scenario S2-E2E-06 | Passed — flashed `Member unlinked from guardian.` |
-| Browser: no-op unlink path | scenario S2-E2E-10 | **Partially verified** — see the scenario for why |
+| Browser: no-op unlink path | scenario S2-E2E-10 | **Blocked** — first half passed; the no-op message could not be reproduced through the UI (see the scenario) |
 
 The control was re-executed during the pre-upload review and reproduced the
 same result. Retest status: **Fixed and verified by automated tests.** The
-success path was additionally confirmed in a real browser; the no-op path in the
-browser is recorded as partially verified because the stale-tab reproduction
-could not be driven reliably through the UI.
+success path was additionally confirmed in a real browser; the no-op path in
+the browser is recorded as Blocked because the stale-tab reproduction could not
+be driven reliably through the UI. The no-op branch itself remains proven by
+the automated tests and the negative control above.
 
 ---
 
