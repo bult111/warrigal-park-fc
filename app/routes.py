@@ -211,8 +211,11 @@ def guardian_link(guardian_id):
 @bp.route("/guardians/<int:guardian_id>/unlink/<int:member_id>", methods=("POST",))
 def guardian_unlink(guardian_id, member_id):
     try:
-        services.unlink_guardian_member(guardian_id, member_id)
-        flash("Member unlinked from guardian.", "success")
+        removed = services.unlink_guardian_member(guardian_id, member_id)
+        if removed:
+            flash("Member unlinked from guardian.", "success")
+        else:
+            flash("That member was not linked to this guardian.", "error")
     except (ValueError, services.ServiceError) as error:
         _flash_error(error)
     return redirect(url_for("main.guardian_detail", guardian_id=guardian_id))

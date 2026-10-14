@@ -1,0 +1,108 @@
+SPRINT 2 - CHANGED, ADDED AND MODIFIED FILES
+============================================
+Project: Warrigal Park FC Member Registration and Team Roster System
+Sprint:  Sprint 2 - Epic: Member and Guardian Management
+Scope:   QA verification of 7 stories (MSD426GXUST25-2 .. MSD426GXUST25-8),
+         1 verified defect fix, new tests, Sprint 2 documentation.
+
+No Git operation was performed. These changes are local working-tree changes
+only and have not been staged, committed, pushed or merged.
+
+-----------------------------------------------------------------------------
+MODIFIED (application code)
+-----------------------------------------------------------------------------
+app/services.py
+    - unlink_guardian_member(): now validates that the guardian and member
+      exist (ServiceError otherwise) and returns True only when a link row was
+      actually deleted.
+    - Reason: fixes defect S2-D1 (Sprint 1 defect D3) - the guardian unlink
+      route reported success when no link existed.
+
+app/routes.py
+    - guardian_unlink(): flashes success only when a link was removed, and
+      "That member was not linked to this guardian." otherwise.
+    - Reason: same defect S2-D1.
+
+SCOPE NOTE - REVERTED, NOT INCLUDED IN THIS SPRINT
+    An equivalent change had also been made to remove_player_from_team()
+    (app/services.py) and player_remove() (app/routes.py). Team and player
+    removal belongs to the Team and Roster Management epic (Sprint 4), not to
+    Member and Guardian Management, so that change was REVERTED during the
+    pre-upload review. Both files are back to their pre-Sprint-2 behaviour for
+    that code path, and no test covered it. Tracked as S2-F1 in
+    docs/testing/sprint-2-defect-log.md for Sprint 4.
+
+-----------------------------------------------------------------------------
+ADDED (tests)
+-----------------------------------------------------------------------------
+tests/test_member_guardian_workflows.py
+    - 48 test functions collecting 54 test cases, covering all seven Sprint 2
+      stories.
+      Story MSD426GXUST25-2 Create Member Record
+      Story MSD426GXUST25-3 Search and Update Member
+      Story MSD426GXUST25-4 Deactivation of Members
+      Story MSD426GXUST25-5 Support Duplicate Member Names
+      Story MSD426GXUST25-6 Create, Search and Update Guardian
+      Story MSD426GXUST25-7 Link Guardians to Junior Members
+      Story MSD426GXUST25-8 Reflect Guardian Contact Updates
+    - Includes regression tests for defect S2-D1.
+    - Test counts: 54 distinct tests collected; the sum of the per-Story
+      mapping counts is 63 because 9 tests support two stories each. See
+      docs/testing/sprint-2-test-results.md.
+
+-----------------------------------------------------------------------------
+ADDED (documentation)
+-----------------------------------------------------------------------------
+docs/testing/sprint-2-test-plan.md
+docs/testing/sprint-2-test-results.md
+docs/testing/sprint-2-e2e-checklist.md
+docs/testing/sprint-2-defect-log.md
+docs/testing/sprint-2-handover.md
+docs/testing/sprint-2-changed-files.txt   (this manifest)
+
+-----------------------------------------------------------------------------
+NOT MODIFIED
+-----------------------------------------------------------------------------
+No Sprint 1 file was changed.
+No existing test was removed, renamed or weakened.
+No template, stylesheet, schema, requirements.txt, README.md, CHANGELOG.md or
+configuration file was changed.
+No .env file was created or read. No database file is included.
+
+-----------------------------------------------------------------------------
+RESULT (measured in .venv with pytest 8.3.3, Flask 3.0.3)
+-----------------------------------------------------------------------------
+Baseline                    : python -m pytest  ->  79 passed
+New module only             : python -m pytest tests/test_member_guardian_workflows.py
+                                                   ->  54 passed
+Final (after scope cleanup) : python -m pytest  -> 133 passed, 0 failed,
+                                                   0 skipped, 0 errors
+Negative control            : 1 failed ONLY while the S2-D1 fix was
+                              deliberately reverted; 133 passed again after
+                              the fix was restored.
+
+-----------------------------------------------------------------------------
+BROWSER VERIFICATION
+-----------------------------------------------------------------------------
+Executed against the real app on a temporary database
+(instance/sprint2_manual_check.db, deleted afterwards), served on port 5001.
+
+  S2-E2E-01 .. S2-E2E-09  -> Passed  (9 scenarios)
+  S2-E2E-10               -> Partially verified (stale-tab no-op unlink)
+
+Screenshots saved OUTSIDE the repository in:
+  C:\Users\HP\Documents\Sprint2_Browser_Evidence\
+(18 PNG files + README.txt index). No screenshot exists for the S2-E2E-10
+no-op message itself. Decide whether to add the images to the repo.
+Driven by browser automation, not by a human; human acceptance sign-off is
+still required.
+Finding S2-N1 recorded (HTML5 validation fires before server-side messages).
+
+-----------------------------------------------------------------------------
+EXCLUDE FROM THE COMMIT (must not be committed)
+-----------------------------------------------------------------------------
+.venv/  venv/      virtual environment used to run the tests
+__pycache__/  *.pyc  .pytest_cache/
+*.db               any temporary or real SQLite database
+.env               secrets
+instance/          local database folder

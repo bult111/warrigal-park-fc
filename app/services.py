@@ -213,11 +213,22 @@ def link_guardian_member(guardian_id, member_id):
 
 
 def unlink_guardian_member(guardian_id, member_id):
-    """Remove a guardian-member link (never deletes the member or guardian)."""
-    database.execute(
+    """Remove a guardian-member link (never deletes the member or guardian).
+
+    Returns ``True`` when a link was actually removed and ``False`` when there
+    was nothing to remove, so the caller can report the outcome accurately
+    instead of claiming success for a no-op. Unknown identifiers raise
+    :class:`ServiceError`.
+    """
+    if get_guardian(guardian_id) is None:
+        raise ServiceError("Guardian not found.")
+    if get_member(member_id) is None:
+        raise ServiceError("Member not found.")
+    removed = database.execute(
         "DELETE FROM guardian_members WHERE guardian_id = ? AND member_id = ?",
         (guardian_id, member_id),
     )
+    return removed > 0
 
 
 def member_guardians(member_id):
