@@ -15,7 +15,7 @@
     <table class="data">
       <tbody>
         <tr><th>Name</th><td>{{ member.name }}</td></tr>
-        <tr><th>Date of Birth</th><td>{{ member.date_of_birth }} (age {{ member.age }})</td></tr>
+        <tr><th>Date of Birth</th><td>{{ member.date_of_birth }}{% if member.age is not none %} (age {{ member.age }}){% else %} <span class="muted">(age cannot be read from the stored date)</span>{% endif %}</td></tr>
         <tr><th>Email</th><td>{{ member.email or '—' }}</td></tr>
         <tr><th>Phone</th><td>{{ member.phone or '—' }}</td></tr>
         <tr><th>Address</th><td>{{ member.address or '—' }}</td></tr>

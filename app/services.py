@@ -6,14 +6,19 @@ business rule is violated. Keeping the rules here (rather than in templates or
 route handlers) makes them testable in isolation.
 """
 
-from datetime import date
-
 from . import database
 from . import models
 
 JUNIOR_GUARDIAN_REQUIRED_MESSAGE = (
     "Registration cannot be completed because a member under 18 must have "
     "at least one guardian."
+)
+
+# Shown when a member's stored date of birth cannot be read, so the age - and
+# therefore the under-18 guardian rule - cannot be evaluated safely.
+UNREADABLE_DATE_OF_BIRTH_MESSAGE = (
+    "This member's date of birth on record cannot be read, so the registration "
+    "cannot be completed. Please correct the member's date of birth first."
 )
 
 
@@ -189,7 +194,9 @@ def guardian_linked_members(guardian_id):
     members = []
     for r in rows:
         member = models.member_to_dict(r)
-        member["age"] = models.calculate_age(date.fromisoformat(r["date_of_birth"]))
+        dob = models.safe_parse_date(r["date_of_birth"])
+        # An unreadable stored date yields no age rather than a crash.
+        member["age"] = models.calculate_age(dob) if dob else None
         members.append(member)
     return members
 
@@ -328,8 +335,17 @@ def create_registration(
 
 
 def _member_is_junior(member_id):
+    """Return ``True`` only when the member is known to be under 18.
+
+    An unreadable stored date of birth returns ``False`` so this helper never
+    raises; :func:`can_complete_registration` is responsible for refusing the
+    completion in that case, so an invalid date can never be treated as proof
+    that the member is an adult.
+    """
     member = get_member(member_id)
-    dob = date.fromisoformat(member["date_of_birth"])
+    dob = models.safe_parse_date(member["date_of_birth"])
+    if dob is None:
+        return False
     return models.calculate_age(dob) < models.JUNIOR_AGE_LIMIT
 
 
@@ -337,10 +353,14 @@ def can_complete_registration(member_id):
     """Return ``(allowed, message)`` for completing a registration.
 
     Applies the under-18 guardian rule: juniors need at least one linked
-    guardian; adults do not.
+    guardian; adults do not. A member whose stored date of birth cannot be read
+    is refused rather than assumed to be an adult.
     """
-    if get_member(member_id) is None:
+    member = get_member(member_id)
+    if member is None:
         return False, "Member not found."
+    if models.safe_parse_date(member["date_of_birth"]) is None:
+        return False, UNREADABLE_DATE_OF_BIRTH_MESSAGE
     if _member_is_junior(member_id) and not member_has_guardian(member_id):
         return False, JUNIOR_GUARDIAN_REQUIRED_MESSAGE
     return True, ""

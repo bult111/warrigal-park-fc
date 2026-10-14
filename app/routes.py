@@ -68,9 +68,11 @@ def member_detail(member_id):
         return redirect(url_for("main.members"))
     history = services.member_registration_history(member_id)
     guardians = services.member_guardians(member_id)
-    from datetime import date
 
-    member["age"] = models.calculate_age(date.fromisoformat(member["date_of_birth"]))
+    # A stored date of birth that cannot be read yields no age instead of an
+    # unhandled ValueError. See the Sprint 3 defect log, item S3-D1.
+    dob = models.safe_parse_date(member["date_of_birth"])
+    member["age"] = models.calculate_age(dob) if dob else None
     return render_template(
         "member_detail.html", member=member, history=history, guardians=guardians
     )

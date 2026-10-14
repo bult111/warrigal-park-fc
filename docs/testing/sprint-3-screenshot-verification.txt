@@ -1,0 +1,106 @@
+SPRINT 3 - SCREENSHOT VERIFICATION RECORD (SUPPLEMENTARY ROUND)
+================================================================
+Round:   S3-E2E-13 and S3-E2E-14 supplementary browser test
+Date:    2026-10-14, 22:56-23:10 local time
+Method:  browser automation against the live Flask application
+         (Microsoft Edge 155.0.4280.0 / Chromium 155)
+
+LOCATIONS
+---------
+Desktop (real desktop path; no OneDrive redirection):
+  C:\Users\HP\Desktop\Sprint3_Test_Evidence\
+
+Project evidence copy:
+  C:\Users\HP\Documents\GitHub\warrigal-park-fc\docs\testing\screenshots\sprint-3\
+
+Desktop path verification:
+  HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders
+    Desktop = C:\Users\HP\Desktop
+  [Environment]::GetFolderPath('Desktop') = C:\Users\HP\Desktop
+  C:\Users\HP\OneDrive\Desktop does not exist.
+
+METHOD
+------
+Each screenshot was captured from the running browser with the session's
+screenshot facility, which returns a content-addressed PNG on the host disk.
+That file was then copied, byte for byte, to BOTH locations. No image was
+generated, redrawn, edited or reconstructed.
+
+Each file was then verified by:
+  1. existence on disk;
+  2. byte size greater than zero;
+  3. PNG signature (89 50 4E 47 0D 0A 1A 0A) at the start;
+  4. IEND chunk present at the end (catches truncation);
+  5. SHA-256 of the desktop copy compared with the project copy.
+
+VERIFICATION RESULTS
+--------------------
+| File | Bytes | Valid PNG | Desktop = Project |
+|---|---:|---|---|
+| S3-E2E-13-A0-both-tabs-before-withdrawal.png | 35542 | yes | identical |
+| S3-E2E-13-A-withdrawal-result.png | 40150 | yes | identical |
+| S3-E2E-13-B-stale-tab-before-submit.png | 35992 | yes | identical |
+| S3-E2E-13-B-stale-tab-attempt.png | 40150 | yes | identical |
+| S3-E2E-13-final-record-state.png | 41451 | yes | identical |
+| S3-E2E-14-future-date-attempt.png | 32636 | yes | identical |
+| S3-E2E-14-server-validation-result.png | 42200 | yes | identical |
+| S3-E2E-14-unreadable-dob-member-detail.png | 45416 | yes | identical |
+| S3-E2E-14-unreadable-dob-registration-rejection.png | 44774 | yes | identical |
+
+TOTALS
+  Saved to desktop            : 9 of 9
+  Size greater than zero      : 9 of 9
+  Valid PNG structure         : 9 of 9
+  Hash-identical to project   : 9 of 9
+  Failed to save              : none
+
+FULL SHA-256 VALUES
+-------------------
+S3-E2E-13-A0-both-tabs-before-withdrawal.png
+  97e92494db1c0166aa401200a34ab8c65f13c27b6fcdf55df9839a9c1f36680b
+S3-E2E-13-A-withdrawal-result.png
+  2c310f30811b625962a6d24b8aed4920c239b33d78cc331087f8f10028442469
+S3-E2E-13-B-stale-tab-before-submit.png
+  539cee004ab7291e21b3d18cdd713cdce2b56fd1a26f864886b1924b77450a84
+S3-E2E-13-B-stale-tab-attempt.png
+  2c310f30811b625962a6d24b8aed4920c239b33d78cc331087f8f10028442469
+S3-E2E-13-final-record-state.png
+  4d7575d4ef72832721f265cdcbd6c3303cd4b6576b188e3619d89280d695883d
+S3-E2E-14-future-date-attempt.png
+  8c09330b980919497290dfceb8927331d06b4ab9d004418f8be97c1a7f962178
+S3-E2E-14-server-validation-result.png
+  15b3908b7a00dd157341ea00b5662cd36974aa9cdffd7dbd6bb6e6695fadbcb2
+S3-E2E-14-unreadable-dob-member-detail.png
+  67176e96ef12504f3a9944e68861a8c5a38d923323d64432b9dbf799e8a53603
+S3-E2E-14-unreadable-dob-registration-rejection.png
+  c68a581797bcf19f32ba4e0dfa92eeaae6df702bd977a173a0d5d877737597e3
+
+NOTE ON TWO IDENTICAL HASHES
+----------------------------
+S3-E2E-13-A-withdrawal-result.png and S3-E2E-13-B-stale-tab-attempt.png share
+the hash 2c310f30...0d5d. This is expected and not an error: the second
+withdrawal is a no-op that leaves the registration in the same `Withdrawn`
+state, so the rendered page is identical. The two separate POST requests are
+evidenced by the network captures (12.46 ms and 23.53 ms, distinct timestamps
+and sequence numbers) and by the Flask server log, not by an image difference.
+
+OTHER EVIDENCE FILES IN THE SAME DESKTOP FOLDER
+-----------------------------------------------
+S3-E2E-server-log.txt                 Flask server log for this round
+S3-E2E-14-api-dob-validation.txt      server-side date validation results
+api_dob_validation.py                 the API test script
+seed_supplement.py                    the disposable-database seed script
+verify_screenshots.py                 this verification script
+
+HISTORICAL SCREENSHOTS
+----------------------
+The 20 PNG files from the previous round remain in the project evidence folder
+and were neither overwritten nor deleted. They are not part of this round's
+desktop copy, because they were captured by a different run.
+
+NOT COMMITTED
+-------------
+The desktop folder is outside the repository and is not part of the change set.
+The 9 new PNGs inside docs/testing/screenshots/sprint-3/ are repository files
+and will appear as untracked additions; decide at review time whether to commit
+them.

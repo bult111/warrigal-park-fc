@@ -1,0 +1,409 @@
+﻿SPRINT 3 - CHANGED, ADDED AND MODIFIED FILES
+============================================
+Project: Warrigal Park FC Member Registration and Team Roster System
+Sprint:  Sprint 3 - Epic: Registration and Eligibility
+Stories: MSD426GXUST25-10 .. MSD426GXUST25-14 (5 stories, 15 story points)
+Branch:  feature/sprint-3-registration-eligibility-sandip001159852
+         (the branch the user confirmed as the intended Sprint 3 branch;
+          switched to once, at the user's explicit instruction)
+
+No Git operation that changes repository state was performed other than that
+single branch switch. Nothing was staged, committed, pushed, fetched, pulled,
+merged, reset, cleaned or stashed.
+
+Baseline before any change in this session : 133 passed
+Final after all changes                    : 250 passed, 0 failed, 0 skipped,
+                                             0 errors
+
+
+-----------------------------------------------------------------------------
+SESSION CONTEXT - WORK LOST AND RECOVERED
+-----------------------------------------------------------------------------
+Earlier in this session the Sprint 3 test module and all Sprint 3 documents were
+removed from the working tree by an external clean/checkout at 2026-10-14
+22:07:33-22:07:45 (git reflog). The loss was reported, work stopped, and the user
+confirmed the branch and asked for recovery rather than a restart.
+
+Recovery method: the 103 lost test node ids were still present in pytest's cache
+(.pytest_cache/v/cache/nodeids) and were used as the acceptance manifest for a
+reconstruction. The rebuilt module contains all 80 test functions with
+0 missing and 0 extra, and collected 103 cases on its first run.
+
+What could NOT be recovered:
+  - The original file bytes. Content was rebuilt from the session record and
+    verified against the recovered node-id manifest. Test names and coverage are
+    provably complete; comment wording may differ.
+  - The deleted screenshots. The browser round captured a fresh set of 20 images;
+    no earlier image was reused or presented as new evidence.
+
+Naming note: the lost module was tests/test_registration_workflows.py. The
+file-write tooling refused to write to that deleted path, so the rebuilt module
+is tests/test_registration_sprint3.py. Test names and content are identical.
+
+
+-----------------------------------------------------------------------------
+MODIFIED (application code)
+-----------------------------------------------------------------------------
+app/models.py                       (+15 lines)
+    - Added safe_parse_date(value): returns None for an unreadable/empty stored
+      date instead of raising ValueError.
+    - Reason: fixes defect S3-D1 (see docs/testing/sprint-3-defect-log.md).
+
+app/services.py                     (+32 / -6 lines)
+    - Added UNREADABLE_DATE_OF_BIRTH_MESSAGE.
+    - can_complete_registration(): returns (False, <message>) when the member's
+      stored date of birth cannot be read, so an invalid date can never be
+      treated as proof that the member is an adult. The check now fetches the
+      member once.
+    - _member_is_junior(): uses safe_parse_date and returns False for an
+      unreadable date, so it never raises.
+    - guardian_linked_members(): reports age = None instead of raising.
+    - Removed the now-unused "from datetime import date" import.
+    - Reason: defect S3-D1.
+
+app/routes.py                       (+4 / -2 lines)
+    - member_detail(): uses models.safe_parse_date; sets member["age"] = None
+      when the stored date cannot be read, instead of raising.
+    - Reason: defect S3-D1.
+
+app/templates/member_detail.html    (+1 / -1 lines)
+    - Date of Birth row shows "(age cannot be read from the stored date)" when
+      the age is unavailable, instead of rendering an empty age.
+
+app/templates/guardian_detail.html  (+1 / -1 lines)
+    - Linked Junior Members table shows an em dash for an unreadable age.
+
+No schema change. No migration. No change to the under-18 rule for valid dates.
+No other application file was touched; team, player, dashboard, member and
+guardian management behaviour is unchanged.
+
+
+-----------------------------------------------------------------------------
+MODIFIED (documentation)
+-----------------------------------------------------------------------------
+CHANGELOG.md
+    - Restored and updated the 1.2.0 entry: the S3-D1 fix, the Sprint 3 test
+      module and its counts, the executed browser round with its 20 screenshots
+      and two partial scenarios, the added Sprint 3 documentation, and the open
+      product decisions. No earlier entry was altered.
+
+README.md
+    - NOT modified. Every documented statement is still accurate and Sprint 3
+      changed no user-facing rule or setup step. It will need updating if the
+      team approves any of S3-O1 .. S3-O5.
+
+
+-----------------------------------------------------------------------------
+ADDED (tests)
+-----------------------------------------------------------------------------
+tests/test_registration_sprint3.py
+    - 90 test functions collecting 117 test cases.
+        103 recovered Sprint 3 cases across the five stories
+         27  MSD426GXUST25-10  Create Registration
+         19  MSD426GXUST25-11  Amend Registration
+         12  MSD426GXUST25-12  Withdraw Registration
+         14  MSD426GXUST25-13  View Member Registration History
+         31  MSD426GXUST25-14  Enforce Under-18 Guardian Rule
+         14  S3-D1 regression tests (final section of the module)
+        ---
+        117 cases
+    - 7 parametrized functions contribute 34 cases; 83 single-case functions.
+    - Verified complete against the recovered 103-node-id manifest: 80/80
+      functions, 0 missing, 0 extra.
+    - tests/conftest.py was NOT modified; the existing fixtures were used as-is.
+    - No existing test was removed, renamed or weakened.
+
+
+-----------------------------------------------------------------------------
+ADDED (documentation)
+-----------------------------------------------------------------------------
+docs/testing/sprint-3-test-plan.md
+    - Sprint goal, stories and points, objectives, the three-layer approach,
+      measured baseline, how the tests are written, story-to-implementation map,
+      15 coverage gaps, per-story case counts, the S3-D1 test table, browser E2E
+      scope with the two partial scenarios named, source of truth for
+      expectations, negative controls, and out-of-scope items.
+
+docs/testing/sprint-3-test-results.md
+    - Session context (loss and recovery), measured baseline, exact counts and
+      arithmetic (90 functions / 117 cases), every command with its result, the
+      two failures that occurred and their cause, per-story automated results,
+      negative-control table, browser results, server-log observations,
+      automated-versus-browser separation, and limitations.
+
+docs/testing/sprint-3-e2e-checklist.md
+    - All 14 scenarios EXECUTED, each with preconditions, numbered steps,
+      expected result, actual result, PASS/partial status, exact screenshot file
+      names and observations. 12 full passes, 2 partial with the unverified half
+      named, 0 failed, 0 blocked, 0 not tested. Includes the additional S3-D1
+      browser confirmation scenario.
+
+docs/testing/sprint-3-defect-log.md
+    - S3-D1: full reproduction, root cause, the fix, the 14 regression tests, the
+      retest table and the browser confirmations.
+    - S3-O1 .. S3-O5, S3-C1, S3-C2, S3-L1, S3-L2, S3-N1, S3-N2: each classified
+      as defect / expected behaviour / product decision / deferred / limitation /
+      not a defect, with evidence and the required decision.
+    - A table of 13 areas investigated and confirmed correct.
+
+docs/testing/sprint-3-handover.md
+    - Repository state at the start, what happened to the earlier work, the
+      recovery method and what could not be recovered, the S3-D1 fix summary, the
+      browser round summary, the findings review, all command results, negative
+      controls, verification of the five stories, limitations, confirmation that
+      no state-changing Git command was run, and upload details with next steps.
+
+docs/testing/sprint-3-screenshots.txt
+    - Browser evidence index: scenario-to-image map, file sizes and truncated
+      SHA-256 for all 20 images, absolute evidence path, and an explicit list of
+      what the images do NOT prove.
+
+docs/testing/sprint-3-changed-files.txt
+    - This manifest.
+
+
+-----------------------------------------------------------------------------
+ADDED (browser evidence)
+-----------------------------------------------------------------------------
+docs/testing/screenshots/sprint-3/          20 PNG files
+    - Captured during the executed browser round on 2026-10-14, 22:25-22:36,
+      against the live Flask application on http://127.0.0.1:5000 using a
+      disposable database.
+    - Synthetic test data only. No real member information.
+    - Index with hashes: docs/testing/sprint-3-screenshots.txt
+    - The team may prefer to keep screenshots out of the repository; if so, move
+      this folder and update the evidence path in the checklist and index.
+
+
+-----------------------------------------------------------------------------
+NOT MODIFIED
+-----------------------------------------------------------------------------
+No Sprint 1 document was changed.
+No Sprint 2 document was changed.
+No existing test was removed, renamed or weakened.
+No template other than the two listed above was changed.
+No stylesheet, schema, requirements.txt or configuration file was changed.
+No .env file was created or read. No secret was written.
+No Jira issue, status, story point or epic assignment was read or changed.
+
+
+-----------------------------------------------------------------------------
+RESULT (measured in .venv with pytest 8.3.3, Flask 3.0.3, Python 3.13.1)
+-----------------------------------------------------------------------------
+Baseline                       : python -m pytest -q  ->  133 passed
+Rebuilt module, first run      : python -m pytest tests/test_registration_sprint3.py -q
+                                                    ->  103 passed
+                                                    (reconstruction verified against
+                                                     the recovered 103-id manifest)
+S3-D1 regression only          : python -m pytest tests/test_registration_sprint3.py
+                                 -q -k "unreadable or readable_stored"
+                                                    ->   14 passed
+Sprint 3 module, final         : python -m pytest tests/test_registration_sprint3.py -q
+                                                    ->  117 passed
+Full suite, final              : python -m pytest -q  ->  250 passed, 0 failed,
+                                                        0 skipped, 0 errors
+Pre-existing suite only        : python -m pytest -q --ignore=tests/test_registration_sprint3.py
+                                                    ->  133 passed
+Collection                     : python -m pytest --collect-only -q
+                                                    ->  250 tests collected
+Dependency check               : python -m pip check ->  No broken requirements found.
+Syntax check                   : python -m compileall -q app tests -> exit 0
+Negative controls              : 12 / 14 / 1 / 24 failures respectively, each only
+                                 while the corresponding mutation was applied;
+                                 250 passed again after all were reverted.
+
+One failure occurred during development and is documented rather than hidden:
+test_unreadable_stored_dob_member_page_returns_200 used a too-broad
+b"age " assertion that matched the word "Page" in the HTML title. The
+application was correct (HTTP 200); the assertion was made precise.
+
+
+-----------------------------------------------------------------------------
+BROWSER VERIFICATION
+-----------------------------------------------------------------------------
+EXECUTED in this session by browser automation against the live application.
+Not executed by a human.
+
+Scenarios executed       : 14 of 14
+Fully passed             : 12
+Passed (partial)         :  2
+Failed                   :  0
+Blocked                  :  0
+Not tested               :  0
+Additional S3-D1 browser :  1 (passed)
+Screenshots              : 20 PNG files
+
+Partial scenarios and their named gaps:
+  S3-E2E-13 (stale-tab withdrawal) - the submission from a page built before the
+            withdrawal could not be reproduced through the UI because the button
+            is only rendered while the status is not Withdrawn. The equivalent
+            service behaviour is covered by automated tests
+            (test_withdraw_registration_is_idempotent,
+             test_withdraw_unknown_registration_route_handled_safely).
+  S3-E2E-14 (invalid date of birth) - the automation tool cannot type into a
+            native <input type="date"> control, so server-side rejection of
+            future/impossible/malformed dates rests on the automated tests
+            (test_invalid_date_of_birth_is_refused_when_creating_a_member, 8 cases).
+            Client-side behaviour (required field, impossible date rejected by
+            the control) was observed directly.
+
+Do NOT describe these results as human testing. Human acceptance sign-off is
+still required for all five stories.
+
+
+-----------------------------------------------------------------------------
+EVIDENCE LOCATIONS (absolute paths)
+-----------------------------------------------------------------------------
+Repository screenshots:
+  C:\Users\HP\Documents\GitHub\warrigal-park-fc\docs\testing\screenshots\sprint-3\
+
+Recovered test-name manifest and the temporary E2E helper scripts (outside the
+repository, not part of the deliverable):
+  C:\Users\HP\Documents\Sprint3_Evidence\
+    recovered-test-manifest.txt   the 103 recovered pytest node ids
+    compare_manifest.py           the verification script used for the rebuild
+    seed_round2.py                the disposable-database seeding script
+
+
+-----------------------------------------------------------------------------
+EXCLUDE FROM THE COMMIT (must not be committed)
+-----------------------------------------------------------------------------
+.venv/  venv/      virtual environment used to run the tests
+__pycache__/  *.pyc  .pytest_cache/
+*.db               temporary or real SQLite database
+.env               secrets
+instance/          local database folder; the disposable E2E database
+                   instance/sprint3_e2e_round2.db was deleted after the run
+pytest-of-*/       pre-existing pytest tmp_path artifact (already ignored)
+
+
+================================================================================
+SUPPLEMENTARY ROUND - 2026-10-14 (S3-E2E-13 and S3-E2E-14)
+================================================================================
+Branch:  feature/sprint-3-registration-eligibility-sandip001159852
+HEAD:    86ebc70 (unchanged; no commit, push, merge, reset or clean was run)
+Scope:   re-test the two scenarios previously left partial, and save this round's
+         real browser screenshots to the local desktop and the project.
+
+NO APPLICATION CODE WAS CHANGED IN THIS ROUND.
+
+-----------------------------------------------------------------------------
+ADDED (project documentation)
+-----------------------------------------------------------------------------
+docs/testing/sprint-3-api-dob-validation.txt
+    - Server-side (API/HTTP) date-of-birth validation table: seven real POST
+      requests to POST /members/new with observed status, message and whether a
+      member row was created. Labelled explicitly as an API supplemental test,
+      not a browser test.
+
+docs/testing/sprint-3-screenshot-verification.txt
+    - Screenshot verification record: both storage locations, the five checks
+      applied to every file (exists, non-zero, PNG signature, IEND chunk,
+      SHA-256 equality), the full hash list, and the reason two files share a
+      hash.
+
+-----------------------------------------------------------------------------
+ADDED (project browser evidence) - 9 PNG files
+-----------------------------------------------------------------------------
+docs/testing/screenshots/sprint-3/S3-E2E-13-A0-both-tabs-before-withdrawal.png
+docs/testing/screenshots/sprint-3/S3-E2E-13-A-withdrawal-result.png
+docs/testing/screenshots/sprint-3/S3-E2E-13-B-stale-tab-before-submit.png
+docs/testing/screenshots/sprint-3/S3-E2E-13-B-stale-tab-attempt.png
+docs/testing/screenshots/sprint-3/S3-E2E-13-final-record-state.png
+docs/testing/screenshots/sprint-3/S3-E2E-14-future-date-attempt.png
+docs/testing/screenshots/sprint-3/S3-E2E-14-server-validation-result.png
+docs/testing/screenshots/sprint-3/S3-E2E-14-unreadable-dob-member-detail.png
+docs/testing/screenshots/sprint-3/S3-E2E-14-unreadable-dob-registration-rejection.png
+
+    - Captured from a real browser (Microsoft Edge 155.0.4280.0) against the live
+      application on a disposable database.
+    - The 20 earlier screenshots in the same folder were NOT overwritten or
+      deleted; they remain as the previous round's historical evidence.
+
+-----------------------------------------------------------------------------
+MODIFIED (project documentation - appended supplementary sections only)
+-----------------------------------------------------------------------------
+docs/testing/sprint-3-e2e-checklist.md
+    - Appended the supplementary round: metadata, the full S3-E2E-13 method with
+      the two real POSTs and final database state, the three-part S3-E2E-14
+      result, the round's automated results, and an updated status table
+      (S3-E2E-13 PASS; S3-E2E-14 PASS (partial), gap narrowed).
+    - All earlier content is preserved unchanged.
+
+docs/testing/sprint-3-test-results.md
+    - Appended the round's exact commands and results (34 / 117 / 250 passed),
+      observed HTTP results, final database state, the separation of browser vs
+      API vs automated testing, and the screenshot verification summary.
+
+docs/testing/sprint-3-defect-log.md
+    - Appended: S3-N1 re-confirmed by a genuine stale-tab submission (still not a
+      defect), S3-L2 extended with confirmed native-date-control behaviour,
+      the harness tool limitation (not an application defect), S3-D1 re-verified,
+      and the API date-validation results. Updated defect summary.
+
+docs/testing/sprint-3-handover.md
+    - Appended the supplementary handover: environment and branch state, verified
+      desktop path, what was executed, key results, automated results,
+      screenshot delivery and verification, the caveat about one screenshot's
+      meaning, what remains unverified, and next steps.
+
+docs/testing/sprint-3-screenshots.txt
+    - Appended the supplementary round's scenario-to-image map, the 9 file hashes,
+      the two storage locations, and an explicit list of what the new images do
+      NOT prove.
+
+docs/testing/sprint-3-changed-files.txt
+    - This section.
+
+-----------------------------------------------------------------------------
+ADDED (local desktop evidence - OUTSIDE the repository, not part of the change set)
+-----------------------------------------------------------------------------
+C:\Users\HP\Desktop\Sprint3_Test_Evidence\
+    S3-E2E-13-A0-both-tabs-before-withdrawal.png
+    S3-E2E-13-A-withdrawal-result.png
+    S3-E2E-13-B-stale-tab-before-submit.png
+    S3-E2E-13-B-stale-tab-attempt.png
+    S3-E2E-13-final-record-state.png
+    S3-E2E-14-future-date-attempt.png
+    S3-E2E-14-server-validation-result.png
+    S3-E2E-14-unreadable-dob-member-detail.png
+    S3-E2E-14-unreadable-dob-registration-rejection.png
+    S3-E2E-server-log.txt                    Flask server log for this round
+    S3-E2E-14-api-dob-validation.txt         API supplemental validation results
+    api_dob_validation.py                    the API test script
+    seed_supplement.py                       disposable-database seed script
+    verify_screenshots.py                    the verification script
+
+    - All 9 PNGs are byte-identical to their project copies (SHA-256 verified).
+
+-----------------------------------------------------------------------------
+NOT MODIFIED
+-----------------------------------------------------------------------------
+No application source file, template or stylesheet was changed in this round.
+CHANGELOG.md was NOT changed in this round (the 1.2.0 entry from the previous
+round already covers the S3-D1 fix and the Sprint 3 coverage; this round added
+verification evidence only).
+README.md was NOT changed.
+No Sprint 1 or Sprint 2 file was changed.
+No existing test was modified, removed or weakened.
+No temporary database, secret, cache or temporary script is part of the
+deliverable. The disposable database instance/sprint3_e2e_supplement.db was
+deleted after the run.
+
+-----------------------------------------------------------------------------
+RESULTS FOR THIS ROUND
+-----------------------------------------------------------------------------
+Related tests   : python -m pytest tests/test_registration_sprint3.py -q
+                  -k "withdraw or unreadable or invalid_date_of_birth or readable_stored"
+                  -> 34 passed, 83 deselected
+Sprint 3 module : python -m pytest tests/test_registration_sprint3.py -q
+                  -> 117 passed
+Full suite      : python -m pytest -q
+                  -> 250 passed, 0 failed, 0 skipped, 0 errors
+
+Browser scenarios executed : 2 (S3-E2E-13, S3-E2E-14)
+  S3-E2E-13 -> PASS  (was PASS (partial))
+  S3-E2E-14 -> PASS (partial) - gap narrowed to submitting a future date
+               through the browser form
+Screenshots : 9 saved to the desktop and the project, all verified
+Failures    : none in automated tests; no defects found or fixed this round
