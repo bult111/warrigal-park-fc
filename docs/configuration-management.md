@@ -109,5 +109,6 @@ The project is version-controlled with Git and hosted on GitHub (remote
   merge.
 
 The current branches are `main`, `feature/qa-and-validation`,
-`feature/configuration-improvements`, and `feature/project-documentation`.
-All three feature branches have been merged into `main`.
+`feature/configuration-improvements`, `feature/project-documentation`, and
+`feature/sprint-1-qa-release` (Sprint 1 QA work, in progress). The three
+earlier feature branches have been merged into `main`.
