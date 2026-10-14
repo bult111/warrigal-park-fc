@@ -1,0 +1,51 @@
+﻿S3-E2E-14 PART B - SERVER-SIDE (API/HTTP) DATE-OF-BIRTH VALIDATION
+==================================================================
+METHOD: real HTTP POST form requests sent to the running Flask application at
+        http://127.0.0.1:5000 (route POST /members/new), using a plain HTTP
+        client. This is an API/HTTP SUPPLEMENTAL TEST, not a browser E2E test.
+        Script: api_dob_validation.py (same folder as this file).
+DATABASE: instance/sprint3_e2e_supplement.db (disposable, this round only)
+RUN DATE: 2026-10-14 23:08 local time
+
+RAW OUTPUT
+----------
+case                       sent           HTTP  rows  flash message
+--------------------------------------------------------------------------------------------------------------
+valid adult DOB            '1990-01-01'   200   5     (none)  [CREATED]
+valid junior DOB           '2014-10-14'   200   6     (none)  [CREATED]
+future DOB                 '2999-01-01'   400   6     Date of birth cannot be in the future.  [not created]
+nonexistent calendar date  '2026-02-30'   400   6     Date of birth must be a valid date in YYYY-MM-DD format.  [not created]
+malformed date             'not-a-date'   400   6     Date of birth must be a valid date in YYYY-MM-DD format.  [not created]
+empty date                 ''             400   6     Date of birth is required.  [not created]
+whitespace date            '   '          400   6     Date of birth is required.  [not created]
+
+ROWS CREATED
+------------
+Only the two VALID dates produced a member row (ids 5 and 6). Every invalid
+input returned HTTP 400 and left the member count unchanged.
+
+SUMMARY
+-------
+| Input                      | HTTP | Accepted? | Message                                              |
+|----------------------------|------|-----------|------------------------------------------------------|
+| 1990-01-01 (valid adult)   | 200  | yes       | -                                                    |
+| 2014-10-14 (valid junior)  | 200  | yes       | -                                                    |
+| 2999-01-01 (future)        | 400  | no        | Date of birth cannot be in the future.               |
+| 2026-02-30 (impossible)    | 400  | no        | Date of birth must be a valid date in YYYY-MM-DD format. |
+| not-a-date (malformed)     | 400  | no        | Date of birth must be a valid date in YYYY-MM-DD format. |
+| "" (empty)                 | 400  | no        | Date of birth is required.                           |
+| "   " (whitespace)         | 400  | no        | Date of birth is required.                           |
+
+NOTE ON STATUS CODES
+--------------------
+The task said not to assume every input must return the same status code. These
+codes were observed, not assumed: 200 for a successful create (the app redirects
+to the new member page), 400 for every rejected create. That matches the
+existing route behaviour (routes.member_new returns 400 with the form
+re-rendered and a flash message).
+
+WHAT THIS DOES NOT PROVE
+------------------------
+This is not browser evidence. It shows that the server refuses invalid dates
+when a request reaches it. The browser's own date control behaviour is covered
+separately in the E2E checklist.

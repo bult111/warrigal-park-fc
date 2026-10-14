@@ -1,0 +1,186 @@
+﻿SPRINT 3 - BROWSER EVIDENCE INDEX
+==================================
+Sprint:  Sprint 3 - Epic: Registration and Eligibility
+Stories: MSD426GXUST25-10 .. MSD426GXUST25-14
+Run date: 2026-10-14, 22:25-22:36 local time
+Method:  Microsoft Edge (Chromium) driven by the session browser-automation tool
+         against the live Flask application on http://127.0.0.1:5000
+Database: disposable instance/sprint3_e2e_round2.db (git-ignored via *.db)
+
+Evidence folder (absolute path):
+  C:\Users\HP\Documents\GitHub\warrigal-park-fc\docs\testing\screenshots\sprint-3\
+
+This folder is inside the repository. It contains only browser screenshots of
+synthetic test data; no real member information and no database file is included.
+The temporary database used for the run was deleted afterwards and is not part of
+the change set.
+
+Total images: 20
+
+
+SCENARIO -> IMAGE MAP
+---------------------
+S3-E2E-01  Create a valid registration
+  S3-E2E-01-new-registration-form.png
+  S3-E2E-01-registration-created.png
+
+S3-E2E-02  Reject missing required fields
+  S3-E2E-02-browser-blocks-empty-member.png
+  S3-E2E-02-season-required-server-400.png
+
+S3-E2E-03  Amend a registration
+  S3-E2E-03-registration-amended.png
+
+S3-E2E-04  Reject an invalid amendment without changing stored data
+  S3-E2E-04-browser-blocks-empty-season.png
+
+S3-E2E-05  Withdraw a registration and verify history is retained
+  S3-E2E-05-registration-withdrawn.png
+
+S3-E2E-06  View a member's registration history
+  S3-E2E-06-history-second-tester.png
+
+S3-E2E-07  Verify history isolation between members
+  S3-E2E-07-history-isolation-adult-tester.png
+
+S3-E2E-08  Verify the empty-history state
+  S3-E2E-08-empty-history-state.png
+
+S3-E2E-09  Eighteenth-birthday boundary: today vs tomorrow
+  S3-E2E-09-boundary-age-18-today.png
+  S3-E2E-09-boundary-18-today-complete-allowed.png
+  S3-E2E-09-boundary-18-tomorrow-blocked.png
+
+S3-E2E-10  Block an under-18 registration without a guardian
+  S3-E2E-09-boundary-18-tomorrow-blocked.png   (shared with S3-E2E-09)
+
+S3-E2E-11  Permit an eligible under-18 registration with a valid guardian
+  S3-E2E-11-guardian-linked-to-junior.png
+  S3-E2E-11-junior-complete-with-guardian.png
+
+S3-E2E-12  Adult registration does not need the under-18 rule
+  S3-E2E-12-adult-complete-without-guardian.png
+
+S3-E2E-13  Withdrawal across stale browser tabs (partial)
+  S3-E2E-13-registration-7-withdrawn.png
+
+S3-E2E-14  Invalid date-of-birth handling (partial)
+  S3-E2E-14-native-date-input-on-member-form.png
+
+Additional - S3-D1 regression confirmed in the browser
+  S3-D1-member-page-corrupt-dob-200-ok.png
+  S3-D1-completion-refused-friendly-message.png
+
+
+FILE INDEX WITH SHA-256 (first 32 hex characters)
+-------------------------------------------------
+| File | Bytes | SHA-256 (truncated) |
+|---|---:|---|
+| `S3-D1-completion-refused-friendly-message.png` | 44274 | 5e7dad23bacd3196fef4d160920c7e69 |
+| `S3-D1-member-page-corrupt-dob-200-ok.png` | 44838 | 64db3f16f4e57ba61822d6f48fa67541 |
+| `S3-E2E-01-new-registration-form.png` | 37877 | 961148740385be3856d980919b9a7e47 |
+| `S3-E2E-01-registration-created.png` | 37769 | eeaab8aad491f9e8add184c9043263f7 |
+| `S3-E2E-02-browser-blocks-empty-member.png` | 41214 | a2f0575c696fbd7241e7be0435f5373e |
+| `S3-E2E-02-season-required-server-400.png` | 39223 | 06f111e98da9380df0a611a1e3f8be86 |
+| `S3-E2E-03-registration-amended.png` | 37722 | 47f0433582e8c3a782acc6f2abf272b2 |
+| `S3-E2E-04-browser-blocks-empty-season.png` | 42402 | edca18b5cd33b17d0dd194fdbb233187 |
+| `S3-E2E-05-registration-withdrawn.png` | 39666 | 83ab1e4f5ef895d48731912288a0a5e0 |
+| `S3-E2E-06-history-second-tester.png` | 37619 | e30d1ac262ed0e5bd2309cce8b071968 |
+| `S3-E2E-07-history-isolation-adult-tester.png` | 36927 | 17f4727889e6caf47f537dd5adf579fe |
+| `S3-E2E-08-empty-history-state.png` | 32855 | 238ad300f9d4cb4d4abb46d00cade523 |
+| `S3-E2E-09-boundary-18-today-complete-allowed.png` | 37817 | 53c22f66dfdbc3cfd575ea54a99bb782 |
+| `S3-E2E-09-boundary-18-tomorrow-blocked.png` | 42312 | 078d619436df0cc9ff8590aede433f0e |
+| `S3-E2E-09-boundary-age-18-today.png` | 43627 | db095de50662a86fdffe4d0d1b5efe57 |
+| `S3-E2E-11-guardian-linked-to-junior.png` | 43526 | 7eb1ede4b8b56a0e498cb7a33dba26f3 |
+| `S3-E2E-11-junior-complete-with-guardian.png` | 37533 | 89196d67b5b2a26f1b72f28b7e40e0e0 |
+| `S3-E2E-12-adult-complete-without-guardian.png` | 38003 | 0b6e829d0d4640a7d27905ab8f1997e9 |
+| `S3-E2E-13-registration-7-withdrawn.png` | 39636 | 8271cfbf61b1e42a657f3aac53ecfa02 |
+| `S3-E2E-14-native-date-input-on-member-form.png` | 30865 | 44e0412c545e86162231db19c25d5183 |
+
+Full SHA-256 values can be regenerated with:
+  Get-ChildItem docs\testing\screenshots\sprint-3\*.png |
+    ForEach-Object { (Get-FileHash $_.FullName -Algorithm SHA256).Hash }
+
+
+WHAT EACH IMAGE DOES NOT PROVE
+------------------------------
+Two scenarios are recorded as partial, and some claims were verified by page
+observation or a database query rather than photographed. In particular:
+  - S3-E2E-13 step 6 (a genuinely stale form submission) is NOT covered by any
+    image; the button is not rendered once the status is Withdrawn.
+  - S3-E2E-14 does not cover server-side rejection of a future, impossible or
+    malformed date; that rests on the automated tests.
+  - Absence of another member's rows, unchanged database row counts, and member
+    records being unaffected by an amendment were checked by observation and
+    direct queries, not screenshots.
+
+Do not present these images as human acceptance evidence. They were captured by
+browser automation, not by a person.
+
+
+================================================================================
+SUPPLEMENTARY ROUND - 2026-10-14 22:56-23:10 (S3-E2E-13 and S3-E2E-14 ONLY)
+================================================================================
+Purpose: complete the two scenarios left partial by the previous round.
+
+- Browser: Microsoft Edge 155.0.4280.0 (Chromium 155), user agent
+  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
+  Chrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0
+- Application: http://127.0.0.1:5000 via `python run.py`, FLASK_DEBUG=0
+- Database: disposable instance/sprint3_e2e_supplement.db (git-ignored, deleted
+  after the run)
+- Desktop copy: C:\Users\HP\Desktop\Sprint3_Test_Evidence\
+  (real desktop path; no OneDrive redirection - verified via the registry
+   "User Shell Folders" Desktop value and .NET GetFolderPath)
+- All 9 files below are byte-identical between the desktop folder and
+  docs/testing/screenshots/sprint-3/ (SHA-256 compared, see
+  sprint-3-screenshot-verification.txt).
+
+| File | Bytes | SHA-256 |
+|---|---:|---|
+| S3-E2E-13-A0-both-tabs-before-withdrawal.png | 35542 | 97e92494db1c0166aa401200a34ab8c65f13c27b6fcdf55df9839a9c1f36680b |
+| S3-E2E-13-A-withdrawal-result.png | 40150 | 2c310f30811b625962a6d24b8aed4920c239b33d78cc331087f8f10028442469 |
+| S3-E2E-13-B-stale-tab-before-submit.png | 35992 | 539cee004ab7291e21b3d18cdd713cdce2b56fd1a26f864886b1924b77450a84 |
+| S3-E2E-13-B-stale-tab-attempt.png | 40150 | 2c310f30811b625962a6d24b8aed4920c239b33d78cc331087f8f10028442469 |
+| S3-E2E-13-final-record-state.png | 41451 | 4d7575d4ef72832721f265cdcbd6c3303cd4b6576b188e3619d89280d695883d |
+| S3-E2E-14-future-date-attempt.png | 32636 | 8c09330b980919497290dfceb8927331d06b4ab9d004418f8be97c1a7f962178 |
+| S3-E2E-14-server-validation-result.png | 42200 | 15b3908b7a00dd157341ea00b5662cd36974aa9cdffd7dbd6bb6e6695fadbcb2 |
+| S3-E2E-14-unreadable-dob-member-detail.png | 45416 | 67176e96ef12504f3a9944e68861a8c5a38d923323d64432b9dbf799e8a53603 |
+| S3-E2E-14-unreadable-dob-registration-rejection.png | 44774 | c68a581797bcf19f32ba4e0dfa92eeaae6df702bd977a173a0d5d877737597e3 |
+
+Note: S3-E2E-13-A-withdrawal-result.png and S3-E2E-13-B-stale-tab-attempt.png
+have the same SHA-256. That is correct and expected: both captured the same
+deterministic post-withdrawal page for the same registration (same status text,
+same flash, same rendered HTML), because the second withdrawal is a no-op that
+leaves the record in the same state.
+
+SCENARIO -> IMAGE MAP (supplementary round)
+-------------------------------------------
+S3-E2E-13  Stale-tab withdrawal (now FULLY verified)
+  A0  both tabs loaded pre-withdrawal    S3-E2E-13-A0-both-tabs-before-withdrawal.png
+  A   tab A withdrawal result (302)      S3-E2E-13-A-withdrawal-result.png
+  B   tab B still stale (Started shown)  S3-E2E-13-B-stale-tab-before-submit.png
+  B   stale form submitted (302)         S3-E2E-13-B-stale-tab-attempt.png
+  -   final record state in the app      S3-E2E-13-final-record-state.png
+
+S3-E2E-14  Invalid date of birth (browser + API supplemental)
+  the native date control accepted a future year (9999)
+                                         S3-E2E-14-future-date-attempt.png
+  a real browser HTTP 400 (guard rule)   S3-E2E-14-server-validation-result.png
+  unreadable stored DOB, page is 200     S3-E2E-14-unreadable-dob-member-detail.png
+  completion refused, 400, status kept   S3-E2E-14-unreadable-dob-registration-rejection.png
+
+WHAT THE SUPPLEMENTARY IMAGES DO NOT PROVE
+------------------------------------------
+- S3-E2E-14-future-date-attempt.png shows that the native control ACCEPTED a
+  future year; it does NOT show a completed future date being submitted, because
+  the segmented year control could not be advanced to the month/day segments by
+  the automation tool. The server-side rejection of a future date is proven by
+  the API supplemental test (sprint-3-api-dob-validation.txt) and by the
+  automated tests, not by a browser submission.
+- S3-E2E-14-server-validation-result.png shows a real browser HTTP 400, but for
+  the under-18 guardian rule on POST /registrations/new, not for a date-of-birth
+  rule. It establishes what the application's server-side rejection looks like
+  in the browser.
+- The 20 older images from the previous round remain in this folder as
+  historical evidence. They were NOT re-executed in this round.

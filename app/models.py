@@ -53,6 +53,21 @@ def parse_date(value):
         raise ValueError("Date of birth must be a valid date in YYYY-MM-DD format.")
 
 
+def safe_parse_date(value):
+    """Parse a stored ISO date without raising, returning ``None`` if unreadable.
+
+    Used when reading a date that is already in the database. Values written
+    through the service layer are always validated first, but a legacy row, a
+    manual ``UPDATE`` or imported data could hold a non-ISO string. Returning
+    ``None`` lets callers fail safely instead of raising an unhandled
+    ``ValueError`` from :meth:`date.fromisoformat`.
+    """
+    try:
+        return date.fromisoformat(str(value).strip())
+    except (TypeError, ValueError):
+        return None
+
+
 def validate_date_of_birth(value, today: date | None = None) -> date:
     """Validate a date of birth and return it as a ``date``.
 
