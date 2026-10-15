@@ -116,6 +116,7 @@ and `feature/sprint-3-registration-eligibility-sandip001159852`. The Sprint 1,
 Sprint 2 and Sprint 3 feature branches are retained on the remote for reference;
 their work is already part of `main`.
 
-Sprint 4 is being developed on the local branch
-`feature/sprint-4-team-roster-leo0318-cpu`. This branch exists only locally, has
-not been pushed to `origin`, and its work has not been merged into `main`.
+Sprint 4 (Team and Roster Management) was developed on the branch
+`feature/sprint-4-team-roster-leo0318-cpu` and merged into `main` via PR #4
+(merge commit `98fa25b0dda738659a752dfc27189ebce286b685`). Sprints 1 through 4
+are therefore all part of `main`.
