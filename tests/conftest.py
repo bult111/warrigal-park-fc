@@ -4,11 +4,21 @@ Every test runs against a fresh, isolated SQLite database in a temporary
 directory so tests are repeatable and never touch real data.
 """
 
-from datetime import date, timedelta
+from datetime import date
 
 import pytest
 
-from app import create_app, database, services
+from app import create_app, database, models, services
+
+# The season the age-boundary fixtures are calibrated against.
+#
+# These fixtures used to be defined relative to `date.today()` ("18 years ago today"),
+# which only describes a boundary case if the rule is also measured against today. The
+# under-18 guardian rule is measured at the season reference date - 31 December of the
+# playing year - so the fixtures are anchored there instead. A fixture anchored to today
+# describes a different player on every day of the year.
+SEASON = "2026"
+_REFERENCE = models.season_reference_date(SEASON)
 
 
 def _years_ago(years):
@@ -63,14 +73,22 @@ def adult_dob():
 
 @pytest.fixture
 def exactly_18_dob():
-    """A date of birth making a member exactly 18 today (birthday today)."""
-    return _years_ago(18).isoformat()
+    """A date of birth making a member exactly 18 at the season reference date.
+
+    The season reference is the last day of the playing year, so the latest birth date
+    that is already an adult for the season is that same day, 18 years earlier.
+    """
+    return date(_REFERENCE.year - models.JUNIOR_AGE_LIMIT, 12, 31).isoformat()
 
 
 @pytest.fixture
 def just_under_18_dob():
-    """A date of birth making a member 17 (their 18th birthday is tomorrow)."""
-    return (_years_ago(18) + timedelta(days=1)).isoformat()
+    """A date of birth making a member 17 at the season reference date.
+
+    Exactly one day after ``exactly_18_dob``: the birthday that would make them an adult
+    falls after the season reference, so they are a junior for the whole season.
+    """
+    return date(_REFERENCE.year - models.JUNIOR_AGE_LIMIT + 1, 1, 1).isoformat()
 
 
 @pytest.fixture

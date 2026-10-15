@@ -25,6 +25,15 @@ REGISTRATION_STATUSES = (
 # The age threshold used by the under-18 guardian rule.
 JUNIOR_AGE_LIMIT = 18
 
+# The point in the year at which a player's age is measured for a season.
+#
+# The association determines age groups by the player's age as at 31 December of the
+# playing year (club circular 2026/03, item 2). The club's under-18 guardian rule is a
+# season-long rule, so it is measured at the same point: a rule that gave a different
+# answer on different days of the same season would not be a season rule at all.
+SEASON_REFERENCE_MONTH = 12
+SEASON_REFERENCE_DAY = 31
+
 # A sensible upper bound used to reject obviously incorrect birth dates.
 MAX_REASONABLE_AGE = 130
 
@@ -38,6 +47,31 @@ def calculate_age(dob: date, today: date | None = None) -> int:
     if (today.month, today.day) < (dob.month, dob.day):
         years -= 1
     return years
+
+
+def season_year(season) -> int:
+    """Return the year a season belongs to.
+
+    ``season`` may be a year (``2026``), a string containing one (``"2026"``,
+    ``"2026 Season"``), or a season code. Anything without a four-digit year falls back
+    to the current year, so callers never have to guard against a missing season.
+    """
+    match = re.search(r"\d{4}", str(season if season is not None else ""))
+    return int(match.group(0)) if match else date.today().year
+
+
+def season_reference_date(season=None) -> date:
+    """Return the date at which a player's age is measured for ``season``.
+
+    See ``SEASON_REFERENCE_MONTH`` above for why the rule is measured at a fixed point
+    rather than at the date the code happens to run.
+    """
+    return date(season_year(season), SEASON_REFERENCE_MONTH, SEASON_REFERENCE_DAY)
+
+
+def is_junior(dob: date, on: date) -> bool:
+    """Return whether a player born on ``dob`` is under the junior age limit on ``on``."""
+    return calculate_age(dob, on) < JUNIOR_AGE_LIMIT
 
 
 def parse_date(value):

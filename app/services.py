@@ -320,7 +320,7 @@ def create_registration(
     )
     # A registration created directly as Complete must still satisfy the rule.
     if status == models.REGISTRATION_STATUS_COMPLETE:
-        allowed, message = can_complete_registration(member_id)
+        allowed, message = can_complete_registration(member_id, season)
         if not allowed:
             raise ServiceError(message)
     cursor = database.get_db().execute(
@@ -334,34 +334,40 @@ def create_registration(
     return get_registration(cursor.lastrowid)
 
 
-def _member_is_junior(member_id):
-    """Return ``True`` only when the member is known to be under 18.
+def _member_is_junior(member_id, season=None):
+    """Return ``True`` only when the member is known to be under 18 for the season.
 
     An unreadable stored date of birth returns ``False`` so this helper never
     raises; :func:`can_complete_registration` is responsible for refusing the
     completion in that case, so an invalid date can never be treated as proof
     that the member is an adult.
+
+    The age is measured at the season's reference date, not at the date the code
+    happens to run. Measuring it "today" made the rule change part-way through a
+    season for any player whose 18th birthday fell inside it, so the same database
+    gave different answers on different days.
     """
     member = get_member(member_id)
     dob = models.safe_parse_date(member["date_of_birth"])
     if dob is None:
         return False
-    return models.calculate_age(dob) < models.JUNIOR_AGE_LIMIT
+    return models.is_junior(dob, models.season_reference_date(season))
 
 
-def can_complete_registration(member_id):
+def can_complete_registration(member_id, season=None):
     """Return ``(allowed, message)`` for completing a registration.
 
     Applies the under-18 guardian rule: juniors need at least one linked
     guardian; adults do not. A member whose stored date of birth cannot be read
-    is refused rather than assumed to be an adult.
+    is refused rather than assumed to be an adult. ``season`` is the season the
+    registration belongs to; when it is omitted the current year is used.
     """
     member = get_member(member_id)
     if member is None:
         return False, "Member not found."
     if models.safe_parse_date(member["date_of_birth"]) is None:
         return False, UNREADABLE_DATE_OF_BIRTH_MESSAGE
-    if _member_is_junior(member_id) and not member_has_guardian(member_id):
+    if _member_is_junior(member_id, season) and not member_has_guardian(member_id):
         return False, JUNIOR_GUARDIAN_REQUIRED_MESSAGE
     return True, ""
 
@@ -377,7 +383,7 @@ def update_registration(registration_id, member_id, season, age_group, status):
 
     # Enforce the under-18 guardian rule when a registration becomes Complete.
     if status == models.REGISTRATION_STATUS_COMPLETE:
-        allowed, message = can_complete_registration(member_id)
+        allowed, message = can_complete_registration(member_id, season)
         if not allowed:
             raise ServiceError(message)
 
