@@ -154,17 +154,20 @@ Completed sprints merged into `main` (from the Git history):
 - **Sprint 3** — Registration and Eligibility
   (`feature/sprint-3-registration-eligibility-sandip001159852`).
 
-**Sprint 4** — Team and Roster Management is complete on the local branch
-`feature/sprint-4-team-roster-leo0318-cpu`. It has **not** been merged into
-`main` or pushed to the remote. Its work covers team creation/listing, renaming
-and safe removal, same-season `Complete`-registration player eligibility, player
-move/remove (including the S2-F1 no-op feedback fix), and roster contact display.
+**Sprint 4** — Team and Roster Management was merged into `main` via PR #4
+(merge commit `98fa25b0dda738659a752dfc27189ebce286b685`, from the branch
+`feature/sprint-4-team-roster-leo0318-cpu`). Its work covers team
+creation/listing, renaming and safe removal, same-season `Complete`-registration
+player eligibility, player move/remove (including the S2-F1 no-op feedback fix),
+and roster contact display.
 
-The full automated test suite currently reports **267 passed** (0 failed, 0
-errors, 0 skipped). Sprint 4 was also verified by a browser acceptance run
-(21/21 scenarios) driven by the DSH environment using Edge and the Chrome
-DevTools Protocol; see `docs/testing/sprint-4-acceptance-results.md`. Browser
-checks are automation, not human sign-off.
+Sprint 4 recorded **267 passed** pytest tests (0 failed, 0 errors, 0 skipped)
+and a **21/21** browser acceptance run driven by the DSH environment using Edge
+and the Chrome DevTools Protocol; see
+`docs/testing/sprint-4-acceptance-results.md`. These results were recorded on
+the Sprint 4 branch before the merge and have not been re-run since. Browser
+checks are automation, not human sign-off, and no GitHub Actions CI run was
+verified.
 
 ## Scope limitations
 

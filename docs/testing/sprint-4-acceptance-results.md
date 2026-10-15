@@ -4,8 +4,8 @@ Sprint 4 (Team and Roster Management) was verified in two ways: the automated
 pytest suite and a browser acceptance run. Both were executed in the DSH
 environment; neither constitutes human acceptance sign-off.
 
-- Branch: `feature/sprint-4-team-roster-leo0318-cpu` (local only — not merged,
-  not pushed).
+- Developed on branch `feature/sprint-4-team-roster-leo0318-cpu`; merged into
+  `main` via PR #4 (merge commit `98fa25b0dda738659a752dfc27189ebce286b685`).
 - Date: 2026-10-15.
 
 ## Automated tests
@@ -66,5 +66,7 @@ roster) are covered in the detailed report referenced above.
   sign-off.
 - The automated pytest result and the browser acceptance are separate kinds of
   evidence; a passing pytest suite is not itself browser acceptance.
-- Sprint 4 has not been merged into `main` and has not been pushed to the
-  remote.
+- The pytest and browser results above were recorded on the Sprint 4 branch
+  before the merge; they were not re-run as part of this documentation update.
+- No GitHub Actions workflow run or commit status was verified, so CI is not
+  claimed as passing.
