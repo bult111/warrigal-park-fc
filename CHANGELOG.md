@@ -95,3 +95,20 @@ work is listed.
   not by a human. Human acceptance sign-off is still required for all five
   Stories, and none should be marked Done in Jira on the strength of these
   documents.
+
+## 1.3.0
+
+- Sprint 4 (Team and Roster Management) completed:
+  - Corrected player eligibility to require a same-season `Complete`
+    registration; `Started` and `Withdrawn` registrations no longer qualify
+    (previously any non-withdrawn registration did).
+  - Fixed defect S2-F1: `remove_player_from_team` now validates the team and
+    member, returns `True`/`False` based on whether a membership row was actually
+    removed, and the route shows an accurate error instead of a false success for
+    a no-op.
+  - Team creation/listing, rename and safe removal, same-season player add, move,
+    remove, and roster contact display verified end to end.
+- Automated test suite: **267 passed** (0 failed, 0 errors, 0 skipped).
+- Browser acceptance: **21/21 scenarios passed**, executed by the DSH environment
+  using Microsoft Edge + Chrome DevTools Protocol (automation, not human
+  sign-off). See `docs/testing/sprint-4-acceptance-results.md`.

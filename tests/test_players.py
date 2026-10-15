@@ -57,8 +57,9 @@ def test_remove_player(make_member, make_registration, make_team):
     team = make_team("2026", "Tigers", "U16")
     services.add_player_to_team(team["id"], member["id"])
 
-    services.remove_player_from_team(team["id"], member["id"])
+    removed = services.remove_player_from_team(team["id"], member["id"])
 
+    assert removed is True
     assert services.team_players(team["id"]) == []
 
 
@@ -136,3 +137,47 @@ def test_move_player_already_in_target_team_rejected(make_member, make_registrat
 
     with pytest.raises(services.ServiceError):
         services.move_player(member["id"], team_a["id"], team_b["id"])
+
+
+def test_started_registration_not_eligible(make_member, make_registration, make_team):
+    """A Started (not Complete) registration does not make a player eligible."""
+    member = make_member("Started Only")
+    make_registration(member["id"], "2026", "U16", "Started")
+    team = make_team("2026", "Tigers", "U16")
+
+    with pytest.raises(services.ServiceError):
+        services.add_player_to_team(team["id"], member["id"])
+
+    assert services.team_players(team["id"]) == []
+
+
+def test_complete_registration_qualifies_despite_earlier_started(
+    make_member, make_registration, make_team
+):
+    """A Complete registration qualifies even when an earlier Started row exists."""
+    member = make_member("Multi Reg")
+    make_registration(member["id"], "2026", "U16", "Started")
+    make_registration(member["id"], "2026", "U16", "Complete")
+    team = make_team("2026", "Tigers", "U16")
+
+    services.add_player_to_team(team["id"], member["id"])
+
+    assert [p["name"] for p in services.team_players(team["id"])] == ["Multi Reg"]
+
+
+def test_remove_player_not_in_team_returns_false(make_member, make_registration, make_team):
+    member = make_member("Outsider")
+    make_registration(member["id"], "2026", "U16", "Complete")
+    team = make_team("2026", "Tigers", "U16")
+
+    removed = services.remove_player_from_team(team["id"], member["id"])
+
+    assert removed is False
+    assert services.team_players(team["id"]) == []
+
+
+def test_remove_nonexistent_member_rejected(make_team):
+    team = make_team("2026", "Tigers", "U16")
+    with pytest.raises(services.ServiceError) as exc_info:
+        services.remove_player_from_team(team["id"], 99999)
+    assert "Member not found" in str(exc_info.value)

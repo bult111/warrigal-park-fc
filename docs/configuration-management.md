@@ -108,7 +108,14 @@ The project is version-controlled with Git and hosted on GitHub (remote
 - The test suite (`pytest`) is run on each feature branch and again after each
   merge.
 
-The current branches are `main`, `feature/qa-and-validation`,
-`feature/configuration-improvements`, `feature/project-documentation`, and
-`feature/sprint-1-qa-release` (Sprint 1 QA work, in progress). The three
-earlier feature branches have been merged into `main`.
+The remote (`origin`) currently retains the following `feature/*` branches, and
+the work on each has been merged into `main`: `feature/qa-and-validation`,
+`feature/configuration-improvements`, `feature/project-documentation`,
+`feature/sprint-1-qa-release`, `feature/sprint-2-member-guardian-colacolaco`,
+and `feature/sprint-3-registration-eligibility-sandip001159852`. The Sprint 1,
+Sprint 2 and Sprint 3 feature branches are retained on the remote for reference;
+their work is already part of `main`.
+
+Sprint 4 is being developed on the local branch
+`feature/sprint-4-team-roster-leo0318-cpu`. This branch exists only locally, has
+not been pushed to `origin`, and its work has not been merged into `main`.

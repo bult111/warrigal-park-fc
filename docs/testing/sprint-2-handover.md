@@ -27,8 +27,9 @@ defect was also fixed in the team-player removal path
 (`remove_player_from_team` in `app/services.py` and `player_remove` in
 `app/routes.py`, alongside the Sprint 1 defect D3).
 
-Team and player removal belongs to the **Team and Roster Management** epic,
-which is planned for **Sprint 4**, not to Member and Guardian Management.
+The team- and player-removal no-op feedback change belongs to the **Team and
+Roster Management** epic, which is planned for **Sprint 4**, not to Member and
+Guardian Management.
 During the pre-upload review that change was therefore **reverted**, so this
 sprint contains no out-of-epic source modification. The revert was verified to
 leave the suite unchanged at 133 passed, because no test covered that path. The
@@ -83,7 +84,7 @@ No Sprint 1 document was modified, and no unrelated document was touched.
 | Figure | Value | Basis |
 |--------|------:|-------|
 | Distinct tests collected in the new module | **54** | `--collect-only -q` → `54 tests collected` |
-| Test functions written | **48** | 6 are parametrized, expanding to 54 cases |
+| Test functions written | **48** | 3 are parametrized, expanding to 54 cases |
 | Sum of the per-Story mapping counts | **63** | Coverage mapping; 9 tests support two Stories each, so 63 − 9 = 54 |
 
 Final suite total: **79 + 54 = 133**. The per-Story figures are mappings, not

@@ -493,16 +493,20 @@ def team_players(team_id):
 # ---------------------------------------------------------------------------
 
 def _eligible_registration(member_id, season):
-    """Return the member's non-withdrawn registration for ``season`` or None."""
+    """Return a member's Complete registration for ``season``, or ``None``.
+
+    Only a ``Complete`` registration makes a player eligible for a team in that
+    season. ``Started`` and ``Withdrawn`` registrations do not qualify.
+    """
     row = database.query_one(
         """
         SELECT id, member_id, season, age_group, status
         FROM registrations
-        WHERE member_id = ? AND season = ? AND status != ?
+        WHERE member_id = ? AND season = ? AND status = ?
         ORDER BY id
         LIMIT 1
         """,
-        (member_id, season, models.REGISTRATION_STATUS_WITHDRAWN),
+        (member_id, season, models.REGISTRATION_STATUS_COMPLETE),
     )
     return models.registration_to_dict(row) if row else None
 
@@ -514,7 +518,7 @@ def _member_has_any_registration_for_season(member_id, season):
 def add_player_to_team(team_id, member_id):
     """Add a member to a team, enforcing same-season registration eligibility.
 
-    The player must have a non-withdrawn registration for the team's season.
+    The player must have a Complete registration for the team's season.
     """
     team = get_team(team_id)
     if team is None:
@@ -531,8 +535,8 @@ def add_player_to_team(team_id, member_id):
 
     if not _member_has_any_registration_for_season(member_id, team["season"]):
         raise ServiceError(
-            "This member does not have a registration for the team's season "
-            f"({team['season']})."
+            "This member does not have a Complete registration for the team's "
+            f"season ({team['season']})."
         )
 
     database.execute(
@@ -563,13 +567,22 @@ def move_player(member_id, from_team_id, to_team_id):
 
 
 def remove_player_from_team(team_id, member_id):
-    """Remove a player from a team, keeping their registration intact."""
+    """Remove a player from a team, keeping their registration intact.
+
+    Returns ``True`` when a membership row was actually removed and ``False``
+    when there was nothing to remove, so callers can report the outcome
+    accurately instead of claiming success for a no-op. Unknown identifiers
+    raise :class:`ServiceError`.
+    """
     if get_team(team_id) is None:
         raise ServiceError("Team not found.")
-    database.execute(
+    if get_member(member_id) is None:
+        raise ServiceError("Member not found.")
+    removed = database.execute(
         "DELETE FROM team_players WHERE team_id = ? AND member_id = ?",
         (team_id, member_id),
     )
+    return removed > 0
 
 
 # ---------------------------------------------------------------------------

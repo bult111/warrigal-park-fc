@@ -2,7 +2,7 @@
 
 import pytest
 
-from app import services
+from app import database, services
 
 
 def test_create_team(make_team):
@@ -60,3 +60,23 @@ def test_registration_remains_after_team_removal(make_member, make_registration,
 def test_remove_nonexistent_team_rejected():
     with pytest.raises(services.ServiceError):
         services.delete_team(99999)
+
+
+def test_rename_nonexistent_team_rejected():
+    with pytest.raises(services.ServiceError):
+        services.rename_team(99999, "2026", "Tigers", "U16")
+
+
+def test_delete_team_clears_team_players(make_member, make_registration, make_team):
+    member = make_member("Player")
+    make_registration(member["id"], "2026", "U16", "Complete")
+    team = make_team("2026", "Tigers", "U16")
+    services.add_player_to_team(team["id"], member["id"])
+    team_id = team["id"]
+
+    services.delete_team(team_id)
+
+    rows = database.query_all(
+        "SELECT * FROM team_players WHERE team_id = ?", (team_id,)
+    )
+    assert rows == []

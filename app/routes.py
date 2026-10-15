@@ -442,8 +442,11 @@ def player_move(team_id, member_id):
 )
 def player_remove(team_id, member_id):
     try:
-        services.remove_player_from_team(team_id, member_id)
-        flash("Player removed from team. Registration was kept.", "success")
+        removed = services.remove_player_from_team(team_id, member_id)
+        if removed:
+            flash("Player removed from team. Registration was kept.", "success")
+        else:
+            flash("That player is not in this team.", "error")
     except (ValueError, services.ServiceError) as error:
         _flash_error(error)
     return redirect(url_for("main.team_detail", team_id=team_id))

@@ -78,7 +78,7 @@ things and **must not be added together**.
 | Figure | Value | Basis |
 |--------|------:|-------|
 | Distinct pytest tests collected in the new module | **54** | Verified with `python -m pytest tests/test_member_guardian_workflows.py --collect-only -q` → `54 tests collected`. This is the only figure that changes the suite total (79 + 54 = 133). |
-| Test functions written in the new module | **48** | Counted from `def test_` definitions. Six functions use `@pytest.mark.parametrize`, so 48 functions expand into 54 collected cases. |
+| Test functions written in the new module | **48** | Counted from `def test_` definitions. Three functions use `@pytest.mark.parametrize`, so 48 functions expand into 54 collected cases. |
 | Sum of the per-Story mapping counts | **63** | 11 + 12 + 6 + 4 + 9 + 16 + 5, as documented in `sprint-2-test-plan.md`. This is a **coverage mapping**, not a test total. |
 
 ### Why the per-Story counts sum to 63

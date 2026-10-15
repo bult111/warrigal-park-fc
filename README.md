@@ -21,7 +21,7 @@ The system lets a club administrator:
 - **Registration management** — create, view, amend, withdraw; history retained across seasons.
 - **Junior guardian rule** — under-18 members require a guardian before a registration can be Complete.
 - **Team management** — create, list, rename, remove (removal keeps members and registrations).
-- **Player management** — add, move and remove players; players must have a same-season registration.
+- **Player management** — add, move and remove players; players must have a same-season `Complete` registration.
 - **Roster, registration history and guardian linked juniors views**.
 - **Dashboard** with basic counts.
 - **User-friendly validation** with flash messages (no raw tracebacks for normal mistakes).
@@ -118,7 +118,7 @@ internet access.
 4. **Registration history is retained.** Withdrawn registrations stay in the
    database and remain visible in the member's history.
 5. **Season eligibility.** A player can be added to a team only if they have a
-   non-withdrawn registration for the same season as the team.
+   `Complete` registration for the same season as the team.
 6. **Team removal safety.** Removing a team deletes only the team and its
    player assignments; members and registrations are untouched.
 
@@ -133,10 +133,38 @@ The project uses Git for version control, with the repository hosted on GitHub
   each integration is recorded explicitly.
 - The test suite (`pytest`) is run on each feature branch before merging.
 
-Current branches: `main`, `feature/qa-and-validation`,
-`feature/configuration-improvements`, `feature/project-documentation`, and
-`feature/sprint-1-qa-release` (Sprint 1 QA work, in progress). The three
-earlier feature branches have been merged into `main`.
+### Branches and sprint status
+
+`main` is the default and integration branch. The remote (`origin`) currently
+retains the following `feature/*` branches, and the work on each has been merged
+into `main` (verified against the Git history):
+
+- `feature/qa-and-validation`
+- `feature/configuration-improvements`
+- `feature/project-documentation`
+- `feature/sprint-1-qa-release`
+- `feature/sprint-2-member-guardian-colacolaco`
+- `feature/sprint-3-registration-eligibility-sandip001159852`
+
+Completed sprints merged into `main` (from the Git history):
+
+- **Sprint 1** — QA and regression testing (`feature/sprint-1-qa-release`).
+- **Sprint 2** — Member and Guardian Management
+  (`feature/sprint-2-member-guardian-colacolaco`).
+- **Sprint 3** — Registration and Eligibility
+  (`feature/sprint-3-registration-eligibility-sandip001159852`).
+
+**Sprint 4** — Team and Roster Management is complete on the local branch
+`feature/sprint-4-team-roster-leo0318-cpu`. It has **not** been merged into
+`main` or pushed to the remote. Its work covers team creation/listing, renaming
+and safe removal, same-season `Complete`-registration player eligibility, player
+move/remove (including the S2-F1 no-op feedback fix), and roster contact display.
+
+The full automated test suite currently reports **267 passed** (0 failed, 0
+errors, 0 skipped). Sprint 4 was also verified by a browser acceptance run
+(21/21 scenarios) driven by the DSH environment using Edge and the Chrome
+DevTools Protocol; see `docs/testing/sprint-4-acceptance-results.md`. Browser
+checks are automation, not human sign-off.
 
 ## Scope limitations
 
