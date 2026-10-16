@@ -69,10 +69,9 @@ def test_duplicate_guardian_link_rejected(make_member, make_guardian, link_guard
 
 def test_duplicate_team_player_rejected(make_member, make_registration, make_team):
     member = make_member("Someone")
-    make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
+    team = make_team("2026", "Tigers", "Seniors")
+    make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
 
-    services.add_player_to_team(team["id"], member["id"])
     with pytest.raises(services.ServiceError):
         services.add_player_to_team(team["id"], member["id"])
 

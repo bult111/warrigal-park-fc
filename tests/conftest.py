@@ -86,20 +86,25 @@ def make_member(app):
 
 @pytest.fixture
 def make_guardian(app):
-    """Factory that creates a guardian and returns its dict."""
-    def _make(name="Jane Guardian", email="", phone="", address=""):
+    """Factory that creates a guardian verified as an adult, returning its dict."""
+    def _make(name="Jane Guardian", email="", phone="", address="", dob=None):
+        dob = dob or _years_ago(40).isoformat()
         with app.app_context():
-            return services.create_guardian(name, email, phone, address)
+            return services.create_guardian(name, dob, email, phone, address)
 
     return _make
 
 
 @pytest.fixture
 def make_registration(app):
-    """Factory that creates a registration and returns its dict."""
-    def _make(member_id, season="2026", age_group="U16", status="Started"):
+    """Factory that creates a registration and returns its dict.
+
+    ``age_group`` is accepted for compatibility with existing call sites but is
+    ignored: the service computes it from the member's date of birth and season.
+    """
+    def _make(member_id, season="2026", age_group=None, status="Started"):
         with app.app_context():
-            return services.create_registration(member_id, season, age_group, status)
+            return services.create_registration(member_id, season, status=status)
 
     return _make
 

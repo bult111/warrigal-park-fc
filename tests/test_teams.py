@@ -35,9 +35,8 @@ def test_remove_team(make_team):
 
 def test_member_remains_after_team_removal(make_member, make_registration, make_team):
     member = make_member("Keep Me")
-    make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
-    services.add_player_to_team(team["id"], member["id"])
+    team = make_team("2026", "Tigers", "Seniors")
+    make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
 
     services.delete_team(team["id"])
 
@@ -47,9 +46,8 @@ def test_member_remains_after_team_removal(make_member, make_registration, make_
 
 def test_registration_remains_after_team_removal(make_member, make_registration, make_team):
     member = make_member("Keep Me")
-    reg = make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
-    services.add_player_to_team(team["id"], member["id"])
+    team = make_team("2026", "Tigers", "Seniors")
+    reg = make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
 
     services.delete_team(team["id"])
 
@@ -69,9 +67,8 @@ def test_rename_nonexistent_team_rejected():
 
 def test_delete_team_clears_team_players(make_member, make_registration, make_team):
     member = make_member("Player")
-    make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
-    services.add_player_to_team(team["id"], member["id"])
+    team = make_team("2026", "Tigers", "Seniors")
+    make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
     team_id = team["id"]
 
     services.delete_team(team_id)

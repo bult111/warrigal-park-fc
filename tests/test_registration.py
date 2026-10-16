@@ -10,7 +10,7 @@ def test_create_registration(make_member, make_registration):
     reg = make_registration(member["id"], "2026", "U16")
     assert reg["id"] is not None
     assert reg["season"] == "2026"
-    assert reg["age_group"] == "U16"
+    assert reg["age_group"] == "Seniors"
     assert reg["status"] == "Started"
 
 
@@ -27,7 +27,7 @@ def test_amend_registration(make_member, make_registration):
     reg = make_registration(member["id"], "2026", "U16")
     updated = services.update_registration(reg["id"], member["id"], "2027", "U18", "Started")
     assert updated["season"] == "2027"
-    assert updated["age_group"] == "U18"
+    assert updated["age_group"] == "Seniors"
 
 
 def test_withdraw_registration(make_member, make_registration):

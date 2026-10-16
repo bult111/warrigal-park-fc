@@ -80,7 +80,7 @@ def test_create_registration_persists_and_is_retrievable(make_member, make_regis
     assert fetched["member_id"] == member["id"]
     assert fetched["member_name"] == "Create Story Member"
     assert fetched["season"] == "2026"
-    assert fetched["age_group"] == "U16"
+    assert fetched["age_group"] == "U18"
     assert fetched["status"] == "Started"
 
 
@@ -94,7 +94,7 @@ def test_create_registration_writes_the_same_values_to_the_database(
     row = _raw_registration(created["id"])
     assert row["member_id"] == member["id"]
     assert row["season"] == "2027"
-    assert row["age_group"] == "U18"
+    assert row["age_group"] == "Seniors"
     assert row["status"] == "Started"
 
 
@@ -168,15 +168,16 @@ def test_create_registration_for_inactive_member_is_allowed(make_member, make_re
         ("", "U16", "Season is required."),
         ("   ", "U16", "Season is required."),
         (None, "U16", "Season is required."),
-        ("2026", "", "Age group is required."),
-        ("2026", "   ", "Age group is required."),
-        ("2026", None, "Age group is required."),
     ],
 )
 def test_create_registration_missing_fields_rejected_and_nothing_stored(
     make_member, make_registration, season, age_group, expected_message
 ):
-    """Missing season or age group is refused with a message and stores nothing."""
+    """A missing or invalid season is refused with a message and stores nothing.
+
+    The age group is no longer submitted by the caller; it is computed on the
+    server, so it is not part of this validation.
+    """
     member = make_member("Missing Field Member", dob="2010-01-01")
     before = _registration_row_count()
 
@@ -234,7 +235,7 @@ def test_create_registration_route_redirects_to_viewable_detail(client, make_mem
     assert detail.status_code == 200
     assert b"Route Registration Member" in detail.data
     assert b"2026" in detail.data
-    assert b"U16" in detail.data
+    assert b"U18" in detail.data
     assert b"Started" in detail.data
     assert b"Registration created." in detail.data
 
@@ -250,7 +251,7 @@ def test_create_registration_route_appears_in_member_history(client, make_member
 
     page = client.get(f"/members/{member['id']}")
     assert page.status_code == 200
-    assert b"U16" in page.data
+    assert b"U18" in page.data
     assert b"Registration History" in page.data
 
 
@@ -261,7 +262,6 @@ def test_create_registration_route_appears_in_member_history(client, make_member
         ({"member_id": "99999", "season": "2026", "age_group": "U16"}, b"Member not found."),
         ({"member_id": "@@bad@@", "season": "2026", "age_group": "U16"}, b"Member not found."),
         ({"member_id": "@real@", "age_group": "U16"}, b"Season is required."),
-        ({"member_id": "@real@", "season": "2026"}, b"Age group is required."),
         (
             {"member_id": "@real@", "season": "2026", "age_group": "U16", "status": "Bogus"},
             b"Invalid registration status.",
@@ -297,7 +297,6 @@ def test_create_registration_route_keeps_typed_values_on_error(client, make_memb
 
     assert response.status_code == 400
     assert b"2031" in response.data
-    assert b"U12" in response.data
     assert b"Member not found." in response.data
 
 
@@ -341,7 +340,7 @@ def test_amend_registration_changes_season_only(make_member, make_registration):
     updated = services.update_registration(created["id"], member["id"], "2027", "U16", "Started")
 
     assert updated["season"] == "2027"
-    assert updated["age_group"] == "U16"
+    assert updated["age_group"] == "U18"
     assert updated["status"] == "Started"
     assert updated["member_id"] == member["id"]
 
@@ -409,7 +408,6 @@ def test_amend_registration_unknown_registration_rejected(make_member):
     "season, age_group, status, expected_message",
     [
         ("", "U16", "Started", "Season is required."),
-        ("2026", "", "Started", "Age group is required."),
         ("2026", "U16", "Bogus", "Invalid registration status."),
         ("2026", "U16", "", "Invalid registration status."),
         ("2026", "U16", None, "Invalid registration status."),
@@ -427,7 +425,7 @@ def test_amend_registration_invalid_values_rejected_and_nothing_changed(
 
     assert expected_message in str(exc_info.value)
     row = _raw_registration(created["id"])
-    assert (row["season"], row["age_group"], row["status"]) == ("2026", "U16", "Started")
+    assert (row["season"], row["age_group"], row["status"]) == ("2026", "U18", "Started")
 
 
 def test_amend_registration_unknown_member_rejected_and_nothing_changed(
@@ -476,7 +474,7 @@ def test_amend_registration_does_not_change_other_registrations(
     untouched = _raw_registration(first["id"])
     assert (untouched["season"], untouched["age_group"], untouched["status"]) == (
         "2025",
-        "U14",
+        "Seniors",
         "Complete",
     )
 
@@ -549,7 +547,7 @@ def test_amend_registration_route_invalid_input_shows_feedback_and_changes_nothi
     assert response.status_code == 400
     assert b"Invalid registration status." in response.data
     row = _raw_registration(created["id"])
-    assert (row["season"], row["age_group"], row["status"]) == ("2026", "U16", "Started")
+    assert (row["season"], row["age_group"], row["status"]) == ("2026", "U18", "Started")
 
 
 def test_amend_registration_form_is_prepopulated(client, make_member, make_registration):
@@ -562,7 +560,6 @@ def test_amend_registration_form_is_prepopulated(client, make_member, make_regis
     assert response.status_code == 200
     assert b"Amend Registration" in response.data
     assert b'value="2026"' in response.data
-    assert b'value="U16"' in response.data
 
 
 def test_amend_unknown_registration_route_redirects_with_feedback(client):
@@ -617,7 +614,7 @@ def test_withdraw_registration_keeps_the_row_and_its_details(
     assert row["id"] == created["id"]
     assert row["member_id"] == member["id"]
     assert row["season"] == "2026"
-    assert row["age_group"] == "U16"
+    assert row["age_group"] == "U18"
 
 
 def test_withdrawn_registration_remains_in_member_history(make_member, make_registration):
@@ -746,7 +743,7 @@ def test_registration_history_returns_the_members_own_registrations(
     assert len(history) == 2
     assert {r["season"] for r in history} == {"2025", "2026"}
     assert {r["status"] for r in history} == {"Complete", "Started"}
-    assert {r["age_group"] for r in history} == {"U14", "U16"}
+    assert {r["age_group"] for r in history} == {"Seniors"}
 
 
 def test_registration_history_rows_expose_the_displayed_fields(
@@ -761,7 +758,7 @@ def test_registration_history_rows_expose_the_displayed_fields(
     assert row["id"] == created["id"]
     assert row["member_id"] == member["id"]
     assert row["season"] == "2026"
-    assert row["age_group"] == "U16"
+    assert row["age_group"] == "U18"
     assert row["status"] == "Started"
 
 
@@ -1152,7 +1149,7 @@ def test_under_18_rule_message_is_the_documented_wording(make_member, junior_dob
     assert message == services.JUNIOR_GUARDIAN_REQUIRED_MESSAGE
     assert message == (
         "Registration cannot be completed because a member under 18 must have "
-        "at least one guardian."
+        "at least one guardian who is verified as an adult (18 or over)."
     )
 
 
@@ -1383,20 +1380,23 @@ def test_unreadable_stored_dob_blocks_registration_amendment(
     assert _raw_registration(created["id"])["status"] == "Started"
 
 
-def test_unreadable_stored_dob_still_allows_non_complete_statuses(
+def test_unreadable_stored_dob_blocks_started_creation(
     make_member, make_registration
 ):
-    """The guardian rule guards completion only, so Started still works."""
+    """An unreadable stored DOB blocks registration at any status.
+
+    The age group has to be computed from the stored date of birth, so a member
+    whose recorded date cannot be read cannot be registered even as Started.
+    """
     member = make_member("Corrupt Dob Started", dob="2014-01-01")
     _corrupt_stored_dob(member["id"])
+    before = _registration_row_count()
 
-    created = make_registration(member["id"], "2026", "U16", "Started")
-    assert created["status"] == "Started"
+    with pytest.raises(services.ServiceError) as exc_info:
+        make_registration(member["id"], "2026", "U16", "Started")
 
-    amended = services.update_registration(
-        created["id"], member["id"], "2027", "U18", "Started"
-    )
-    assert amended["season"] == "2027"
+    assert str(exc_info.value) == services.UNREADABLE_DATE_OF_BIRTH_MESSAGE
+    assert _registration_row_count() == before
 
 
 def test_unreadable_stored_dob_member_page_returns_200(client, make_member):

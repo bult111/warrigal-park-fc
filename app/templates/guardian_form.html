@@ -19,6 +19,11 @@
         <input type="text" id="name" name="name" value="{{ form.get('name', '') }}" required>
       </div>
       <div class="form-field">
+        <label for="date_of_birth">Date of Birth *</label>
+        <input type="date" id="date_of_birth" name="date_of_birth" value="{{ form.get('date_of_birth', '') }}" required>
+        <span class="help-text">A guardian must be verified as an adult (18 or over).</span>
+      </div>
+      <div class="form-field">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" value="{{ form.get('email', '') }}">
       </div>

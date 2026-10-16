@@ -17,6 +17,33 @@ def _flash_error(error):
     flash(str(error), "error")
 
 
+def _flash_assignment(registration):
+    """Flash whether a newly completed registration was assigned to a team."""
+    if registration["status"] != models.REGISTRATION_STATUS_COMPLETE:
+        return
+    conflict = services.assignment_conflict(
+        registration["member_id"], registration["season"]
+    )
+    if conflict:
+        flash(
+            "Registration saved, but the team assignment needs attention: "
+            f"{conflict}.",
+            "error",
+        )
+        return
+    team = services.team_for_member_in_season(
+        registration["member_id"], registration["season"]
+    )
+    if team is None:
+        flash(
+            "No matching team exists yet for this age group and season, so the "
+            "player is currently unassigned until one is created.",
+            "success",
+        )
+    else:
+        flash(f"Player assigned to team '{team['name']}'.", "success")
+
+
 # ---------------------------------------------------------------------------
 # Dashboard
 # ---------------------------------------------------------------------------
@@ -144,6 +171,7 @@ def guardian_new():
         try:
             guardian = services.create_guardian(
                 form.get("name"),
+                form.get("date_of_birth"),
                 form.get("email"),
                 form.get("phone"),
                 form.get("address"),
@@ -183,6 +211,7 @@ def guardian_edit(guardian_id):
             guardian = services.update_guardian(
                 guardian_id,
                 form.get("name"),
+                form.get("date_of_birth"),
                 form.get("email"),
                 form.get("phone"),
                 form.get("address"),
@@ -241,10 +270,10 @@ def registration_new():
             registration = services.create_registration(
                 request.form.get("member_id", type=int),
                 form.get("season"),
-                form.get("age_group"),
-                form.get("status") or models.REGISTRATION_STATUS_STARTED,
+                status=form.get("status") or models.REGISTRATION_STATUS_STARTED,
             )
             flash("Registration created.", "success")
+            _flash_assignment(registration)
             return redirect(url_for("main.registration_detail", registration_id=registration["id"]))
         except (ValueError, services.ServiceError) as error:
             _flash_error(error)
@@ -283,10 +312,10 @@ def registration_edit(registration_id):
                 registration_id,
                 request.form.get("member_id", type=int),
                 form.get("season"),
-                form.get("age_group"),
-                form.get("status"),
+                status=form.get("status"),
             )
             flash("Registration updated.", "success")
+            _flash_assignment(registration)
             return redirect(url_for("main.registration_detail", registration_id=registration_id))
         except (ValueError, services.ServiceError) as error:
             _flash_error(error)
@@ -334,6 +363,13 @@ def team_new():
                 form.get("season"), form.get("name"), form.get("age_group")
             )
             flash(f"Team '{team['name']}' created.", "success")
+            assigned = services.team_players(team["id"])
+            if assigned:
+                flash(
+                    f"{len(assigned)} eligible player(s) were automatically "
+                    "assigned to this team.",
+                    "success",
+                )
             return redirect(url_for("main.team_detail", team_id=team["id"]))
         except (ValueError, services.ServiceError) as error:
             _flash_error(error)

@@ -20,7 +20,8 @@ def test_search_guardian(make_guardian):
 def test_update_guardian(make_guardian):
     guardian = make_guardian("Old Guardian")
     updated = services.update_guardian(
-        guardian["id"], "New Guardian", "new@example.com", "0400 999 999", "9 Park Rd"
+        guardian["id"], "New Guardian", "1980-05-05", "new@example.com",
+        "0400 999 999", "9 Park Rd"
     )
     assert updated["name"] == "New Guardian"
     assert updated["email"] == "new@example.com"
@@ -45,7 +46,8 @@ def test_guardian_contact_update_reflected(make_guardian, make_member, link_guar
     link_guardian(guardian["id"], junior["id"])
 
     services.update_guardian(
-        guardian["id"], "Parent", "new@example.com", "0400 000 000", "1 Park Rd"
+        guardian["id"], "Parent", "1980-05-05", "new@example.com",
+        "0400 000 000", "1 Park Rd"
     )
 
     # The member's guardian list must show the updated contact details.

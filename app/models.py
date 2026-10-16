@@ -28,6 +28,29 @@ JUNIOR_AGE_LIMIT = 18
 # A sensible upper bound used to reject obviously incorrect birth dates.
 MAX_REASONABLE_AGE = 130
 
+# Age-group rule for this course project (NOT an official Football Australia
+# regulation). The age group is derived from the season age, which is the age a
+# member reaches on 31 December of the season year:
+#
+#     season_age = season_year - birth_year
+#
+# Each pair is ``(youngest season age in the group, group label)``.
+AGE_GROUP_THRESHOLDS = (
+    (18, "Seniors"),
+    (16, "U18"),
+    (14, "U16"),
+    (12, "U14"),
+    (10, "U12"),
+    (8, "U10"),
+    (6, "U8"),
+    (4, "U6"),
+)
+# Groups from youngest to oldest, for use in forms.
+AGE_GROUPS = tuple(group for _, group in reversed(AGE_GROUP_THRESHOLDS))
+
+# Members younger than this in a season cannot be placed in an age group.
+MIN_REGISTRATION_AGE = 4
+
 _EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
 
@@ -83,6 +106,50 @@ def validate_date_of_birth(value, today: date | None = None) -> date:
     return dob
 
 
+def validate_adult_date_of_birth(value, today: date | None = None) -> date:
+    """Validate a guardian date of birth, requiring an adult (18 or over).
+
+    The 18th birthday itself counts as an adult. Raises ``ValueError`` for a
+    missing, unparseable, future, implausible or under-18 date.
+    """
+    today = today or date.today()
+    dob = validate_date_of_birth(value, today=today)
+    if calculate_age(dob, today) < JUNIOR_AGE_LIMIT:
+        raise ValueError("A guardian must be at least 18 years old.")
+    return dob
+
+
+def parse_season(season):
+    """Parse a season into a four-digit calendar year, or raise ``ValueError``."""
+    if season is None or str(season).strip() == "":
+        raise ValueError("Season is required.")
+    text = str(season).strip()
+    if len(text) != 4 or not text.isdigit():
+        raise ValueError("Season must be a four-digit year, for example 2026.")
+    return int(text)
+
+
+def get_age_group(date_of_birth, season):
+    """Return the age group for a date of birth in a registration season.
+
+    The season age is ``season_year - birth_year``, i.e. the age reached on
+    31 December of the season year. A member below :data:`MIN_REGISTRATION_AGE`
+    is refused. This is the course project's own rule (see
+    ``docs/project-scope.md``); it is not an official Football Australia
+    regulation.
+    """
+    year = parse_season(season)
+    dob = date_of_birth if isinstance(date_of_birth, date) else parse_date(date_of_birth)
+    season_age = year - dob.year
+    for min_age, group in AGE_GROUP_THRESHOLDS:
+        if season_age >= min_age:
+            return group
+    raise ValueError(
+        f"A member must be at least {MIN_REGISTRATION_AGE} in the {year} season "
+        "to be placed in an age group."
+    )
+
+
 def validate_email(value):
     """Validate an optional email address.
 
@@ -127,13 +194,22 @@ def member_to_dict(row) -> dict:
 
 
 def guardian_to_dict(row) -> dict:
-    """Map a ``guardians`` row to a plain dict for the templates."""
+    """Map a ``guardians`` row to a plain dict for the templates.
+
+    ``date_of_birth`` is ``None`` for legacy guardians created before the field
+    existed; such guardians are not verified as adults.
+    """
+    dob = safe_parse_date(row["date_of_birth"])
+    age = calculate_age(dob) if dob else None
     return {
         "id": row["id"],
         "name": row["name"],
+        "date_of_birth": row["date_of_birth"],
         "email": row["email"],
         "phone": row["phone"],
         "address": row["address"],
+        "age": age,
+        "is_adult": age is not None and age >= JUNIOR_AGE_LIMIT,
     }
 
 

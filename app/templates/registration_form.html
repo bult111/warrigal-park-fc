@@ -24,8 +24,9 @@
         <input type="text" id="season" name="season" value="{{ form.get('season', '') }}" placeholder="e.g. 2026" required>
       </div>
       <div class="form-field">
-        <label for="age_group">Age Group *</label>
-        <input type="text" id="age_group" name="age_group" value="{{ form.get('age_group', '') }}" placeholder="e.g. U16" required>
+        <label for="age_group_preview">Age Group</label>
+        <input type="text" id="age_group_preview" value="{{ registration.age_group if registration else 'Calculated from date of birth and season' }}" readonly>
+        <span class="help-text">The age group is calculated on the server from the member's date of birth and the season; it cannot be set by hand.</span>
       </div>
       <div class="form-field">
         <label for="status">Status *</label>

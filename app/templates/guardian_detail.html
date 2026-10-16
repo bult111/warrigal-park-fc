@@ -15,6 +15,8 @@
     <table class="data">
       <tbody>
         <tr><th>Name</th><td>{{ guardian.name }}</td></tr>
+        <tr><th>Date of Birth</th><td>{{ guardian.date_of_birth or '—' }}</td></tr>
+        <tr><th>Age</th><td>{% if guardian.is_adult %}{{ guardian.age }} (verified adult){% else %}Not verified as an adult{% endif %}</td></tr>
         <tr><th>Email</th><td>{{ guardian.email or '—' }}</td></tr>
         <tr><th>Phone</th><td>{{ guardian.phone or '—' }}</td></tr>
         <tr><th>Address</th><td>{{ guardian.address or '—' }}</td></tr>

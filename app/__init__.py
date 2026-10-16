@@ -51,4 +51,8 @@ def create_app(test_config=None):
     def registration_statuses():
         return _models.REGISTRATION_STATUSES
 
+    @app.template_global()
+    def age_groups():
+        return _models.AGE_GROUPS
+
     return app

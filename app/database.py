@@ -6,6 +6,7 @@ be placed here.
 """
 
 import sqlite3
+from contextlib import contextmanager
 from pathlib import Path
 
 import click
@@ -27,7 +28,10 @@ CREATE TABLE IF NOT EXISTS guardians (
     name    TEXT NOT NULL,
     email   TEXT NOT NULL DEFAULT '',
     phone   TEXT NOT NULL DEFAULT '',
-    address TEXT NOT NULL DEFAULT ''
+    address TEXT NOT NULL DEFAULT '',
+    -- Nullable: legacy guardians created before the column existed stay valid
+    -- but are not treated as verified adults until a date of birth is recorded.
+    date_of_birth TEXT
 );
 
 CREATE TABLE IF NOT EXISTS guardian_members (
@@ -65,6 +69,32 @@ CREATE TABLE IF NOT EXISTS team_players (
 """
 
 
+def _migrate(db):
+    """Apply idempotent schema migrations to an existing database.
+
+    Called for every new connection (and by ``init_db``) so that a database
+    created by an earlier version gains the ``guardians.date_of_birth`` column
+    before any code reads it. Safe to run repeatedly, and a no-op while the
+    ``guardians`` table does not exist yet.
+    """
+    tables = {
+        row["name"]
+        for row in db.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
+    }
+    if "guardians" not in tables:
+        return
+    columns = {row["name"] for row in db.execute("PRAGMA table_info(guardians)")}
+    if "date_of_birth" not in columns:
+        try:
+            db.execute("ALTER TABLE guardians ADD COLUMN date_of_birth TEXT")
+            db.commit()
+        except sqlite3.OperationalError as error:
+            # Another connection may have added the column between the check and
+            # the ALTER; treat a duplicate-column error as already migrated.
+            if "duplicate column name" not in str(error).lower():
+                raise
+
+
 def get_db():
     """Return the current request's SQLite connection, creating it if needed."""
     if "db" not in g:
@@ -78,6 +108,8 @@ def get_db():
         g.db = sqlite3.connect(str(path))
         g.db.row_factory = sqlite3.Row
         g.db.execute("PRAGMA foreign_keys = ON")
+        # Bring an older database up to the current schema before it is used.
+        _migrate(g.db)
     return g.db
 
 
@@ -89,9 +121,10 @@ def close_db(e=None):
 
 
 def init_db():
-    """Create the database schema in an empty or missing database file."""
+    """Create the database schema and apply migrations to an existing file."""
     db = get_db()
     db.executescript(SCHEMA)
+    _migrate(db)
     db.commit()
 
 
@@ -124,3 +157,27 @@ def execute(sql, params=()):
     cursor = db.execute(sql, params)
     db.commit()
     return cursor.rowcount
+
+
+@contextmanager
+def transaction():
+    """Run several writes as a single atomic unit.
+
+    ``execute`` commits after every statement, so a change that must succeed or
+    fail as a whole has to run inside this block and use the connection
+    directly rather than ``execute``::
+
+        with database.transaction() as db:
+            db.execute("UPDATE ...", (...))
+            db.execute("UPDATE ...", (...))
+
+    The block commits when it completes and rolls back if any exception is
+    raised, leaving no partially written state.
+    """
+    db = get_db()
+    try:
+        yield db
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise

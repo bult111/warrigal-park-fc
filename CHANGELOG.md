@@ -112,3 +112,28 @@ work is listed.
 - Browser acceptance: **21/21 scenarios passed**, executed by the DSH environment
   using Microsoft Edge + Chrome DevTools Protocol (automation, not human
   sign-off). See `docs/testing/sprint-4-acceptance-results.md`.
+
+## 1.4.0
+
+- Automatic age groups:
+  - The age group is computed from the member's date of birth and the season
+    (`season_age = season_year - birth_year`) against a fixed list (`U6`, `U8`,
+    `U10`, `U12`, `U14`, `U16`, `U18`, `Seniors`) and stored on the registration;
+    the age group submitted by the form is ignored. A member below 4 in a season
+    cannot be registered. This is the course project's own rule, not an official
+    Football Australia regulation.
+  - Amending a registration to another season recomputes the age group.
+- Automatic team assignment:
+  - A `Complete` registration places the eligible player onto a matching team
+    (same season and age group), choosing the fewest players and breaking ties by
+    the lowest team id; creating a matching team later assigns waiting players.
+    An existing placement is never silently moved.
+  - Manual add and move also enforce the season and age-group match and at most
+    one team per season. Withdrawing the last `Complete` registration for a
+    season removes that season's assignment; the registration row is kept.
+- Guardian date of birth:
+  - `guardians` gains a `date_of_birth`, added by an idempotent migration that
+    preserves existing guardians and links. A guardian must be verified as an
+    adult (18 or over) before they can be linked or satisfy the under-18 rule; a
+    legacy guardian without a date of birth is not verified.
+- Automated test suite: **335 passed** (0 failed, 0 errors, 0 skipped).

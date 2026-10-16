@@ -17,11 +17,13 @@ The system lets a club administrator:
 ## Main features
 
 - **Member management** — create, search (duplicate names allowed), update, set inactive.
-- **Guardian management** — create, search, update, link to members, view linked juniors.
-- **Registration management** — create, view, amend, withdraw; history retained across seasons.
-- **Junior guardian rule** — under-18 members require a guardian before a registration can be Complete.
+- **Guardian management** — create, search, update, link to members, view linked juniors. Each guardian records a `date_of_birth` that must verify them as an adult (18 or over).
+- **Registration management** — create, view, amend, withdraw; history retained across seasons. The age group is computed from the member's date of birth and the season and is never taken from the submitted form.
+- **Junior guardian rule** — under-18 members require a linked, adult-verified guardian before a registration can be Complete.
+- **Automatic age groups** — the season age (`season_year − birth_year`) maps onto a fixed list: `U6`, `U8`, `U10`, `U12`, `U14`, `U16`, `U18`, `Seniors`. This is the course project's own rule, not an official Football Australia regulation.
+- **Automatic team assignment** — a Complete registration places the eligible player onto a matching team (same season and age group), fewest players first and then the lowest team id.
 - **Team management** — create, list, rename, remove (removal keeps members and registrations).
-- **Player management** — add, move and remove players; players must have a same-season `Complete` registration.
+- **Player management** — add, move and remove players; players must hold a same-season `Complete` registration and a matching age group, with at most one team per season.
 - **Roster, registration history and guardian linked juniors views**.
 - **Dashboard** with basic counts.
 - **User-friendly validation** with flash messages (no raw tracebacks for normal mistakes).
@@ -110,16 +112,32 @@ internet access.
 
 1. **Duplicate names are allowed.** A member's `id` — never the name — is the
    unique identifier, and a name search returns every matching record.
-2. **Under-18 guardian rule.** A member under 18 must have at least one linked
-   guardian before a registration can be set to `Complete`. Adults do not
-   require a guardian.
-3. **Soft deactivation.** Setting a member inactive changes their status; it
+2. **Guardian adult rule.** A guardian must record a `date_of_birth` that
+   verifies them as an adult (18 or over; the 18th birthday itself counts). A
+   guardian with a missing or unreadable date of birth stays a valid row but is
+   not verified, so it cannot satisfy the under-18 rule.
+3. **Under-18 guardian rule.** A member under 18 must have at least one linked,
+   adult-verified guardian before a registration can be set to `Complete`.
+   Adults (18 or over) do not require a guardian.
+4. **Automatic age group.** The age group is always computed from the member's
+   date of birth and the season (`season_age = season_year − birth_year`) and
+   stored on the registration: `U6`, `U8`, `U10`, `U12`, `U14`, `U16`, `U18` or
+   `Seniors`. A member below 4 in a season cannot be registered. This is the
+   course project's own rule, not an official Football Australia regulation.
+5. **Automatic team assignment.** A `Complete` registration makes the player
+   eligible for a team in the same season and matching age group, and places
+   them on it automatically — fewest players first, then the lowest team id —
+   including when a matching team is created later. An existing placement is
+   never silently moved.
+6. **Soft deactivation.** Setting a member inactive changes their status; it
    never deletes the member.
-4. **Registration history is retained.** Withdrawn registrations stay in the
-   database and remain visible in the member's history.
-5. **Season eligibility.** A player can be added to a team only if they have a
-   `Complete` registration for the same season as the team.
-6. **Team removal safety.** Removing a team deletes only the team and its
+7. **Registration history is retained.** Withdrawn registrations stay in the
+   database and remain visible in the member's history. A season's team
+   assignment is dropped only when no `Complete` registration for it remains.
+8. **Team eligibility.** A player can be placed on a team only with a `Complete`
+   registration for the same season and a matching age group, and only one team
+   per season.
+9. **Team removal safety.** Removing a team deletes only the team and its
    player assignments; members and registrations are untouched.
 
 ## Git workflow
@@ -168,6 +186,12 @@ and the Chrome DevTools Protocol; see
 the Sprint 4 branch before the merge and have not been re-run since. Browser
 checks are automation, not human sign-off, and no GitHub Actions CI run was
 verified.
+
+**Current work (not merged)** — automatic age-group calculation, automatic team
+assignment and the guardian date-of-birth/adult requirement are implemented on
+the branch `feature/auto-age-team-assignment-guardian-adult-leo0318-cpu`. This
+branch has not been merged into `main`. On this branch the full suite records
+**335 passed** (0 failed, 0 errors, 0 skipped).
 
 ## Scope limitations
 

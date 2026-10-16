@@ -40,9 +40,8 @@ def test_team_page(client, make_team):
 
 def test_roster_page(client, make_member, make_registration, make_team):
     member = make_member("Roster Player")
-    make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
-    services.add_player_to_team(team["id"], member["id"])
+    team = make_team("2026", "Tigers", "Seniors")
+    make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
 
     response = client.get(f"/teams/{team['id']}/roster")
     assert response.status_code == 200
@@ -125,9 +124,8 @@ def test_team_rename_route(client, make_team):
 
 def test_team_delete_route(client, make_member, make_registration, make_team):
     member = make_member("Keep Me")
-    reg = make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
-    services.add_player_to_team(team["id"], member["id"])
+    team = make_team("2026", "Tigers", "Seniors")
+    reg = make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
 
     response = client.post(f"/teams/{team['id']}/delete", follow_redirects=True)
     assert response.status_code == 200
@@ -141,7 +139,7 @@ def test_team_delete_route(client, make_member, make_registration, make_team):
 def test_player_add_route_success(client, make_member, make_registration, make_team):
     member = make_member("Add Me")
     make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
+    team = make_team("2026", "Tigers", "Seniors")
 
     response = client.post(
         f"/teams/{team['id']}/players/add",
@@ -170,9 +168,8 @@ def test_player_add_route_invalid(client, make_member, make_registration, make_t
 
 def test_player_remove_route_success(client, make_member, make_registration, make_team):
     member = make_member("Remove Me")
-    make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
-    services.add_player_to_team(team["id"], member["id"])
+    team = make_team("2026", "Tigers", "Seniors")
+    make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
 
     response = client.post(
         f"/teams/{team['id']}/players/{member['id']}/remove",
@@ -199,10 +196,9 @@ def test_player_remove_route_noop(client, make_member, make_registration, make_t
 
 def test_player_move_route_success(client, make_member, make_registration, make_team):
     member = make_member("Mover")
-    make_registration(member["id"], "2026", "U16", "Complete")
-    team_a = make_team("2026", "Tigers", "U16")
-    team_b = make_team("2026", "Eagles", "U16")
-    services.add_player_to_team(team_a["id"], member["id"])
+    team_a = make_team("2026", "Tigers", "Seniors")
+    team_b = make_team("2026", "Eagles", "Seniors")
+    make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns to team A
 
     response = client.post(
         f"/teams/{team_a['id']}/players/{member['id']}/move",
@@ -219,9 +215,8 @@ def test_roster_shows_contact_details(client, make_member, make_registration, ma
     member = make_member(
         "Roster Contact", email="player@example.com", phone="0400 000 000"
     )
-    make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
-    services.add_player_to_team(team["id"], member["id"])
+    team = make_team("2026", "Tigers", "Seniors")
+    make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
 
     response = client.get(f"/teams/{team['id']}/roster")
     assert response.status_code == 200

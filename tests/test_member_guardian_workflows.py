@@ -248,7 +248,7 @@ def test_deactivate_preserves_registrations_and_guardians(make_member, make_guar
     assert services.get_member(junior["id"]) is not None
     assert services.member_registration_history(junior["id"]) == [
         {"id": registration["id"], "member_id": junior["id"], "season": "2026",
-         "age_group": "U16", "status": "Started"}
+         "age_group": "U12", "status": "Started"}
     ]
     assert [g["id"] for g in services.member_guardians(junior["id"])] == [guardian["id"]]
 
@@ -257,9 +257,8 @@ def test_deactivate_does_not_remove_team_placement(make_member, make_registratio
                                                    make_team):
     """Deactivation must not delete unrelated records such as team placement."""
     member = make_member("Deactivated Player")
-    make_registration(member["id"], "2026", "U16", "Complete")
-    team = make_team("2026", "Tigers", "U16")
-    services.add_player_to_team(team["id"], member["id"])
+    team = make_team("2026", "Tigers", "Seniors")
+    make_registration(member["id"], "2026", "U16", "Complete")  # auto-assigns
 
     services.set_member_inactive(member["id"])
 
@@ -374,7 +373,12 @@ def test_guardian_create_route_redirects_to_viewable_detail(client):
     """Creating a guardian through the form redirects to a detail page showing it."""
     response = client.post(
         "/guardians/new",
-        data={"name": "Route Guardian", "email": "rg@example.com", "phone": "0400 333 444"},
+        data={
+            "name": "Route Guardian",
+            "date_of_birth": "1980-05-05",
+            "email": "rg@example.com",
+            "phone": "0400 333 444",
+        },
     )
 
     assert response.status_code == 302
@@ -387,8 +391,11 @@ def test_guardian_create_route_redirects_to_viewable_detail(client):
 @pytest.mark.parametrize(
     "payload, expected_message",
     [
-        ({"name": ""}, b"Name is required."),
-        ({"name": "Bad Email", "email": "not-an-email"}, b"Email address is not valid."),
+        ({"name": "", "date_of_birth": "1980-05-05"}, b"Name is required."),
+        (
+            {"name": "Bad Email", "date_of_birth": "1980-05-05", "email": "not-an-email"},
+            b"Email address is not valid.",
+        ),
     ],
 )
 def test_guardian_create_invalid_input_shows_feedback_and_stores_nothing(
@@ -417,7 +424,8 @@ def test_guardian_update_persists_after_reload(make_guardian):
     guardian = make_guardian("Before Guardian")
 
     services.update_guardian(
-        guardian["id"], "After Guardian", "after@example.com", "0400 555 666", "7 New Rd"
+        guardian["id"], "After Guardian", "1980-05-05", "after@example.com",
+        "0400 555 666", "7 New Rd"
     )
 
     reloaded = services.get_guardian(guardian["id"])
@@ -435,6 +443,7 @@ def test_guardian_update_route_persists_and_shows_new_values(client, make_guardi
         f"/guardians/{guardian['id']}/edit",
         data={
             "name": "Edited Guardian",
+            "date_of_birth": "1980-05-05",
             "email": "edited.guardian@example.com",
             "phone": "0400 999 000",
             "address": "5 Edit Rd",
@@ -452,7 +461,7 @@ def test_guardian_update_with_invalid_input_changes_nothing(make_guardian):
     guardian = make_guardian("Keep Guardian", "original@example.com")
 
     with pytest.raises(ValueError):
-        services.update_guardian(guardian["id"], "Changed", "bad-email", "", "")
+        services.update_guardian(guardian["id"], "Changed", "1980-05-05", "bad-email", "", "")
 
     reloaded = services.get_guardian(guardian["id"])
     assert reloaded["name"] == "Keep Guardian"
@@ -462,7 +471,7 @@ def test_guardian_update_with_invalid_input_changes_nothing(make_guardian):
 def test_guardian_update_unknown_id_is_handled_safely(client):
     """Unknown guardian ids raise a friendly error and redirect safely."""
     with pytest.raises(services.ServiceError):
-        services.update_guardian(99999, "Ghost Guardian", "", "", "")
+        services.update_guardian(99999, "Ghost Guardian", "1980-05-05", "", "", "")
 
     response = client.get("/guardians/99999/edit", follow_redirects=True)
     assert b"Guardian not found." in response.data
@@ -664,7 +673,8 @@ def test_guardian_contact_update_reflected_on_member_page(client, make_member, m
     link_guardian(guardian["id"], junior["id"])
 
     services.update_guardian(
-        guardian["id"], "Contact Guardian", "current@example.com", "0400 222 333", "8 New Rd"
+        guardian["id"], "Contact Guardian", "1980-05-05", "current@example.com",
+        "0400 222 333", "8 New Rd"
     )
 
     page = client.get(f"/members/{junior['id']}")
@@ -677,7 +687,8 @@ def test_guardian_contact_update_reflected_on_guardian_pages(client, make_guardi
     """The guardian detail and list pages show the updated contact details."""
     guardian = make_guardian("Page Guardian", email="stale@example.com")
     services.update_guardian(
-        guardian["id"], "Page Guardian", "current@example.com", "0400 444 555", ""
+        guardian["id"], "Page Guardian", "1980-05-05", "current@example.com",
+        "0400 444 555", ""
     )
 
     detail = client.get(f"/guardians/{guardian['id']}")
@@ -696,7 +707,8 @@ def test_guardian_update_keeps_relationships_intact(make_member, make_guardian, 
     services.link_guardian_member(guardian["id"], junior["id"])
 
     services.update_guardian(
-        guardian["id"], "Renamed Guardian", "new@example.com", "0400 666 777", "1 New Rd"
+        guardian["id"], "Renamed Guardian", "1980-05-05", "new@example.com",
+        "0400 666 777", "1 New Rd"
     )
 
     assert [m["id"] for m in services.guardian_linked_members(guardian["id"])] == [junior["id"]]
@@ -712,7 +724,7 @@ def test_updating_one_guardian_does_not_change_another(make_member, make_guardia
     services.link_guardian_member(second["id"], junior["id"])
 
     services.update_guardian(
-        first["id"], "First Guardian", "first.changed@example.com", "", ""
+        first["id"], "First Guardian", "1980-05-05", "first.changed@example.com", "", ""
     )
 
     assert services.get_guardian(second["id"])["email"] == "second@example.com"
@@ -738,6 +750,8 @@ def test_guardian_contact_is_read_from_the_shared_record(make_guardian, make_mem
     guardian = make_guardian("Schema Guardian", email="sole@example.com")
     services.link_guardian_member(guardian["id"], junior["id"])
 
-    services.update_guardian(guardian["id"], "Schema Guardian", "sole.updated@example.com", "", "")
+    services.update_guardian(
+        guardian["id"], "Schema Guardian", "1980-05-05", "sole.updated@example.com", "", ""
+    )
 
     assert services.member_guardians(junior["id"])[0]["email"] == "sole.updated@example.com"

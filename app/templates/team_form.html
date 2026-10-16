@@ -24,7 +24,11 @@
       </div>
       <div class="form-field">
         <label for="age_group">Age Group *</label>
-        <input type="text" id="age_group" name="age_group" value="{{ form.get('age_group', '') }}" placeholder="e.g. U16" required>
+        <select id="age_group" name="age_group" required>
+          {% for group in age_groups() %}
+            <option value="{{ group }}" {% if form.get('age_group') == group %}selected{% endif %}>{{ group }}</option>
+          {% endfor %}
+        </select>
       </div>
     </div>
     <div class="form-actions">

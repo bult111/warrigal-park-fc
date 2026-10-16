@@ -20,12 +20,14 @@
   <div class="table-wrap">
     <table class="data">
       <thead>
-        <tr><th>Name</th><th>Email</th><th>Phone</th><th></th></tr>
+        <tr><th>Name</th><th>Date of Birth</th><th>Age</th><th>Email</th><th>Phone</th><th></th></tr>
       </thead>
       <tbody>
         {% for g in guardians %}
         <tr>
           <td><a href="{{ url_for('main.guardian_detail', guardian_id=g.id) }}">{{ g.name }}</a></td>
+          <td>{{ g.date_of_birth or '—' }}</td>
+          <td>{% if g.is_adult %}{{ g.age }}{% else %}<span class="muted">Not verified</span>{% endif %}</td>
           <td>{{ g.email or '—' }}</td>
           <td>{{ g.phone or '—' }}</td>
           <td class="right">
