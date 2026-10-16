@@ -187,11 +187,20 @@ the Sprint 4 branch before the merge and have not been re-run since. Browser
 checks are automation, not human sign-off, and no GitHub Actions CI run was
 verified.
 
-**Current work (not merged)** — automatic age-group calculation, automatic team
-assignment and the guardian date-of-birth/adult requirement are implemented on
-the branch `feature/auto-age-team-assignment-guardian-adult-leo0318-cpu`. This
-branch has not been merged into `main`. On this branch the full suite records
-**335 passed** (0 failed, 0 errors, 0 skipped).
+### Automatic age groups, automatic team assignment and the guardian adult rule
+
+These features are now part of `main`. The work landed as the ordinary commit
+`1ec3a25` ("feat: add automatic age-group assignment and adult guardian
+validation"), which is the current tip of `main`. It is not a `--no-ff` merge
+commit, so there is no pull-request merge record for it; the branch
+`feature/auto-age-team-assignment-guardian-adult-leo0318-cpu` points at the same
+commit.
+
+On this state the full suite records **348 passed** (0 failed, 0 errors,
+0 skipped), including the date-of-birth consistency regression tests in
+`tests/test_member_dob_consistency.py`. This supersedes the **335 passed** figure
+recorded while the work was still described as unmerged. The **267 passed**
+figure stated above remains the Sprint 4 record and is unchanged.
 
 ## Scope limitations
 

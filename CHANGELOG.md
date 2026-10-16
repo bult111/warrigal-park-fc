@@ -136,4 +136,23 @@ work is listed.
     preserves existing guardians and links. A guardian must be verified as an
     adult (18 or over) before they can be linked or satisfy the under-18 rule; a
     legacy guardian without a date of birth is not verified.
-- Automated test suite: **335 passed** (0 failed, 0 errors, 0 skipped).
+- Date-of-birth consistency fix:
+  - Changing a member's date of birth can change the age group of their existing
+    registrations. `services.update_member` now re-checks every affected
+    registration before writing anything and applies the member row together
+    with every recomputed registration age group in a single transaction, so a
+    rejected or failing change leaves no partial state.
+  - Automatic assignment never relies on a stale stored age group: it always uses
+    the age group recomputed from the member's date of birth and the season. An
+    existing placement that no longer matches is reported through
+    `services.assignment_conflict` rather than being silently moved or
+    duplicated.
+- New regression tests:
+  - `tests/test_member_dob_consistency.py` (7 tests) covers the age-group rewrite
+    after a date-of-birth change, rejection of a change that would break a team
+    assignment, rejection below the minimum age, the junior verified-adult
+    requirement after a change, and rollback of a mid-write failure.
+  - `tests/test_auto_assignment.py` adds stored-vs-computed age-group coverage,
+    including the stale-group, mismatch-reporting and fewest-players/tie-break
+    paths.
+- Automated test suite: **348 passed** (0 failed, 0 errors, 0 skipped).
