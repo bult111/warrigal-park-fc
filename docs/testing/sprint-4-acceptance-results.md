@@ -70,3 +70,12 @@ roster) are covered in the detailed report referenced above.
   before the merge; they were not re-run as part of this documentation update.
 - No GitHub Actions workflow run or commit status was verified, so CI is not
   claimed as passing.
+
+## Later re-verification (not part of the Sprint 4 record)
+
+The figures on this page are the Sprint 4 record and are unchanged. A separate
+fresh verification of the later code state was carried out on 2026-10-16; see
+`final-verification-20261016/final-verification-report.md`. As part of that pass
+the GitHub API was queried and confirmed that this repository has **zero**
+GitHub Actions workflow runs (`total_count: 0`), so no CI pass exists to claim
+for any commit.

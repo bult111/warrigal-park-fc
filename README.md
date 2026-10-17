@@ -149,20 +149,38 @@ The project uses Git for version control, with the repository hosted on GitHub
 - Feature work is done on `feature/*` branches created from `main`.
 - Feature branches are merged back into `main` with `--no-ff` merge commits so
   each integration is recorded explicitly.
+- Not every change follows that path: the commit `1ec3a25` was pushed straight
+  onto `main` as an ordinary commit rather than through a `--no-ff` merge, so no
+  pull-request merge record exists for it (see below).
 - The test suite (`pytest`) is run on each feature branch before merging.
 
 ### Branches and sprint status
 
-`main` is the default and integration branch. The remote (`origin`) currently
-retains the following `feature/*` branches, and the work on each has been merged
-into `main` (verified against the Git history):
+`main` is the default and integration branch. The following branches exist on the
+remote (`origin`), as confirmed from the GitHub API on 2026-10-16:
 
-- `feature/qa-and-validation`
+- `main`
+- `docs/align-auto-age-feature-status`
+- `docs/sprint-4-merge-status`
 - `feature/configuration-improvements`
 - `feature/project-documentation`
+- `feature/qa-and-validation`
 - `feature/sprint-1-qa-release`
 - `feature/sprint-2-member-guardian-colacolaco`
 - `feature/sprint-3-registration-eligibility-sandip001159852`
+- `feature/sprint-3-season-age-reference-leo0318-cpu` (**not** merged into `main`)
+- `feature/sprint-4-team-roster-leo0318-cpu`
+
+Every branch in that list is already contained in `main` except
+`feature/sprint-3-season-age-reference-leo0318-cpu` (`8ac23ef`, "fix: measure the
+under-18 guardian rule at the season reference date"). That branch is an
+alternative rule interpretation that was never merged; `main` measures the
+under-18 rule as of today, which is what the business rules above describe.
+
+The branch `feature/auto-age-team-assignment-guardian-adult-leo0318-cpu` is
+**not** present on the remote. It exists only as a local branch in the developer's
+working copy, where it points at `1ec3a25`; the same commit is reachable from
+`main` (it is the first parent of the current `main` tip).
 
 Completed sprints merged into `main` (from the Git history):
 
@@ -184,23 +202,48 @@ and a **21/21** browser acceptance run driven by the DSH environment using Edge
 and the Chrome DevTools Protocol; see
 `docs/testing/sprint-4-acceptance-results.md`. These results were recorded on
 the Sprint 4 branch before the merge and have not been re-run since. Browser
-checks are automation, not human sign-off, and no GitHub Actions CI run was
-verified.
+checks are automation, not human sign-off.
+
+Two later documentation-only pull requests were merged into `main`:
+
+- **PR #5** — "docs: correct Sprint 4 merge status" (branch
+  `docs/sprint-4-merge-status`, head `7212814`), merge commit
+  `3dbaf1e66127787d9ef50b549a0e21b0270aba2f`.
+- **PR #6** — "Align documentation with merged feature status" (branch
+  `docs/align-auto-age-feature-status`, head
+  `3205042ade4beef2753dde4c86fbb5292dc418c8`), merge commit
+  `fd7b68c15d92e0511b8609f3c9ce84c9943724ee`.
 
 ### Automatic age groups, automatic team assignment and the guardian adult rule
 
-These features are now part of `main`. The work landed as the ordinary commit
+These features are part of `main`. The work landed as the ordinary commit
 `1ec3a25` ("feat: add automatic age-group assignment and adult guardian
-validation"), which is the current tip of `main`. It is not a `--no-ff` merge
-commit, so there is no pull-request merge record for it; the branch
-`feature/auto-age-team-assignment-guardian-adult-leo0318-cpu` points at the same
-commit.
+validation"). That commit was pushed directly onto `main`; it is **not** the tip
+of `main` and it is **not** a `--no-ff` merge commit, so there is no
+pull-request merge record for it.
 
-On this state the full suite records **348 passed** (0 failed, 0 errors,
-0 skipped), including the date-of-birth consistency regression tests in
-`tests/test_member_dob_consistency.py`. This supersedes the **335 passed** figure
-recorded while the work was still described as unmerged. The **267 passed**
-figure stated above remains the Sprint 4 record and is unchanged.
+The current tip of `main` is `fd7b68c15d92e0511b8609f3c9ce84c9943724ee`, the
+merge commit of PR #6 (2026-10-16). PR #6 merged the documentation branch
+`docs/align-auto-age-feature-status` (head `3205042`) and changed only
+`README.md` and `CHANGELOG.md`; it contains no application code. The commit
+history on `main` is therefore:
+
+```text
+fd7b68c  docs: align documentation with current feature status  <- main tip (PR #6)
+1ec3a25  feat: add automatic age-group assignment and adult guardian validation
+3dbaf1e  Merge pull request #5 from bult111/docs/sprint-4-merge-status
+```
+
+On the audited state (`fd7b68c`, tree `a42f0465`) the full suite records
+**348 passed** (0 failed, 0 errors, 0 skipped), including the date-of-birth
+consistency regression tests in `tests/test_member_dob_consistency.py`. This
+figure was re-run and confirmed on 2026-10-16; the evidence is in
+`docs/testing/final-verification-20261016/`. It supersedes the **335 passed**
+figure recorded while the work was still described as unmerged. The
+**267 passed** figure stated above remains the Sprint 4 record and is unchanged.
+
+No GitHub Actions workflow is configured for this repository and no workflow run
+has ever been recorded, so no CI result is claimed anywhere in this project.
 
 ## Scope limitations
 
