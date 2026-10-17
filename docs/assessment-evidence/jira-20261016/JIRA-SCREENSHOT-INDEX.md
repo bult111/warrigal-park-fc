@@ -6,7 +6,7 @@ assessment evidence set.
 - **Project / board:** `MSD426GXUST25` / `MSD426GXUST25 board` (board id `2017`)
 - **Board URL:** https://scu-it.atlassian.net/jira/software/c/projects/MSD426GXUST25/boards/2017/
 - **Capture date:** 2026-10-16
-- **Capture method:** live Jira Cloud session in the DSH-controlled browser, read-only.
+- **Capture method:** live Jira Cloud session in a local browser, read-only.
   No issue, sprint, status, assignee, priority or configuration was created,
   edited, started, completed or deleted at any point.
 - **Screenshot directory:** `docs/assessment-evidence/jira-20261016/` (this folder)
@@ -22,7 +22,6 @@ assessment evidence set.
 
 | File name | What the screenshot shows | Jira page / URL | Related issue / sprint (as actually visible) | A3 use | Evidence status | Limitations |
 |---|---|---|---|---|---|---|
-| `JIRA-01-board-overview.png` | `MSD426GXUST25 board`, tab **当前冲刺** (current sprint). Columns 待办 / 正在进行 / 完成 are all empty; Jira shows the "从待办事项列表开始" empty-state message. | `https://scu-it.atlassian.net/jira/software/c/projects/MSD426GXUST25/boards/2017/` | Board `2017`. No active sprint; no cards on the board. | SCRUM process — board overview | Obtained, but content-incomplete | The board has no work in progress because no sprint is active. All 26 work items sit in the already-closed Sprints 1–4 (see `JIRA-09`…`JIRA-11`). This is the true state of the board and was not altered. |
 | `JIRA-02-backlog-sprints.png` | Backlog tab: Epic panel listing `Member and Guardian Management`, `Registration and Eligibility`, `Team and Roster Management`; sprint group **MSD426GX Sprint 5** (0 个工作项, not started, "冲刺开始" button present); **Backlog** section (0 个工作项). | `https://scu-it.atlassian.net/jira/software/c/projects/MSD426GXUST25/boards/2017/backlog` | Sprint `MSD426GX Sprint 5` (0 items); 3 epics named above. | Product backlog / sprint breakdown | Obtained, but content-incomplete | Backlog and Sprint 5 both contain **0 work items**. Closed Sprints 1–4 do not appear in this view, so this page cannot evidence the sprint backlogs; use the Sprint Reports instead. |
 | `JIRA-03-sprint-1-record.png` | Sprint Report for **MSD426GX Sprint 1**: name, "关闭冲刺，由 Runze Zhang 结束", period 13/十月/26 10:49 下午 – 14/十月/26 7:30 下午, the sprint goal text, and the burndown chart on story points. | `.../boards/2017/reports/sprint-retrospective?sprint=10635` | Sprint 1; closed by Runze Zhang. | SCRUM process — sprint planning / sprint record | Obtained | Only the upper part of the report fits the 1280×720 viewport; the issue-level detail is in `JIRA-03b`. |
 | `JIRA-03b-sprint-1-status-report.png` | Sprint 1 **状态报告 / 已完成的事务**: issues `MSD426GXUST25-22` … `-26` with type 故事, priority, status 已完成 and Story Points; header total **Story Points (15)**. | `.../reports/sprint-retrospective?sprint=10635` | Sprint 1; issues 22, 23, 24, 25, 26. | SCRUM process — sprint backlog + completion; story points | Obtained | Shows the completed issues only. The report renders no "issues not completed" block for this sprint. |
@@ -109,11 +108,12 @@ these.
    meeting record. Confluence is linked in the Jira sidebar but was **not**
    inspected during this capture — meeting notes may live there.
 
-2. **No active sprint and an empty board.** Sprint 5 exists but was never
-   started and holds 0 work items; the Backlog also holds 0. Consequently
-   `JIRA-01-board-overview.png` necessarily shows an empty board and no
-   screenshot can show work flowing through board columns. Confirm whether a
-   board view with cards is expected, or whether Sprint Reports are sufficient.
+2. **No active sprint.** Sprint 5 exists but was never started and holds 0
+   work items, and the Backlog also holds 0. The board therefore shows no
+   cards, so no screenshot can show work flowing through board columns; the
+   Sprint Reports (`JIRA-03` … `JIRA-06`) carry the process evidence instead.
+   Confirm whether a board view with cards is expected, or whether Sprint
+   Reports are sufficient.
 
 3. **Sprint 5 is empty and undated.** Only Sprints 1–4 carry content, and all
    four were closed within roughly three days (13–15 October 2026). Confirm
