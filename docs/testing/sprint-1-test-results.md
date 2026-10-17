@@ -21,6 +21,17 @@
 Dependencies in `requirements.txt` (Flask 3.0.3, python-dotenv 1.0.1, pytest 8.3.3)
 match the versions installed in the project virtual environment.
 
+> **Environment note (interpreter changes across sprints).** This sprint was run
+> on the original machine with Python 3.10.11. From Sprint 2 the work continued
+> on a different machine: the working copy arrived without the original `.venv`,
+> so a fresh virtual environment was created there and installed from
+> `requirements.txt`, and that machine runs Python 3.13.1. No dependency version
+> was changed — only the interpreter that the virtual environment was built
+> against. The final verification round (2026-10-16) was then run again on a
+> Python 3.10.11 interpreter. The versions recorded in each sprint document are
+> therefore the versions actually used in that round, not a single value that
+> applies to the whole project.
+
 ## Test command
 
 ```powershell
