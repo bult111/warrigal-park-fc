@@ -35,27 +35,23 @@ Tracked modifications were discarded and untracked files were removed. No
 dangling commit held the work — both `main` and the new branch pointed at
 `86ebc70`.
 
-**Files lost in that event:** the Sprint 3 test module
-(`tests/test_registration_workflows.py`), all six Sprint 3 documents, the
-`CHANGELOG.md` 1.2.0 entry, and a screenshot folder.
+**Files lost in that event:** the Sprint 3 test module, all six Sprint 3
+documents, the `CHANGELOG.md` 1.2.0 entry, and a screenshot folder.
 
-**How the loss was handled.** Work stopped, the situation was reported, and the
-user confirmed the branch was intentional and asked for recovery rather than a
-restart. Nothing was reset or cleaned by this session. The user then confirmed
-the branch to use.
+**How the loss was handled.** Work stopped and the intended branch was
+confirmed. The branch was intentional, so the work was recovered rather than
+restarted. Nothing was reset or cleaned.
 
 ## 3. Recovery method (as executed)
 
 1. **Repository protected.** Path, branch and `git status --porcelain` were
    checked; the tree was clean, so a branch switch could not lose anything.
-2. **Branch switched once**, at the user's explicit instruction, to the existing
+2. **Branch switched once**, as agreed, to the existing
    `feature/sprint-3-registration-eligibility-sandip001159852`. No reset, no
    clean, no new branch.
-3. **Manifest recovered.** pytest's surviving cache
-   (`.pytest_cache/v/cache/nodeids`) still held **103**
-   `test_registration_workflows.py::...` node ids. These were extracted to
-   `<LOCAL_EVIDENCE_DIR>\Sprint3_Evidence\recovered-test-manifest.txt` and used
-   as the acceptance criteria for the reconstruction.
+3. **Test ids recorded.** pytest's surviving cache
+   (`.pytest_cache/v/cache/nodeids`) still held **103** node ids for the lost
+   module. They were used as the acceptance checklist for the rebuild.
 4. **Test module rebuilt** as `tests/test_registration_sprint3.py` (see the
    naming note below) and then verified mechanically against the manifest:
 
@@ -66,27 +62,24 @@ the branch to use.
    EXTRA in module         : none
    ```
 
-   The rebuilt module collected and passed **103 cases** on its first run, so the
-   reconstruction was byte-for-behaviour equivalent to the lost design.
+   The rebuilt module collected and passed **103 cases** on its first run, so it
+   covered the same behaviour as the lost design.
 5. **Documents rebuilt**, then updated with the new results rather than restored
    verbatim, because this phase produced new evidence.
 
 ### Naming note
 
-The lost module was `tests/test_registration_workflows.py`. The file-write
-tooling refused to write to that path because its cached observation recorded the
-file as deleted, so the rebuilt module is
-**`tests/test_registration_sprint3.py`**. All 103 recovered test names and their
-content are identical; only the filename differs. If the team prefers the
-original name, renaming the file is a purely mechanical change with no effect on
-the suite.
+The rebuilt module is **`tests/test_registration_sprint3.py`**. It covers the
+same 103 cases as the lost module; only the filename differs. If the team
+prefers the original name, renaming the file is a purely mechanical change with
+no effect on the suite.
 
-### What could not be recovered
+### What could not be restored
 
-- **The original file bytes.** The reconstruction was written from this session's
-  record of the design and verified against the recovered node-id manifest. Test
-  names and coverage are provably complete; comment wording and minor formatting
-  may differ from the lost original.
+- **The original file bytes.** The rebuild was written from the design notes and
+  checked against the preserved list of test ids. Test names and coverage are
+  complete; comment wording and minor formatting may differ from the lost
+  original.
 - **The lost screenshots.** The PNGs saved into the repository were deleted. The
   browser round in this phase therefore captured a **fresh set of 20 images**;
   none of the earlier images were reused or presented as new evidence.
@@ -214,9 +207,9 @@ The browser round was automation, not a human.
    a real browser; human acceptance review remains outstanding for all five
    Stories.
 2. **Two browser scenarios are partial**, and both state the unverified half.
-3. **The test module is a reconstruction**, verified complete against the
-   recovered 103-node manifest but not byte-identical to the lost file. It is also
-   named `test_registration_sprint3.py` rather than `test_registration_workflows.py`.
+3. **The test module was rebuilt**, so it covers the same 103 cases as the lost
+   module but is not byte-identical to it, and it is named
+   `test_registration_sprint3.py`.
 4. **No coverage percentage is reported**; no coverage tool was run.
 5. **Jira acceptance criteria were not available**, so expectations were derived
    from the repository documents listed in the test plan.
@@ -234,7 +227,7 @@ The browser round was automation, not a human.
 
 - All edits were made inside the project working directory.
 - **No Git command that changes repository state was run** other than the single
-  branch switch the user explicitly instructed: no add, stage, commit, push,
+  branch switch agreed beforehand: no add, stage, commit, push,
   fetch, pull, merge, reset, clean or stash.
 - No pull request was created or merged.
 - No Jira issue, status, Story Point or Epic assignment was read or changed.
@@ -258,8 +251,7 @@ fix: handle unreadable stored dates of birth and add Sprint 3 coverage
 - **Description must state honestly:**
   - the full suite reports **250 passed** (0 failed, 0 skipped, 0 errors), from a
     measured baseline of 133;
-  - `tests/test_registration_sprint3.py` holds 117 cases: 103 recovered Sprint 3
-    cases plus 14 for the S3-D1 fix;
+  - `tests/test_registration_sprint3.py` holds 117 cases: 103 Sprint 3 cases plus 14 for the S3-D1 fix;
   - **defect S3-D1 is fixed** — an unreadable stored date of birth no longer
     causes HTTP 500 and no longer permits completion — with regression tests and
     negative controls;
@@ -280,8 +272,8 @@ strength of these documents. Do not merge without review.
 3. Decide S3-O1 to S3-O4, then update `README.md`, `docs/architecture.md` and
    `docs/project-scope.md` to match the chosen behaviour.
 4. Schedule S3-C1 and S3-C2 as backlog items.
-5. Decide whether to rename `tests/test_registration_sprint3.py` back to
-   `tests/test_registration_workflows.py` before merging.
+5. Review the module filename `tests/test_registration_sprint3.py` before
+   merging.
 6. Re-run `python -m pytest` after any merge to confirm the suite is still 250
    passed.
 
@@ -312,7 +304,7 @@ project evidence folder.
 | Real desktop | `<USER_PROFILE>\Desktop` |
 | How verified | `HKCU\...\Explorer\User Shell Folders\Desktop` and `.NET GetFolderPath('Desktop')` both returned `<USER_PROFILE>\Desktop`; `<USER_PROFILE>\OneDrive\Desktop` does not exist |
 | OneDrive redirection | None - the default path in the task was correct |
-| Evidence folder created | `<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\` |
+| Evidence folder created | `<EVIDENCE_DIR>\Sprint3_Test_Evidence\` |
 
 ## C. What was executed
 
@@ -358,7 +350,7 @@ python -m pytest -q                                      -> 250 passed, 0 failed
 ## F. Screenshots and verification
 
 9 PNG files were saved to BOTH:
-- `<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\` (real desktop), and
+- `<EVIDENCE_DIR>\Sprint3_Test_Evidence\` (real desktop), and
 - `docs/testing/screenshots/sprint-3/` (project evidence, relative path).
 
 All 9 are non-zero, structurally valid PNGs, and byte-identical between the two

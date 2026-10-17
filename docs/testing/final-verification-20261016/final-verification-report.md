@@ -9,9 +9,9 @@ application-code defect was found**, so no application code was changed. Four
 documentation files were corrected after checking the real remote state.
 
 **Path placeholders:** `<PROJECT_ROOT>` is the repository checkout;
-`<AUDIT_WORKSPACE>` is the scratch workspace outside the repository;
-`<AUDIT_ARCHIVE>` is the local archive outside the repository that holds the
-internal audit artifacts excluded from this repository. See `test-environment.md`.
+`<TEST_WORKSPACE>` is the scratch workspace outside the repository;
+`<LOCAL_ARCHIVE>` is the local archive outside the repository that holds the
+internal test artifacts excluded from this repository. See `test-environment.md`.
 
 ---
 
@@ -22,14 +22,14 @@ internal audit artifacts excluded from this repository. See `test-environment.md
 | Repository | https://github.com/bult111/warrigal-park-fc |
 | Remote `main` at verification time | `fd7b68c15d92e0511b8609f3c9ce84c9943724ee` (via GitHub REST API) |
 | Remote `main` tree | `a42f0465fee7fddeb6e8d498a5c2e86ca6d857fd` |
-| Local branch audited | `audit/final-verification-20261016` |
+| Local branch tested | `audit/final-verification-20261016` |
 | Base commit of that branch | `3205042ade4beef2753dde4c86fbb5292dc418c8` |
 | Tree of that base commit | `a42f0465fee7fddeb6e8d498a5c2e86ca6d857fd` |
-| Trees identical? | **Yes** — the audited content is byte-identical to remote `main` |
+| Trees identical? | **Yes** — the tested content is byte-identical to remote `main` |
 | `main` branch modified? | **No** — local `main` is still `1ec3a25` |
 | Pushed / merged / PR created? | **No** |
 
-### Why the audited commit is not literally `fd7b68c`
+### Why the tested commit is not literally `fd7b68c`
 
 `git fetch` cannot reach `github.com:443` from this machine, so no remote objects
 could be downloaded. However, `fd7b68c` is a **merge commit with two parents**
@@ -44,7 +44,7 @@ git rev-parse '3205042^{tree}'   ->  a42f0465fee7fddeb6e8d498a5c2e86ca6d857fd
 GitHub API, fd7b68c tree         ->  a42f0465fee7fddeb6e8d498a5c2e86ca6d857fd
 ```
 
-So the working tree audited here contains exactly the files of remote `main`.
+So the working tree tested here contains exactly the files of remote `main`.
 This is a content equivalence, not a claim to have fetched the merge commit.
 
 ### Remote facts established from the GitHub REST API
@@ -77,7 +77,7 @@ touched, reset, cleaned or committed:
 - `docs/testing/auto-age-guardian-browser-acceptance-20261016.md`
 - `docs/testing/screenshots/auto-age-guardian-20261016/`
 
-`main` itself was left at `1ec3a25`. The audit was performed on a separate
+`main` itself was left at `1ec3a25`. The verification was performed on a separate
 branch, and all new evidence was written to new paths.
 
 ---
@@ -112,7 +112,7 @@ branch, and all new evidence was written to new paths.
 | Re-run after all documentation edits? | **Yes** — the result above is the post-edit run |
 
 Raw output: `pytest-results.txt`. The full collected-test inventory (348 ids,
-`pytest-collected-tests.txt`) is kept in the local audit archive; see
+`pytest-collected-tests.txt`) is kept in the local test archive; see
 "Archived outside the repository" in section 5.
 
 ### Required test modules are discovered and executed
@@ -172,16 +172,16 @@ Chrome DevTools Protocol, using an **isolated temporary SQLite database**.
 - Full detail and per-scenario narrative: `browser-acceptance-results.md`.
 - Screenshots: `../screenshots/final-verification-20261016/` (22 real PNG captures).
 - Raw console logs and machine-readable per-scenario results are **not** kept in
-  this repository; they are preserved in the local audit archive (see
+  this repository; they are preserved in the local test archive (see
   "Archived outside the repository" in section 5).
 - Authoring scripts (`run1.mjs`, `run2.mjs`, `cdp.mjs`, `init_temp_db.py`,
   `inject_legacy.py`, `db_dump.py`) were run from a scratch workspace outside the
-  repository, `<AUDIT_WORKSPACE>`, and are copied into the local audit archive.
+  repository, `<TEST_WORKSPACE>`, and are copied into the local test archive.
 
 Two rows were **injected by script** (not by the application) to reproduce legacy
 data: a guardian with an unreadable `date_of_birth`, and a member whose date of
 birth no longer matches an existing team assignment. The injection script is
-preserved in the local audit archive as `inject_legacy.py`; every behavioural
+preserved in the local test archive as `inject_legacy.py`; every behavioural
 assertion about them was made through the UI.
 
 ### Scenario table
@@ -302,9 +302,9 @@ GitHub Actions or deployment success was claimed.
 
 #### Archived outside the repository
 
-Six internal audit artifacts are deliberately **not** committed, so that the
+Six internal test artifacts are deliberately **not** committed, so that the
 public change set contains only the reports, the results and the screenshots.
-They are preserved unmodified in the local audit archive `<AUDIT_ARCHIVE>`, and
+They are preserved unmodified in the local test archive `<LOCAL_ARCHIVE>`, and
 the archive records the SHA-256 of each original in
 `SHA256SUMS-originals.txt` so the copies can be checked against this report.
 

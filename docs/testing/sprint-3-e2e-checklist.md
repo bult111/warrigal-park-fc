@@ -308,8 +308,8 @@ database ended the run with 7 registrations (ids 1-7), 5 members, 1 guardian and
 
 | Step | Action | Observed result |
 |---|---|---|
-| 1 | Opened `/registrations/6` in the first agent tab | Detail page for registration 6 |
-| 2 | Opened a second agent tab at `/registrations/7` (which did not exist yet) | Redirected to the Registrations list with `Registration not found.` — the unknown-id path works |
+| 1 | Opened `/registrations/6` in the first tab | Detail page for registration 6 |
+| 2 | Opened a second tab at `/registrations/7` (which did not exist yet) | Redirected to the Registrations list with `Registration not found.` — the unknown-id path works |
 | 3 | In the second tab, created registration id 7 (`Adult Tester`, `2031`, `Seniors`, `Started`) | 302 to `/registrations/7` with `Registration created.` |
 | 4 | Clicked **Withdraw Registration** on registration 7 | 302; green flash `Registration withdrawn.`; Status `Withdrawn`; "record is preserved in the history"; the button was removed |
 | 5 | Reloaded the Registrations list | Row 7 listed as `Withdrawn`; row counts unchanged (7 rows before and after) |
@@ -425,8 +425,8 @@ historical evidence and are not re-verified here.
 | Application | http://127.0.0.1:5000 via `python run.py`, FLASK_DEBUG=0 |
 | Test database | `instance/sprint3_e2e_supplement.db` (disposable, git-ignored via `*.db`, deleted after the run) |
 | Seed data | 4 members: Stale Tab Tester (adult), Adult Tester 2, Junior Tester 2 (junior), Corrupt Dob Tester; registrations 1, 2 and later 3. Created through the service layer. |
-| Screenshots | 9 PNGs, saved to the real desktop folder `<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\` AND copied byte-identically into `docs/testing/screenshots/sprint-3/` (SHA-256 verified). |
-| Server log | `<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\S3-E2E-server-log.txt` (also summarised below) |
+| Screenshots | 9 PNGs, saved to the real desktop folder `<EVIDENCE_DIR>\Sprint3_Test_Evidence\` AND copied byte-identically into `docs/testing/screenshots/sprint-3/` (SHA-256 verified). |
+| Server log | `<EVIDENCE_DIR>\Sprint3_Test_Evidence\S3-E2E-server-log.txt` (also summarised below) |
 
 Desktop path verification: `HKCU\...\Explorer\User Shell Folders\Desktop` =
 `<USER_PROFILE>\Desktop`, `.NET GetFolderPath('Desktop')` = `<USER_PROFILE>\Desktop`.
@@ -543,7 +543,7 @@ under-18 guardian rule was used instead - the same server-side rejection path
 
 Real HTTP POSTs to `POST /members/new` on the running application. Full evidence:
 `docs/testing/sprint-3-api-dob-validation.txt` and
-`<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\S3-E2E-14-api-dob-validation.txt`.
+`<EVIDENCE_DIR>\Sprint3_Test_Evidence\S3-E2E-14-api-dob-validation.txt`.
 
 | Input sent | HTTP | Member created? | Flash message |
 |---|---|---|---|

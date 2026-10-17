@@ -92,7 +92,7 @@ Executed against the real app on a temporary database
                               unlink not reproducible through the UI)
 
 Screenshots saved OUTSIDE the repository in:
-  <LOCAL_EVIDENCE_DIR>\Sprint2_Browser_Evidence\
+  <EVIDENCE_DIR>\Sprint2_Browser_Evidence\
 (17 PNG files, 16 distinct - two are byte-identical; plus README.txt index).
 All were inspected visually in the final review. No screenshot exists for the
 S2-E2E-10 no-op message itself. Ask for approval before copying any image into

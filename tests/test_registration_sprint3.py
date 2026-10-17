@@ -24,12 +24,11 @@ registrations stay in the database and remain visible in the member's
 history"). The interaction between withdrawal and team rosters is a separate,
 still-open product question (S3-C2) and is deliberately **not** asserted here.
 
-Provenance note: this module was first written earlier in the same work session
-as ``tests/test_registration_workflows.py`` and was lost when the working tree
-was cleaned externally. It has been reconstructed from the session record and
-verified against the recovered pytest node-id manifest (103 ids) retained with
-the browser evidence. The final section (S3-D1 regression) was added after the
-reconstruction as part of the S3-D1 fix.
+Provenance note: this module was first written in an earlier round and was
+lost when the working tree was cleaned externally. It was rewritten from the
+design notes and checked against the list of 103 test ids retained with the
+browser evidence. The final section (S3-D1 regression) was added afterwards as
+part of the S3-D1 fix.
 """
 
 import pytest

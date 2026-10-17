@@ -1,4 +1,4 @@
-DATABASE FILE : <AUDIT_WORKSPACE>\final-verify.db
+DATABASE FILE : <TEST_WORKSPACE>\final-verify.db
 REAL DB EXISTS: False
 
 --- members (11 rows) ---

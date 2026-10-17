@@ -161,7 +161,7 @@ Details, observations and evidence notes are in `sprint-2-e2e-checklist.md`.
    the two-tab check documented in the checklist and mark it `Passed` or `Fail`.
 2. **Screenshots** — 17 PNG files (16 distinct; one byte-identical duplicate)
    are saved outside the repository in
-   `<LOCAL_EVIDENCE_DIR>\Sprint2_Browser_Evidence\`, and all of them were
+   `<EVIDENCE_DIR>\Sprint2_Browser_Evidence\`, and all of them were
    inspected visually during the final documentation review. No screenshot
    exists for the E2E-10 no-op message. Recommended for the PR: one image per
    scenario outcome — `S2-E2E-01_member_created.png`,
@@ -212,7 +212,7 @@ checks, did reach the server and produced the expected 400 response and flash.
 - **Browser verification was performed by automation, not by a human.** Nine of
   the ten scenarios passed; S2-E2E-10 is Blocked (first half passed). 17 PNG
   files are saved outside the repository in
-  `<LOCAL_EVIDENCE_DIR>\Sprint2_Browser_Evidence\`, and all were inspected
+  `<EVIDENCE_DIR>\Sprint2_Browser_Evidence\`, and all were inspected
   visually during the final review; each image matched its scenario. No image
   exists for the S2-E2E-10 no-op message, and no image can substitute for human
   acceptance.

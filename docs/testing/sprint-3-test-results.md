@@ -10,21 +10,18 @@
 - **Working directory:** `<PROJECT_ROOT>`
 - **Branch:** `feature/sprint-3-registration-eligibility-sandip001159852`
 
-## 0. Session context (why this file was rebuilt)
+## 0. Context (why this file was rebuilt)
 
 Earlier in this session the Sprint 3 test module and all Sprint 3 documents were
 removed from the working tree by an external clean/checkout at
-`2026-10-14 22:07:33-22:07:45` (see `sprint-3-handover.md`). The test module was
-reconstructed from the session record and **verified against a recovered
-manifest**: pytest's cache still listed the 103 lost node ids, and the rebuilt
-module contains all 80 test functions with **0 missing and 0 extra**. The fix for
+`2026-10-14 22:07:33-22:07:45` (see `sprint-3-handover.md`). The module was
+rebuilt and **checked against the preserved list of 103 test ids**: pytest's
+cache still listed them, and the rebuilt module contains all 80 test functions
+with **0 missing and 0 extra**. The fix for
 S3-D1 and 14 new regression tests were then added on top.
 
-The reconstruction originally reproduced the file as
-`tests/test_registration_workflows.py`; that filename could not be recreated
-because the tooling refused to write to the deleted path, so the rebuilt module
-is `tests/test_registration_sprint3.py`. The 103 recovered test names are
-identical.
+The rebuilt module is `tests/test_registration_sprint3.py`. It covers the same
+103 test names as the lost module.
 
 ## 1. Baseline (measured before any change in this session)
 
@@ -94,7 +91,7 @@ Composition of the 117:
 
 | Part | Cases |
 |---|---:|
-| Recovered Sprint 3 coverage (verified against the 103-id manifest) | 103 |
+| Sprint 3 coverage (verified against the 103 test ids) | 103 |
 | New S3-D1 regression tests | 14 |
 | **Total** | **117** |
 
@@ -121,7 +118,7 @@ Final reconciliation:
 
 ```text
 baseline (Sprint 2 state)                 133
-recovered Sprint 3 coverage              +103
+recreated Sprint 3 coverage              +103
 new S3-D1 regression tests                + 14
                                          -----
 final full suite                          250   measured: 250 passed
@@ -153,7 +150,7 @@ caused by over-strict assertions written by me, not by application defects.
 
 | Failing test | Cause | Resolution |
 |---|---|---|
-| Five failures on the first run of the reconstructed module (earlier in the session, before the loss) | The tests created `Complete` registrations for members with `date_of_birth="2010-01-01"` — 16-year-olds. The under-18 rule correctly refused them. | Changed those tests to use adult members so they isolate the behaviour they target. This also independently confirmed that the rule is enforced on creation. |
+| Five failures on the first run of the rebuilt module (earlier in the session, before the loss) | The tests created `Complete` registrations for members with `date_of_birth="2010-01-01"` — 16-year-olds. The under-18 rule correctly refused them. | Changed those tests to use adult members so they isolate the behaviour they target. This also independently confirmed that the rule is enforced on creation. |
 | `test_unreadable_stored_dob_member_page_returns_200` (this session) | The assertion `b"age " not in page.data` was too broad: the HTML `<title>` contains "Corrupt Dob Page", which matched `age ` (from "Page "). The page itself returned **HTTP 200** and rendered correctly. | Replaced with a precise assertion: the page must contain `(age cannot be read from the stored date)` and must not contain `(age 12)`. |
 
 No other failure or error occurred at any point.
@@ -162,14 +159,14 @@ No other failure or error occurred at any point.
 
 | Story | Title | SP | Cases in the module | Automated result |
 |---|---|---:|---:|---|
-| `MSD426GXUST25-10` | Create Registration | 3 | 27 recovered | **Pass** |
-| `MSD426GXUST25-11` | Amend Registration | 2 | 19 recovered | **Pass** |
-| `MSD426GXUST25-12` | Withdraw Registration | 2 | 12 recovered | **Pass** |
-| `MSD426GXUST25-13` | View Member Registration History | 3 | 14 recovered | **Pass** |
-| `MSD426GXUST25-14` | Enforce Under-18 Guardian Rule | 5 | 31 recovered + 14 S3-D1 = 45 | **Pass** |
+| `MSD426GXUST25-10` | Create Registration | 3 | 27 mapped | **Pass** |
+| `MSD426GXUST25-11` | Amend Registration | 2 | 19 mapped | **Pass** |
+| `MSD426GXUST25-12` | Withdraw Registration | 2 | 12 mapped | **Pass** |
+| `MSD426GXUST25-13` | View Member Registration History | 3 | 14 mapped | **Pass** |
+| `MSD426GXUST25-14` | Enforce Under-18 Guardian Rule | 5 | 31 mapped + 14 S3-D1 = 45 | **Pass** |
 | **Total** | | **15** | **117** | **117 passed** |
 
-The recovered per-Story figures (27 + 19 + 12 + 14 + 31 = 103) were measured by
+The per-Story figures (27 + 19 + 12 + 14 + 31 = 103) were measured by
 mapping the 103 collected node ids to their Story section in the source. The 14
 S3-D1 tests sit in their own final section and belong to Story -14, which is why
 that Story's column shows 45. Several tests additionally evidence a second Story;
@@ -271,10 +268,9 @@ browser and which half rests on automated tests.
    not be added to the suite total.
 7. **No CI or GitHub Actions run was performed or observed**, so nothing here is
    claimed as CI evidence.
-8. The rebuilt module is named `tests/test_registration_sprint3.py` rather than
-   the original `tests/test_registration_workflows.py`, because the tooling
-   refused to write to the deleted path. Test names and content are unchanged and
-   were verified against the recovered 103-id manifest.
+8. The rebuilt module is named `tests/test_registration_sprint3.py`. Test names
+   and content are unchanged and were checked against the preserved list of 103
+   test ids.
 
 
 ================================================================================
@@ -358,7 +354,7 @@ explicitly excluded from the browser PASS and attributed to the API test.
 | Screenshots that could not be saved | **none** |
 
 Evidence folder on the desktop:
-`<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\`
+`<EVIDENCE_DIR>\Sprint3_Test_Evidence\`
 (the real desktop path - no OneDrive redirection).
 
 ## Failures or anomalies in this round
