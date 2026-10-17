@@ -167,7 +167,7 @@ The project uses Git for version control, with the repository hosted on GitHub
 `main` is the default and integration branch. The following branches exist on the
 remote (`origin`), as confirmed from the GitHub API on 2026-10-17:
 
-- `main` (`8c04c5e`, the merge commit of PR #7)
+- `main`
 - `docs/align-auto-age-feature-status`
 - `docs/redact-local-paths-20261016`
 - `docs/sprint-4-merge-status`
@@ -237,17 +237,20 @@ validation"). That commit was pushed directly onto `main`; it is **not** the tip
 of `main` and it is **not** a `--no-ff` merge commit, so there is no
 pull-request merge record for it.
 
-The current tip of `main` is `8c04c5ec60e5ec53ec65f31c4bcb11dfa1605389`, the
-merge commit of PR #7 (2026-10-17). PRs #5, #6 and #7 each changed documentation
-or evidence only, so no application code has changed since `1ec3a25`. The commit
-history on `main` is therefore:
+The last commit that changed application code is `1ec3a25`. Every commit after it
+- PRs #5, #6 and #7, and this README correction - changed documentation or
+evidence only. The code-relevant history on `main` is therefore:
 
 ```text
-8c04c5e  Merge PR #7: final verification evidence and path redaction  <- main tip
 fd7b68c  docs: align documentation with current feature status (PR #6)
 1ec3a25  feat: add automatic age-group assignment and adult guardian validation
 3dbaf1e  Merge pull request #5 from bult111/docs/sprint-4-merge-status
 ```
+
+A specific "current tip" is deliberately not quoted here: a documentation commit
+moves the tip without changing the code, so any quoted tip goes stale as soon as
+the documentation is corrected. The branch list above records `main` as observed
+from the GitHub API on 2026-10-17.
 
 On that code state (`fd7b68c`, tree `a42f0465`) the full suite records
 **348 passed** (0 failed, 0 errors, 0 skipped), including the date-of-birth
