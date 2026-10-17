@@ -1,8 +1,16 @@
 # Warrigal Park FC Member Registration and Team Roster System
 
 A simple local web application for managing club members, guardians,
-registrations and teams at Warrigal Park FC. Built as a student project
-(ISYS3001 Assessment 2) using Flask and SQLite.
+registrations and teams at Warrigal Park FC. Built with Flask and SQLite for
+ISYS3001 Managing Software Development: the individual Assessment 2 deliverable
+was developed into a group project for Assessment 3 by Team 25 (Cao Yang,
+Chen Shuai, Zhang Runze, Zhou Kunpeng).
+
+Project planning is recorded in Jira, project `MSD426GXUST25`
+(<https://scu-it.atlassian.net/jira/software/c/projects/MSD426GXUST25/boards/2017>):
+four Epics, twenty-two user stories with acceptance criteria and story points,
+and the sprint goal for each of the five sprints. This repository holds the
+code, the tests and the written evidence that correspond to that backlog.
 
 ## Purpose
 
@@ -157,10 +165,11 @@ The project uses Git for version control, with the repository hosted on GitHub
 ### Branches and sprint status
 
 `main` is the default and integration branch. The following branches exist on the
-remote (`origin`), as confirmed from the GitHub API on 2026-10-16:
+remote (`origin`), as confirmed from the GitHub API on 2026-10-17:
 
-- `main`
+- `main` (`8c04c5e`, the merge commit of PR #7)
 - `docs/align-auto-age-feature-status`
+- `docs/redact-local-paths-20261016`
 - `docs/sprint-4-merge-status`
 - `feature/configuration-improvements`
 - `feature/project-documentation`
@@ -180,7 +189,7 @@ under-18 rule as of today, which is what the business rules above describe.
 The branch `feature/auto-age-team-assignment-guardian-adult-leo0318-cpu` is
 **not** present on the remote. It exists only as a local branch in the developer's
 working copy, where it points at `1ec3a25`; the same commit is reachable from
-`main` (it is the first parent of the current `main` tip).
+`main`, where it is an ancestor of the current tip.
 
 Completed sprints merged into `main` (from the Git history):
 
@@ -204,7 +213,7 @@ and the Chrome DevTools Protocol; see
 the Sprint 4 branch before the merge and have not been re-run since. Browser
 checks are automation, not human sign-off.
 
-Two later documentation-only pull requests were merged into `main`:
+Three later documentation-only pull requests were merged into `main`:
 
 - **PR #5** — "docs: correct Sprint 4 merge status" (branch
   `docs/sprint-4-merge-status`, head `7212814`), merge commit
@@ -213,6 +222,12 @@ Two later documentation-only pull requests were merged into `main`:
   `docs/align-auto-age-feature-status`, head
   `3205042ade4beef2753dde4c86fbb5292dc418c8`), merge commit
   `fd7b68c15d92e0511b8609f3c9ce84c9943724ee`.
+- **PR #7** — "docs: add final verification evidence and redact local paths"
+  (branch `docs/redact-local-paths-20261016`, head `3a7714f`), merge commit
+  `8c04c5ec60e5ec53ec65f31c4bcb11dfa1605389`. This added the final verification
+  evidence set under `docs/testing/final-verification-20261016/` and redacted
+  local file paths from earlier test records. It changed documentation and
+  evidence only.
 
 ### Automatic age groups, automatic team assignment and the guardian adult rule
 
@@ -222,19 +237,19 @@ validation"). That commit was pushed directly onto `main`; it is **not** the tip
 of `main` and it is **not** a `--no-ff` merge commit, so there is no
 pull-request merge record for it.
 
-The current tip of `main` is `fd7b68c15d92e0511b8609f3c9ce84c9943724ee`, the
-merge commit of PR #6 (2026-10-16). PR #6 merged the documentation branch
-`docs/align-auto-age-feature-status` (head `3205042`) and changed only
-`README.md` and `CHANGELOG.md`; it contains no application code. The commit
+The current tip of `main` is `8c04c5ec60e5ec53ec65f31c4bcb11dfa1605389`, the
+merge commit of PR #7 (2026-10-17). PRs #5, #6 and #7 each changed documentation
+or evidence only, so no application code has changed since `1ec3a25`. The commit
 history on `main` is therefore:
 
 ```text
-fd7b68c  docs: align documentation with current feature status  <- main tip (PR #6)
+8c04c5e  Merge PR #7: final verification evidence and path redaction  <- main tip
+fd7b68c  docs: align documentation with current feature status (PR #6)
 1ec3a25  feat: add automatic age-group assignment and adult guardian validation
 3dbaf1e  Merge pull request #5 from bult111/docs/sprint-4-merge-status
 ```
 
-On the audited state (`fd7b68c`, tree `a42f0465`) the full suite records
+On that code state (`fd7b68c`, tree `a42f0465`) the full suite records
 **348 passed** (0 failed, 0 errors, 0 skipped), including the date-of-birth
 consistency regression tests in `tests/test_member_dob_consistency.py`. This
 figure was re-run and confirmed on 2026-10-16; the evidence is in
