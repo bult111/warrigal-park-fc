@@ -12,7 +12,7 @@
 
 | Item | Value |
 |---|---|
-| Project path | `C:\Users\HP\Documents\GitHub\warrigal-park-fc` — verified before any change |
+| Project path | `<PROJECT_ROOT>` — verified before any change |
 | Branch at the start | `main`, working tree **clean** |
 | HEAD | `86ebc70 Merge pull request: Sprint 2 Member and Guardian Management` |
 | Result | The Sprint 3 files were **absent** — see section 2 |
@@ -54,7 +54,7 @@ the branch to use.
 3. **Manifest recovered.** pytest's surviving cache
    (`.pytest_cache/v/cache/nodeids`) still held **103**
    `test_registration_workflows.py::...` node ids. These were extracted to
-   `C:\Users\HP\Documents\Sprint3_Evidence\recovered-test-manifest.txt` and used
+   `<LOCAL_EVIDENCE_DIR>\Sprint3_Evidence\recovered-test-manifest.txt` and used
    as the acceptance criteria for the reconstruction.
 4. **Test module rebuilt** as `tests/test_registration_sprint3.py` (see the
    naming note below) and then verified mechanically against the manifest:
@@ -298,7 +298,7 @@ project evidence folder.
 
 | Item | Value |
 |---|---|
-| Project path | `C:\Users\HP\Documents\GitHub\warrigal-park-fc` |
+| Project path | `<PROJECT_ROOT>` |
 | Branch (verified before any action) | `feature/sprint-3-registration-eligibility-sandip001159852` |
 | HEAD | `86ebc70` |
 | Working tree at start | Already dirty with the previous round's committed-pending work (5 modified source/template files, `CHANGELOG.md`, the Sprint 3 documents, the test module, the screenshots folder). Preserved untouched; nothing was cleaned, reset or overwritten. |
@@ -309,10 +309,10 @@ project evidence folder.
 
 | Item | Value |
 |---|---|
-| Real desktop | `C:\Users\HP\Desktop` |
-| How verified | `HKCU\...\Explorer\User Shell Folders\Desktop` and `.NET GetFolderPath('Desktop')` both returned `C:\Users\HP\Desktop`; `C:\Users\HP\OneDrive\Desktop` does not exist |
+| Real desktop | `<USER_PROFILE>\Desktop` |
+| How verified | `HKCU\...\Explorer\User Shell Folders\Desktop` and `.NET GetFolderPath('Desktop')` both returned `<USER_PROFILE>\Desktop`; `<USER_PROFILE>\OneDrive\Desktop` does not exist |
 | OneDrive redirection | None - the default path in the task was correct |
-| Evidence folder created | `C:\Users\HP\Desktop\Sprint3_Test_Evidence\` |
+| Evidence folder created | `<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\` |
 
 ## C. What was executed
 
@@ -358,7 +358,7 @@ python -m pytest -q                                      -> 250 passed, 0 failed
 ## F. Screenshots and verification
 
 9 PNG files were saved to BOTH:
-- `C:\Users\HP\Desktop\Sprint3_Test_Evidence\` (real desktop), and
+- `<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\` (real desktop), and
 - `docs/testing/screenshots/sprint-3/` (project evidence, relative path).
 
 All 9 are non-zero, structurally valid PNGs, and byte-identical between the two

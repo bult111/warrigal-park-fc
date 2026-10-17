@@ -104,19 +104,38 @@ The project is version-controlled with Git and hosted on GitHub (remote
 - `main` is the default and stable integration branch.
 - Each piece of work is done on a `feature/*` branch created from `main`.
 - Feature branches are merged back into `main` with `--no-ff` so the merge is
-  recorded as an explicit merge commit.
+  recorded as an explicit merge commit. One exception is recorded below: the
+  commit `1ec3a25` was pushed directly onto `main`.
 - The test suite (`pytest`) is run on each feature branch and again after each
   merge.
 
-The remote (`origin`) currently retains the following `feature/*` branches, and
-the work on each has been merged into `main`: `feature/qa-and-validation`,
-`feature/configuration-improvements`, `feature/project-documentation`,
-`feature/sprint-1-qa-release`, `feature/sprint-2-member-guardian-colacolaco`,
-and `feature/sprint-3-registration-eligibility-sandip001159852`. The Sprint 1,
-Sprint 2 and Sprint 3 feature branches are retained on the remote for reference;
-their work is already part of `main`.
+The remote (`origin`) retains the following branches, confirmed from the GitHub
+API on 2026-10-16:
 
-Sprint 4 (Team and Roster Management) was developed on the branch
-`feature/sprint-4-team-roster-leo0318-cpu` and merged into `main` via PR #4
-(merge commit `98fa25b0dda738659a752dfc27189ebce286b685`). Sprints 1 through 4
-are therefore all part of `main`.
+| Branch | Head | Merged into `main`? |
+|--------|------|---------------------|
+| `main` | `fd7b68c15d92e0511b8609f3c9ce84c9943724ee` | — (integration branch) |
+| `docs/align-auto-age-feature-status` | `3205042ade4beef2753dde4c86fbb5292dc418c8` | Yes, via PR #6 (`fd7b68c`) |
+| `docs/sprint-4-merge-status` | `721281494370b40aac9c89a320cad56005baea2e` | Yes, via PR #5 (`3dbaf1e`) |
+| `feature/configuration-improvements` | `8ee0b5291b045d598c84df0644570ed414735062` | Yes |
+| `feature/project-documentation` | `66499c0ea269870b541496aeefdb7e0463173ec4` | Yes |
+| `feature/qa-and-validation` | `d680b5c3a009ff61e62e8fb18f6b5a27f2b88b72` | Yes |
+| `feature/sprint-1-qa-release` | `ebd622b680ebbf1c1a11585f8c15397b10b95524` | Yes, via PR #1 (`ee2cf04`) |
+| `feature/sprint-2-member-guardian-colacolaco` | `efd1da1cfe4a62489f6b104a634bf3595ac78243` | Yes, via PR #2 (`86ebc70`) |
+| `feature/sprint-3-registration-eligibility-sandip001159852` | `ab7d851a7fe3e00cd70d0042b9922c7ebafa6d95` | Yes, via PR #3 (`d6ee6a0`) |
+| `feature/sprint-3-season-age-reference-leo0318-cpu` | `8ac23ef37d93ced0d6af8192d785a3af72731fee` | **No** — unmerged alternative rule interpretation |
+| `feature/sprint-4-team-roster-leo0318-cpu` | `94acc1bd405635d9b5151ab975a9bb4904effc0c` | Yes, via PR #4 (`98fa25b`) |
+
+Sprints 1 through 4 are therefore all part of `main`. The branch
+`feature/auto-age-team-assignment-guardian-adult-leo0318-cpu` is **not** present
+on the remote: it exists only as a local branch in the developer's working copy.
+The automatic age-group, automatic team-assignment and guardian adult-verification
+work is on `main` as the ordinary commit
+`1ec3a25ccf44abeebf8f0c6c3647b4ea8b90593b`; because it was pushed directly rather
+than merged with `--no-ff`, it has no pull-request merge record. The current tip
+of `main` is the documentation merge commit `fd7b68c` (PR #6), whose tree
+`a42f0465` is the state this project's documentation describes.
+
+No CI service is configured: there is no GitHub Actions workflow in the
+repository and the GitHub API reports zero workflow runs, so no CI pass is
+claimed anywhere in this project.

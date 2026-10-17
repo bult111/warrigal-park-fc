@@ -59,7 +59,7 @@ the P3 "Actual" cell).
 
 - **Performed by:** the user, in Microsoft Edge 155.0.4283.45.
 - **Date:** 2026-10-13 (screenshots saved 23:41–23:50 local time).
-- **Screenshots:** `C:\Users\z\Desktop\ScreenShot\Sprint1_Browser_Test`
+- **Screenshots:** `<LOCAL_EVIDENCE_DIR>\Sprint1_Browser_Test`
   (6 PNG files). All six were reviewed and mapped to scenarios by page content;
   see the screenshot index below.
 
@@ -71,7 +71,7 @@ database and confirmed to serve over HTTP from the terminal:
 - Command: `python run.py` (venv) with `DATABASE`, `HOST=127.0.0.1`,
   `PORT=5001`, `FLASK_DEBUG=0`.
 - Temporary database:
-  `C:\Users\z\AppData\Local\Temp\dsh-EXtiRJ\warrigal_sprint1_browser_qa.db`
+  `<TEMP_DIR>\warrigal_sprint1_browser_qa.db`
 - URL: `http://127.0.0.1:5001`
 
 | Path | HTTP status | Rendered heading |
@@ -110,7 +110,7 @@ Start the app with a fresh temporary database (never the real
 `instance/warrigal_park_fc.db`):
 
 ```powershell
-cd "C:\Users\z\Desktop\deepseek harness\warrigal-park-fc"
+cd "<PROJECT_ROOT>"
 $env:DATABASE = Join-Path $env:TEMP ("warrigal_sprint1_browser_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".db")
 $env:HOST = "127.0.0.1"
 $env:PORT = "5001"
@@ -152,7 +152,7 @@ using fictional data only (for example `Sprint1 Browser QA 20261013`,
 
 All six are genuine Microsoft Edge captures of the app at
 `http://127.0.0.1:5001`, saved in
-`C:\Users\z\Desktop\ScreenShot\Sprint1_Browser_Test`:
+`<LOCAL_EVIDENCE_DIR>\Sprint1_Browser_Test`:
 
 | Ref | File | Page observed | Scenario |
 |-----|------|---------------|----------|

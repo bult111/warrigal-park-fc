@@ -350,7 +350,7 @@ tests and the negative control. See `sprint-2-e2e-checklist.md` for the
 observations and the two-tab procedure a human should run.
 
 Screenshots **are** saved to disk for this run, in an evidence folder outside
-the repository: `C:\Users\HP\Documents\Sprint2_Browser_Evidence\` — **17 PNG
+the repository: `<LOCAL_EVIDENCE_DIR>\Sprint2_Browser_Evidence\` — **17 PNG
 files** (16 distinct; `S2-E2E-04_duplicates_list.png` and
 `S2-E2E-04_duplicates_isolated.png` are byte-identical) plus a `README.txt`
 index. Each scenario in the checklist lists its image file names.
@@ -392,7 +392,7 @@ confirm the run left no state behind: **133 passed**.
   recorded above. They were executed by browser automation rather than a human,
   so they do not replace human acceptance sign-off.
 - **Screenshots:** 17 PNG files (16 distinct) are saved in the evidence folder
-  `C:\Users\HP\Documents\Sprint2_Browser_Evidence\` and all of them were
+  `<LOCAL_EVIDENCE_DIR>\Sprint2_Browser_Evidence\` and all of them were
   inspected visually during this review. No image exists for the S2-E2E-10
   no-op message, and no image can prove that a human performed the runs — human
   confirmation remains outstanding.

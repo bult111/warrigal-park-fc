@@ -1,0 +1,57 @@
+DATABASE FILE : <AUDIT_WORKSPACE>\final-verify.db
+REAL DB EXISTS: False
+
+--- members (11 rows) ---
+    (1, 'Leo Junior', '2012-05-10', 'Active')
+    (2, 'Noah Net', '2011-03-03', 'Active')
+    (3, 'Mia Minor', '2016-08-20', 'Active')
+    (4, 'Sam Seniorish', '2009-02-02', 'Active')
+    (5, 'Tiny Tot', '2023-01-01', 'Active')
+    (6, 'Spoof Test', '2016-04-04', 'Active')
+    (7, 'Boundary Kid', '2018-12-31', 'Active')
+    (8, 'Lower Edge', '2021-01-01', 'Active')
+    (9, 'Hist Kid', '2013-03-03', 'Active')
+    (10, 'Legacy Junior', '2016-01-01', 'Active')
+    (11, 'Ava Adult', '1998-06-06', 'Active')
+
+--- guardians (2 rows) ---
+    (1, 'Ada Adult', '1980-07-07')
+    (2, 'Legacy Unreadable', 'not-a-date')
+
+--- guardian_members (6 rows) ---
+    (1, 1)
+    (1, 2)
+    (1, 3)
+    (1, 4)
+    (1, 7)
+    (2, 10)
+
+--- registrations (8 rows) ---
+    (1, 3, '2026', 'U12', 'Complete')
+    (2, 7, '2026', 'U10', 'Complete')
+    (3, 8, '2026', 'U6', 'Started')
+    (4, 6, '2026', 'U12', 'Started')
+    (5, 1, '2026', 'U16', 'Complete')
+    (6, 2, '2026', 'U16', 'Complete')
+    (7, 4, '2026', 'U18', 'Complete')
+    (8, 9, '2028', 'U16', 'Withdrawn')
+
+--- teams (6 rows) ---
+    (1, '2026', 'Tigers', 'U16')
+    (2, '2026', 'Lions', 'U16')
+    (3, '2026', 'Eagles', 'U12')
+    (4, '2026', 'Falcons', 'U16')
+    (5, '2026', 'Cubs', 'U8')
+    (7, '2026', 'Juniors', 'U18')
+
+--- team_players (4 rows) ---
+    (2, 2, 'Lions', 'U16', 2, 'Noah Net')
+    (3, 7, 'Juniors', 'U18', 4, 'Sam Seniorish')
+    (4, 3, 'Eagles', 'U12', 3, 'Mia Minor')
+    (5, 5, 'Cubs', 'U8', 7, 'Boundary Kid')
+
+--- duplicate-assignment check (a member with >1 team in the same season) ---
+   duplicates found: none
+
+--- assignment-vs-computed-age-group check ---
+   mismatches: [('Boundary Kid', 'Cubs', 'U8', 'U10')]

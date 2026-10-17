@@ -6,8 +6,8 @@
   Flask application, with screenshots captured for each executed scenario.
 - **Document status:** **EXECUTED** in this session. Actual outcomes below are
   observations from that run, not expectations.
-- **Evidence folder (absolute path):**
-  `C:\Users\HP\Documents\GitHub\warrigal-park-fc\docs\testing\screenshots\sprint-3\`
+- **Evidence folder (local path; user profile redacted):**
+  `<PROJECT_ROOT>\docs\testing\screenshots\sprint-3\`
 - **Evidence index with SHA-256 hashes:** `docs/testing/sprint-3-screenshots.txt`
 
 > **How to read the status column.**
@@ -425,11 +425,11 @@ historical evidence and are not re-verified here.
 | Application | http://127.0.0.1:5000 via `python run.py`, FLASK_DEBUG=0 |
 | Test database | `instance/sprint3_e2e_supplement.db` (disposable, git-ignored via `*.db`, deleted after the run) |
 | Seed data | 4 members: Stale Tab Tester (adult), Adult Tester 2, Junior Tester 2 (junior), Corrupt Dob Tester; registrations 1, 2 and later 3. Created through the service layer. |
-| Screenshots | 9 PNGs, saved to the real desktop folder `C:\Users\HP\Desktop\Sprint3_Test_Evidence\` AND copied byte-identically into `docs/testing/screenshots/sprint-3/` (SHA-256 verified). |
-| Server log | `C:\Users\HP\Desktop\Sprint3_Test_Evidence\S3-E2E-server-log.txt` (also summarised below) |
+| Screenshots | 9 PNGs, saved to the real desktop folder `<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\` AND copied byte-identically into `docs/testing/screenshots/sprint-3/` (SHA-256 verified). |
+| Server log | `<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\S3-E2E-server-log.txt` (also summarised below) |
 
 Desktop path verification: `HKCU\...\Explorer\User Shell Folders\Desktop` =
-`C:\Users\HP\Desktop`, `.NET GetFolderPath('Desktop')` = `C:\Users\HP\Desktop`.
+`<USER_PROFILE>\Desktop`, `.NET GetFolderPath('Desktop')` = `<USER_PROFILE>\Desktop`.
 No OneDrive redirection is in effect, so the default path in the task was
 correct and was used as-is.
 
@@ -543,7 +543,7 @@ under-18 guardian rule was used instead - the same server-side rejection path
 
 Real HTTP POSTs to `POST /members/new` on the running application. Full evidence:
 `docs/testing/sprint-3-api-dob-validation.txt` and
-`C:\Users\HP\Desktop\Sprint3_Test_Evidence\S3-E2E-14-api-dob-validation.txt`.
+`<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\S3-E2E-14-api-dob-validation.txt`.
 
 | Input sent | HTTP | Member created? | Flash message |
 |---|---|---|---|

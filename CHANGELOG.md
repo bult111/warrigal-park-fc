@@ -156,3 +156,39 @@ work is listed.
     including the stale-group, mismatch-reporting and fewest-players/tie-break
     paths.
 - Automated test suite: **348 passed** (0 failed, 0 errors, 0 skipped).
+
+## 1.4.1
+
+Documentation-only change. No application code, database schema, dependency or
+test was modified.
+
+- Corrected the repository-status statements in `README.md`:
+  - `1ec3a25` (automatic age groups, automatic team assignment, guardian adult
+    verification) was previously described as "the current tip of `main`". The
+    real tip of `main` is the merge commit
+    `fd7b68c15d92e0511b8609f3c9ce84c9943724ee` of PR #6, "Align documentation
+    with merged feature status". `1ec3a25` remains the feature commit.
+  - Removed the claim that the branch
+    `feature/auto-age-team-assignment-guardian-adult-leo0318-cpu` is present on
+    the remote. It is **not** on the remote; it exists only as a local branch and
+    points at `1ec3a25`.
+  - Updated the remote branch list to the branches actually reported by the
+    GitHub API on 2026-10-16, and recorded that
+    `feature/sprint-3-season-age-reference-leo0318-cpu` (`8ac23ef`) is the only
+    remote branch not merged into `main`.
+  - Recorded PR #5 (`3dbaf1e`) and PR #6 (`fd7b68c`) explicitly, and clarified
+    that `1ec3a25` reached `main` as an ordinary commit rather than a `--no-ff`
+    merge, so it has no pull-request merge record.
+- Corrected `docs/configuration-management.md` so its branch and merge history
+  matches the remote and the README.
+- Recorded that this repository has **no** GitHub Actions workflow and no
+  workflow run, so no CI result is claimed.
+- Re-verified the automated suite on the audited code
+  (`fd7b68c`, tree `a42f0465`) on 2026-10-16 with
+  `.\.venv\Scripts\python.exe -m pytest -q`: **348 passed**, 0 failed, 0 errors,
+  0 skipped. The **267 passed** Sprint 4 figure and the **335 passed** unmerged
+  figure above are historical records and are unchanged.
+- Ran a fresh browser end-to-end acceptance pass against the audited code with an
+  isolated temporary SQLite database; results, screenshots and environment
+  details are in `docs/testing/final-verification-20261016/`. The
+  **21/21** Sprint 4 browser figure remains a separate historical record.

@@ -17,7 +17,7 @@
 > Screenshots **are** saved to disk for this run. They live in an evidence
 > folder **outside the repository** (so nothing new has to be committed):
 >
-> `C:\Users\HP\Documents\Sprint2_Browser_Evidence\`
+> `<LOCAL_EVIDENCE_DIR>\Sprint2_Browser_Evidence\`
 >
 > That folder contains **17 PNG files** (plus a `README.txt` index). Two of the
 > 17 are byte-identical duplicates of each other
@@ -379,7 +379,7 @@ This document now reflects one executed run. If a human re-runs the scenarios:
 
 - Update the `Observed result` cells with what you see.
 - Add your screenshots to the evidence folder
-  (`C:\Users\HP\Documents\Sprint2_Browser_Evidence\`) or another non-repository
+  (`<LOCAL_EVIDENCE_DIR>\Sprint2_Browser_Evidence\`) or another non-repository
   location, and record the file names in the `Evidence` lines.
 - Mark S2-E2E-10 fully `Passed` only after the two-tab check above succeeds.
 - If a scenario fails, record the exact steps, expected and actual behaviour and
