@@ -1,7 +1,7 @@
 # Sprint 4 — Acceptance Results
 
 Sprint 4 (Team and Roster Management) was verified in two ways: the automated
-pytest suite and a browser acceptance run. Both were executed in the DSH
+pytest suite and a browser acceptance run. Both were executed in the test
 environment; neither constitutes human acceptance sign-off.
 
 - Developed on branch `feature/sprint-4-team-roster-leo0318-cpu`; merged into
@@ -26,7 +26,7 @@ Result:
 ## Browser acceptance
 
 A browser acceptance run was executed against a real local instance of the
-application, driven by the DSH environment using Microsoft Edge and the Chrome
+application, driven by the test environment using Microsoft Edge and the Chrome
 DevTools Protocol (no Playwright, no Selenium, no third-party packages). An
 isolated project copy and an isolated SQLite database were used; the original
 database was not touched.
@@ -61,7 +61,7 @@ roster) are covered in the detailed report referenced above.
 
 ## Important caveats
 
-- The browser run is **automation**, executed by the DSH environment over
+- The browser run is **automation**, executed by the test environment over
   Edge + CDP. It is **not** human manual testing and is **not** course-official
   sign-off.
 - The automated pytest result and the browser acceptance are separate kinds of

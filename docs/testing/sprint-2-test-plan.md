@@ -50,7 +50,7 @@ different things and must not be added together.
 | Figure | Value | Meaning |
 |--------|------:|---------|
 | Distinct pytest tests collected in the new module | **54** | 54 test cases were collected and executed. This is the number reported by pytest and the only figure that changes the suite total. |
-| Test functions in the new module | **48** | 48 `def test_...` functions. Six of them use `@pytest.mark.parametrize`, so 48 functions expand to 54 collected cases. |
+| Test functions in the new module | **48** | 48 `def test_...` functions. Three of them use `@pytest.mark.parametrize`, so 48 functions expand to 54 collected cases. |
 | Sum of the per-Story counts | **63** | 11 + 12 + 6 + 4 + 9 + 16 + 5. This is a **coverage mapping**, not a test count. |
 
 ### Why the per-Story counts sum to 63 and not 54

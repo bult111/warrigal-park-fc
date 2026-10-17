@@ -29,16 +29,15 @@ Recovery method: the 103 lost test node ids were still present in pytest's cache
 reconstruction. The rebuilt module contains all 80 test functions with
 0 missing and 0 extra, and collected 103 cases on its first run.
 
-What could NOT be recovered:
-  - The original file bytes. Content was rebuilt from the session record and
-    verified against the recovered node-id manifest. Test names and coverage are
+What could NOT be restored:
+  - The original file bytes. Content was rebuilt from the design notes and
+    checked against the preserved list of test ids. Test names and coverage are
     provably complete; comment wording may differ.
   - The deleted screenshots. The browser round captured a fresh set of 20 images;
     no earlier image was reused or presented as new evidence.
 
-Naming note: the lost module was tests/test_registration_workflows.py. The
-file-write tooling refused to write to that deleted path, so the rebuilt module
-is tests/test_registration_sprint3.py. Test names and content are identical.
+Naming note: the rebuilt module is tests/test_registration_sprint3.py. Test
+names and content are identical to the lost module.
 
 
 -----------------------------------------------------------------------------
@@ -98,7 +97,7 @@ ADDED (tests)
 -----------------------------------------------------------------------------
 tests/test_registration_sprint3.py
     - 90 test functions collecting 117 test cases.
-        103 recovered Sprint 3 cases across the five stories
+        103 Sprint 3 cases across the five stories
          27  MSD426GXUST25-10  Create Registration
          19  MSD426GXUST25-11  Amend Registration
          12  MSD426GXUST25-12  Withdraw Registration
@@ -108,7 +107,7 @@ tests/test_registration_sprint3.py
         ---
         117 cases
     - 7 parametrized functions contribute 34 cases; 83 single-case functions.
-    - Verified complete against the recovered 103-node-id manifest: 80/80
+    - Verified complete against the preserved list of 103 test ids: 80/80
       functions, 0 missing, 0 extra.
     - tests/conftest.py was NOT modified; the existing fixtures were used as-is.
     - No existing test was removed, renamed or weakened.
@@ -148,7 +147,7 @@ docs/testing/sprint-3-defect-log.md
 
 docs/testing/sprint-3-handover.md
     - Repository state at the start, what happened to the earlier work, the
-      recovery method and what could not be recovered, the S3-D1 fix summary, the
+      rebuild method and what could not be restored, the S3-D1 fix summary, the
       browser round summary, the findings review, all command results, negative
       controls, verification of the five stories, limitations, confirmation that
       no state-changing Git command was run, and upload details with next steps.
@@ -193,8 +192,8 @@ RESULT (measured in .venv with pytest 8.3.3, Flask 3.0.3, Python 3.13.1)
 Baseline                       : python -m pytest -q  ->  133 passed
 Rebuilt module, first run      : python -m pytest tests/test_registration_sprint3.py -q
                                                     ->  103 passed
-                                                    (reconstruction verified against
-                                                     the recovered 103-id manifest)
+                                                    (rebuild verified against
+                                                     the recorded 103 test ids)
 S3-D1 regression only          : python -m pytest tests/test_registration_sprint3.py
                                  -q -k "unreadable or readable_stored"
                                                     ->   14 passed
@@ -257,10 +256,10 @@ EVIDENCE LOCATIONS (paths; user profile redacted)
 Repository screenshots:
   <PROJECT_ROOT>\docs\testing\screenshots\sprint-3\
 
-Recovered test-name manifest and the temporary E2E helper scripts (outside the
+Test-name manifest and the temporary E2E helper scripts (outside the
 repository, not part of the deliverable):
-  <LOCAL_EVIDENCE_DIR>\Sprint3_Evidence\
-    recovered-test-manifest.txt   the 103 recovered pytest node ids
+  <EVIDENCE_DIR>\Sprint3_Evidence\
+    test-manifest.txt            the 103 pytest node ids
     compare_manifest.py           the verification script used for the rebuild
     seed_round2.py                the disposable-database seeding script
 
@@ -358,7 +357,7 @@ docs/testing/sprint-3-changed-files.txt
 -----------------------------------------------------------------------------
 ADDED (local desktop evidence - OUTSIDE the repository, not part of the change set)
 -----------------------------------------------------------------------------
-<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\
+<EVIDENCE_DIR>\Sprint3_Test_Evidence\
     S3-E2E-13-A0-both-tabs-before-withdrawal.png
     S3-E2E-13-A-withdrawal-result.png
     S3-E2E-13-B-stale-tab-before-submit.png

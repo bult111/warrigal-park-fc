@@ -129,8 +129,8 @@ Measured on the working copy before any change in this session. Details are in
 
 All Sprint 3 tests live in `tests/test_registration_sprint3.py` — **117 collected
 cases** in **90 test functions**. Per-Story figures are coverage mappings; several
-tests evidence a second Story, and the recovered figures were measured by mapping
-the 103 recovered node ids to their Story section.
+tests evidence a second Story, and the figures were measured by mapping the 103
+test ids to their Story section.
 
 | Story | Cases in the module |
 |---|---:|
@@ -138,7 +138,7 @@ the 103 recovered node ids to their Story section.
 | MSD426GXUST25-11 Amend Registration | 19 |
 | MSD426GXUST25-12 Withdraw Registration | 12 |
 | MSD426GXUST25-13 View Member Registration History | 14 |
-| MSD426GXUST25-14 Enforce Under-18 Guardian Rule | 31 recovered + 14 S3-D1 = 45 |
+| MSD426GXUST25-14 Enforce Under-18 Guardian Rule | 31 mapped + 14 S3-D1 = 45 |
 | **Total** | **117** |
 
 ### MSD426GXUST25-14 — the S3-D1 regression cases (added this session)

@@ -109,9 +109,9 @@ work is listed.
   - Team creation/listing, rename and safe removal, same-season player add, move,
     remove, and roster contact display verified end to end.
 - Automated test suite: **267 passed** (0 failed, 0 errors, 0 skipped).
-- Browser acceptance: **21/21 scenarios passed**, executed by the DSH environment
-  using Microsoft Edge + Chrome DevTools Protocol (automation, not human
-  sign-off). See `docs/testing/sprint-4-acceptance-results.md`.
+- Browser acceptance: **21/21 scenarios passed**, executed by scripted browser
+  automation using Microsoft Edge + Chrome DevTools Protocol (automation, not
+  human sign-off). See `docs/testing/sprint-4-acceptance-results.md`.
 
 ## 1.4.0
 

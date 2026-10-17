@@ -62,8 +62,8 @@ placeholders are used throughout these documents:
 | Placeholder | Meaning |
 |-------------|---------|
 | `<PROJECT_ROOT>` | The repository checkout — the directory that contains `README.md`, `app/`, `tests/` and `requirements.txt`. |
-| `<AUDIT_WORKSPACE>` | The scratch workspace used for the browser run, located **outside** the repository. It holds the temporary SQLite database, the Edge profile and the acceptance driver scripts. |
-| `<AUDIT_ARCHIVE>` | The local audit archive, located **outside** the repository, holding the internal audit artifacts that are deliberately excluded from this repository. |
+| `<TEST_WORKSPACE>` | The scratch workspace used for the browser run, located **outside** the repository. It holds the temporary SQLite database, the Edge profile and the acceptance driver scripts. |
+| `<LOCAL_ARCHIVE>` | The local test archive, located **outside** the repository, holding the internal working files that are deliberately excluded from this repository. |
 
 ## Database isolation
 
@@ -72,10 +72,10 @@ placeholders are used throughout these documents:
 | Real project database | `<PROJECT_ROOT>\instance\warrigal_park_fc.db` | **No.** The file does not exist on this machine; it was never opened or created. |
 | Other pre-existing file | `<PROJECT_ROOT>\instance\presentation_demo.db` (2026-10-15) | **No.** Never opened. |
 | Unit-test databases | pytest `tmp_path` per test | Yes — created and discarded by the test suite itself. |
-| Browser acceptance database | `<AUDIT_WORKSPACE>\final-verify.db` | Yes — the only database the Flask instance under test used. |
+| Browser acceptance database | `<TEST_WORKSPACE>\final-verify.db` | Yes — the only database the Flask instance under test used. |
 
 The Flask server for the browser run was started with
-`DATABASE=<AUDIT_WORKSPACE>\final-verify.db`, and `init_temp_db.py` printed that
+`DATABASE=<TEST_WORKSPACE>\final-verify.db`, and `init_temp_db.py` printed that
 same path together with `REAL DB EXISTS: False` before and after the run
 (`database-state-final.txt`).
 
@@ -98,7 +98,7 @@ byte-identical to remote `main`, even though `git fetch` could not run.
 
 `git` could not reach `github.com:443` from this machine, so
 `git fetch`/`git ls-remote` failed. The GitHub REST API was reachable through the
-agent's HTTP fetch tool, and that is the source of every remote fact recorded in
+the team's browser tool, and that is the source of every remote fact recorded in
 these documents. This distinction matters: remote **Git state** was read from the
 API, not from a Git fetch.
 
@@ -115,12 +115,12 @@ git diff --check
 # bytecode compilation check
 .\.venv\Scripts\python.exe -m compileall -q app tests
 
-# browser acceptance (driver scripts run from <AUDIT_WORKSPACE>)
-$env:DATABASE = "<AUDIT_WORKSPACE>\final-verify.db"
+# browser acceptance (driver scripts run from <TEST_WORKSPACE>)
+$env:DATABASE = "<TEST_WORKSPACE>\final-verify.db"
 $env:PORT = "5066"
 .\.venv\Scripts\python.exe run.py
 node run1.mjs                       # 35 scenarios
-python inject_legacy.py             # legacy-data injection; script in <AUDIT_ARCHIVE>
+python inject_legacy.py             # legacy-data injection; script in <LOCAL_ARCHIVE>
 node run2.mjs                       # 2 scenarios
 python db_dump.py
 ```

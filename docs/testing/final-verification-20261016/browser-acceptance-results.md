@@ -4,7 +4,7 @@ Automated browser acceptance of the [Warrigal Park FC] application, executed
 against a real running Flask instance driven by a real Microsoft Edge browser
 over the Chrome DevTools Protocol.
 
-- **Audited code**: `fd7b68c15d92e0511b8609f3c9ce84c9943724ee` (remote `main`),
+- **Code under test**: `fd7b68c15d92e0511b8609f3c9ce84c9943724ee` (remote `main`),
   tree `a42f0465fee7fddeb6e8d498a5c2e86ca6d857fd`.
 - **Local branch used**: `audit/final-verification-20261016` (based on
   `3205042ade4beef2753dde4c86fbb5292dc418c8`, whose tree is byte-identical to
@@ -13,10 +13,10 @@ over the Chrome DevTools Protocol.
 - **Result**: **37 / 37 scenarios PASS, 0 FAIL, 0 not executed.**
 - **Screenshots**: `../screenshots/final-verification-20261016/` (22 PNG files).
 - **Raw logs**: not published in this repository. The console logs and the
-  machine-readable per-scenario results are preserved in the local audit archive
-  (`<AUDIT_ARCHIVE>`).
-- **Path placeholders**: `<AUDIT_WORKSPACE>` is the scratch workspace outside the
-  repository; `<AUDIT_ARCHIVE>` is the local audit archive outside the repository.
+  machine-readable per-scenario results are preserved in the local test archive
+  (`<LOCAL_ARCHIVE>`).
+- **Path placeholders**: `<TEST_WORKSPACE>` is the scratch workspace outside the
+  repository; `<LOCAL_ARCHIVE>` is the local test archive outside the repository.
   See `test-environment.md` for the full list.
 
 Every scenario below was executed through the application's own HTML pages by
@@ -32,7 +32,7 @@ without an executed run.
 |------|-------|
 | Application | `python run.py` from the project virtual environment |
 | Bind address | `http://127.0.0.1:5066` |
-| Database | `<AUDIT_WORKSPACE>/final-verify.db` (isolated temporary SQLite file) |
+| Database | `<TEST_WORKSPACE>/final-verify.db` (isolated temporary SQLite file) |
 | Browser | Microsoft Edge `Edg/155.0.4283.45` (headless), CDP on `127.0.0.1:9333` |
 | Driver | `cdp.mjs` — a dependency-free CDP client using Node's built-in `fetch`/`WebSocket` |
 | Node | v24.9.0 |
@@ -43,7 +43,7 @@ without an executed run.
 
 Two rows were written directly with SQLite, because the service layer would
 never create them. They simulate real legacy/imported data. The injection script
-is preserved as `inject_legacy.py` in the local audit archive (`<AUDIT_ARCHIVE>`);
+is preserved as `inject_legacy.py` in the local test archive (`<LOCAL_ARCHIVE>`);
 it asserts it is writing to the acceptance database and refuses any other target.
 
 1. **Guardian with an unreadable `date_of_birth`** (`'not-a-date'`), linked to a

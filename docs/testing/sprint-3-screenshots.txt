@@ -129,7 +129,7 @@ Purpose: complete the two scenarios left partial by the previous round.
 - Application: http://127.0.0.1:5000 via `python run.py`, FLASK_DEBUG=0
 - Database: disposable instance/sprint3_e2e_supplement.db (git-ignored, deleted
   after the run)
-- Desktop copy: <LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\
+- Desktop copy: <EVIDENCE_DIR>\Sprint3_Test_Evidence\
   (real desktop path; no OneDrive redirection - verified via the registry
    "User Shell Folders" Desktop value and .NET GetFolderPath)
 - All 9 files below are byte-identical between the desktop folder and

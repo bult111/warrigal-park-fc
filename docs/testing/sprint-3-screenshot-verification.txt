@@ -8,7 +8,7 @@ Method:  browser automation against the live Flask application
 LOCATIONS
 ---------
 Desktop (real desktop path; no OneDrive redirection):
-  <LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\
+  <EVIDENCE_DIR>\Sprint3_Test_Evidence\
 
 Project evidence copy:
   <PROJECT_ROOT>\docs\testing\screenshots\sprint-3\

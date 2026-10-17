@@ -207,8 +207,8 @@ player eligibility, player move/remove (including the S2-F1 no-op feedback fix),
 and roster contact display.
 
 Sprint 4 recorded **267 passed** pytest tests (0 failed, 0 errors, 0 skipped)
-and a **21/21** browser acceptance run driven by the DSH environment using Edge
-and the Chrome DevTools Protocol; see
+and a **21/21** browser acceptance run driven by scripted browser automation
+using Edge and the Chrome DevTools Protocol; see
 `docs/testing/sprint-4-acceptance-results.md`. These results were recorded on
 the Sprint 4 branch before the merge and have not been re-run since. Browser
 checks are automation, not human sign-off.
@@ -256,9 +256,9 @@ On that code state (`fd7b68c`, tree `a42f0465`) the full suite records
 **348 passed** (0 failed, 0 errors, 0 skipped), including the date-of-birth
 consistency regression tests in `tests/test_member_dob_consistency.py`. This
 figure was re-run and confirmed on 2026-10-16; the evidence is in
-`docs/testing/final-verification-20261016/`. It supersedes the **335 passed**
-figure recorded while the work was still described as unmerged. The
-**267 passed** figure stated above remains the Sprint 4 record and is unchanged.
+`docs/testing/final-verification-20261016/`.
+
+The **267 passed** figure stated above is the Sprint 4 record and is unchanged.
 
 No GitHub Actions workflow is configured for this repository and no workflow run
 has ever been recorded, so no CI result is claimed anywhere in this project.

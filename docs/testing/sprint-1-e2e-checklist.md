@@ -59,7 +59,7 @@ the P3 "Actual" cell).
 
 - **Performed by:** the user, in Microsoft Edge 155.0.4283.45.
 - **Date:** 2026-10-13 (screenshots saved 23:41–23:50 local time).
-- **Screenshots:** `<LOCAL_EVIDENCE_DIR>\Sprint1_Browser_Test`
+- **Screenshots:** `<EVIDENCE_DIR>\Sprint1_Browser_Test`
   (6 PNG files). All six were reviewed and mapped to scenarios by page content;
   see the screenshot index below.
 
@@ -152,7 +152,7 @@ using fictional data only (for example `Sprint1 Browser QA 20261013`,
 
 All six are genuine Microsoft Edge captures of the app at
 `http://127.0.0.1:5001`, saved in
-`<LOCAL_EVIDENCE_DIR>\Sprint1_Browser_Test`:
+`<EVIDENCE_DIR>\Sprint1_Browser_Test`:
 
 | Ref | File | Page observed | Scenario |
 |-----|------|---------------|----------|
