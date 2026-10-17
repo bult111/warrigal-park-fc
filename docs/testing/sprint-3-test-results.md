@@ -7,7 +7,7 @@
   carried over from Sprint 1 or Sprint 2.
 - **Environment:** Windows, Python 3.13.1, pytest 8.3.3, Flask 3.0.3,
   SQLite 3.45.3, Microsoft Edge (Chromium) for the browser round.
-- **Working directory:** `C:\Users\HP\Documents\GitHub\warrigal-park-fc`
+- **Working directory:** `<PROJECT_ROOT>`
 - **Branch:** `feature/sprint-3-registration-eligibility-sandip001159852`
 
 ## 0. Session context (why this file was rebuilt)
@@ -358,7 +358,7 @@ explicitly excluded from the browser PASS and attributed to the API test.
 | Screenshots that could not be saved | **none** |
 
 Evidence folder on the desktop:
-`C:\Users\HP\Desktop\Sprint3_Test_Evidence\`
+`<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\`
 (the real desktop path - no OneDrive redirection).
 
 ## Failures or anomalies in this round

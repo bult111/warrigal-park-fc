@@ -155,7 +155,7 @@ docs/testing/sprint-3-handover.md
 
 docs/testing/sprint-3-screenshots.txt
     - Browser evidence index: scenario-to-image map, file sizes and truncated
-      SHA-256 for all 20 images, absolute evidence path, and an explicit list of
+      SHA-256 for all 20 images, the evidence path, and an explicit list of
       what the images do NOT prove.
 
 docs/testing/sprint-3-changed-files.txt
@@ -252,14 +252,14 @@ still required for all five stories.
 
 
 -----------------------------------------------------------------------------
-EVIDENCE LOCATIONS (absolute paths)
+EVIDENCE LOCATIONS (paths; user profile redacted)
 -----------------------------------------------------------------------------
 Repository screenshots:
-  C:\Users\HP\Documents\GitHub\warrigal-park-fc\docs\testing\screenshots\sprint-3\
+  <PROJECT_ROOT>\docs\testing\screenshots\sprint-3\
 
 Recovered test-name manifest and the temporary E2E helper scripts (outside the
 repository, not part of the deliverable):
-  C:\Users\HP\Documents\Sprint3_Evidence\
+  <LOCAL_EVIDENCE_DIR>\Sprint3_Evidence\
     recovered-test-manifest.txt   the 103 recovered pytest node ids
     compare_manifest.py           the verification script used for the rebuild
     seed_round2.py                the disposable-database seeding script
@@ -358,7 +358,7 @@ docs/testing/sprint-3-changed-files.txt
 -----------------------------------------------------------------------------
 ADDED (local desktop evidence - OUTSIDE the repository, not part of the change set)
 -----------------------------------------------------------------------------
-C:\Users\HP\Desktop\Sprint3_Test_Evidence\
+<LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\
     S3-E2E-13-A0-both-tabs-before-withdrawal.png
     S3-E2E-13-A-withdrawal-result.png
     S3-E2E-13-B-stale-tab-before-submit.png

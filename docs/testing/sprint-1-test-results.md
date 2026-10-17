@@ -2,7 +2,7 @@
 
 - **Date:** 2026-10-13
 - **Branch:** `feature/sprint-1-qa-release`
-- **Working directory:** `C:\Users\z\Desktop\deepseek harness\warrigal-park-fc`
+- **Working directory:** `<PROJECT_ROOT>`
 - **OS:** Windows (win32)
 - **Interpreter:** `.venv\Scripts\python.exe` — Python 3.10.11
 - **pytest:** 8.3.3

@@ -8,16 +8,16 @@ Method:  browser automation against the live Flask application
 LOCATIONS
 ---------
 Desktop (real desktop path; no OneDrive redirection):
-  C:\Users\HP\Desktop\Sprint3_Test_Evidence\
+  <LOCAL_EVIDENCE_DIR>\Sprint3_Test_Evidence\
 
 Project evidence copy:
-  C:\Users\HP\Documents\GitHub\warrigal-park-fc\docs\testing\screenshots\sprint-3\
+  <PROJECT_ROOT>\docs\testing\screenshots\sprint-3\
 
 Desktop path verification:
   HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders
-    Desktop = C:\Users\HP\Desktop
-  [Environment]::GetFolderPath('Desktop') = C:\Users\HP\Desktop
-  C:\Users\HP\OneDrive\Desktop does not exist.
+    Desktop = <USER_PROFILE>\Desktop
+  [Environment]::GetFolderPath('Desktop') = <USER_PROFILE>\Desktop
+  <USER_PROFILE>\OneDrive\Desktop does not exist.
 
 METHOD
 ------

@@ -2,7 +2,7 @@
 
 - **Date:** 2026-10-13
 - **Branch:** `feature/sprint-1-qa-release`
-- **Working directory:** `C:\Users\z\Desktop\deepseek harness\warrigal-park-fc`
+- **Working directory:** `<PROJECT_ROOT>`
 
 This document records what was actually done during Sprint 1 QA on the local
 machine, and what still needs manual action. It is intentionally limited to
@@ -43,7 +43,7 @@ handover notes. No application feature code was changed.
    Edge browser pass was then completed manually by the user: all five
    scenarios (Dashboard, Member, Guardian, Registration/under-18 rule, Team &
    roster) passed, with six screenshots in
-   `C:\Users\z\Desktop\ScreenShot\Sprint1_Browser_Test` (all reviewed and
+   `<LOCAL_EVIDENCE_DIR>\Sprint1_Browser_Test` (all reviewed and
    mapped to scenarios). See `sprint-1-e2e-checklist.md` →
    `Manual Browser Verification`.
 
